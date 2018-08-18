@@ -1,5 +1,12 @@
+# Annoying stuff
 *.pyc
 *.swp
 .ipynb_checkpoints
 
+# directory for fit data h5 files
 data
+
+# pypi stuff
+build
+dist
+*.egg-info
