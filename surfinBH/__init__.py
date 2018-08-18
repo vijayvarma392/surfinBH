@@ -23,3 +23,4 @@ THE SOFTWARE.
 """ 
 
 from _loadFits import LoadFits
+from _downloadData import DownloadData
