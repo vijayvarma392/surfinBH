@@ -1,1 +1,1 @@
-from loadFits import LoadFits
+from _loadFits import LoadFits
