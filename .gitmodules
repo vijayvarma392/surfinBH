@@ -1,3 +1,0 @@
-[submodule "surfinBH/eval_pysur"]
-	path = surfinBH/_eval_pysur/
-	url = git@bitbucket.org:vijayvarma392/eval_pysur.git
