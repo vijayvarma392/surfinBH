@@ -1,11 +1,11 @@
 import setuptools
 
-with open("README.rst", "r") as fh:
+with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="surfinBH",
-    version="0.0.4.dev2",
+    version="0.0.4.dev5",
     author="Vijay Varma",
     author_email="vvarma@caltech.edu",
     description="Surrogate Final BH properties.",
