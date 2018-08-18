@@ -1,7 +1,7 @@
 """surfinBH
 ========
 
-An to use easy interface to Surrogate Final BH properties fits.
+Surrogate Final BH properties.
 
 Example usage
 -------------
