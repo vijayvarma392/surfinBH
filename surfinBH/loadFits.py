@@ -1,8 +1,8 @@
-import fit_evaluators
+import _fit_evaluators
 
 FIT_CLASSES = {
-    "3dq8": fit_evaluators.Fit3dq8,
-    "7dq2": fit_evaluators.Fit7dq2,
+    "3dq8": _fit_evaluators.Fit3dq8,
+    "7dq2": _fit_evaluators.Fit7dq2,
     }
 
 def LoadFits(name):
