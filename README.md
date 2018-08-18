@@ -2,4 +2,4 @@
 
 Surrogate Final BH properties <br/>
 
-<br/> <img src="images/point_break.jpeg" alt="Point Break" width="400px"/>
+<br/> <img src="https://github.com/vijayvarma392/surfinBH/tree/master/images/point_break.jpeg" alt="Point Break" width="400px"/>
