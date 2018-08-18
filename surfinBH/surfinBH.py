@@ -2,7 +2,7 @@ import numpy as np
 import os, sys
 import h5py
 
-import eval_pysur
+import _eval_pysur
 
 #=============================================================================
 class SurFinBH(object):
@@ -59,9 +59,9 @@ class SurFinBH(object):
             fit_data = self._read_dict(h5file[fit_key])
 
         if 'fitType' in fit_data.keys() and fit_data['fitType'] == 'GPR':
-            fit = eval_pysur.evaluate_fit.getGPRFitAndErrorEvaluator(fit_data)
+            fit = _eval_pysur.evaluate_fit.getGPRFitAndErrorEvaluator(fit_data)
         else:
-            fit = eval_pysur.evaluate_fit.getFitEvaluator(fit_data)
+            fit = _eval_pysur.evaluate_fit.getFitEvaluator(fit_data)
 
         return fit
 
