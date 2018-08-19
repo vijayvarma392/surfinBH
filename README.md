@@ -8,7 +8,7 @@
 
 *surfinBH* provides fits for *Surrogate Final Black Hole* properties from
 mergers of binary black holes (BBH). Just like Point Break, but with black
-holes (BH)! This package lives on
+holes! This package lives on 
 [GitHub](https://github.com/vijayvarma392/surfinBH).
 
 These fits are described in the following papers:
@@ -56,8 +56,8 @@ import surfinBH
 
 See list of available fits
 ```python
->> print(surfinBH.fits_collection.keys())
-['surfinBH3dq8', 'surfinBH7dq2']
+print(surfinBH.fits_collection.keys())
+>>> ['surfinBH3dq8', 'surfinBH7dq2']
 ```
 
 Pick your favorite fit and get some basic information about it.
