@@ -63,5 +63,5 @@ THE SOFTWARE.
 """
 
 from _loadFits import LoadFits
-from _loadFits import FIT_CLASSES
-from _downloadData import DownloadData
+from _loadFits import fits_collection
+from _loadFits import DownloadData

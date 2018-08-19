@@ -27,7 +27,7 @@ import os, sys
 import h5py
 
 import _eval_pysur
-from _downloadData import _data_path
+from _dataPath import DataPath
 
 #=============================================================================
 class SurFinBH(object):
@@ -36,7 +36,7 @@ class SurFinBH(object):
     #-------------------------------------------------------------------------
     def __init__(self, name):
         self.name = name
-        h5file = h5py.File('%s/fit_%s.h5'%(_data_path(), name), 'r')
+        h5file = h5py.File('%s/fit_%s.h5'%(DataPath(), name), 'r')
         self.fits = self.load_fits(h5file)
         h5file.close()
 
