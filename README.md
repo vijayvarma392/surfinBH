@@ -56,16 +56,15 @@ import surfinBH
 
 See list of available fits
 ```python
-print(surfinBH.fits_collection.keys()))
->>> ['7dq2', '3dq8']
+>> print(surfinBH.fits_collection.keys())
+['surfinBH3dq8', 'surfinBH7dq2']
 ```
 
 Pick your favorite fit and get some basic information about it.
 ```python
-fit_name = '7dq2'
+fit_name = 'surfinBH7dq2'
 surfinBH.fits_collection[fit_name].desc
->>> 'Fits for remnant mass, spin and kick veclocity for generically precessing
-BBH systems.'
+>>> 'Fits for remnant mass, spin and kick veclocity for generically precessing BBH systems.'
 
 surfinBH.fits_collection[fit_name].refs
 >>> 'Varma:2018_inprep'

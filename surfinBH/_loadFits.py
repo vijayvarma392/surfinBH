@@ -22,7 +22,7 @@ def LoadFits(name):
     if name not in fits_collection.keys():
         raise Exception('Invalid fit name : %s'%name)
     else:
-        fit = fits_collection[name].fit_class(name)
+        fit = fits_collection[name].fit_class(name.split('surfinBH')[-1])
         print('Loaded surfinBH%s fit.'%name)
         return fit
 
@@ -57,10 +57,10 @@ def DownloadData(name):
 
 ##############################################################################
 
-#### Add fits here
+#### Add fits here, each name should start with surfinBH.
 fits_collection = {}
 
-fits_collection['3dq8'] = FitAttributes( \
+fits_collection['surfinBH3dq8'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit3dq8,
     desc = 'Fits for remnant mass, spin and kick veclocity for nonprecessing'
         ' BBH systems.',
@@ -69,7 +69,7 @@ fits_collection['3dq8'] = FitAttributes( \
     refs_url = 'arxiv.2018.xxxx',
     )
 
-fits_collection['7dq2'] = FitAttributes( \
+fits_collection['surfinBH7dq2'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit7dq2,
     desc = 'Fits for remnant mass, spin and kick veclocity for genrically'
         ' precessing BBH systems.',
@@ -77,4 +77,3 @@ fits_collection['7dq2'] = FitAttributes( \
     refs = 'Varma:2018_inprep',
     refs_url = 'arxiv.2018.xxxx',
     )
-
