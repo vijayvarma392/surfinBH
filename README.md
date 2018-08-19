@@ -6,9 +6,9 @@
 <br/>
 <br/>
 
-*surfinBH* provides fits for *Surrogate Final Black Hole* properties from
-mergers of binary black holes (BBH). Just like Point Break, but with black
-holes! This package lives on 
+_**surfinBH**_ provides _**sur**rogate **fin**al **B**lack_ _**H**ole_
+properties from mergers of binary black holes (BBH). Just like Point Break, but
+with black holes! This package lives on
 [GitHub](https://github.com/vijayvarma392/surfinBH).
 
 These fits are described in the following papers:
@@ -22,7 +22,7 @@ if available, the relevant paper describing the particular model.
 ## Installation
 
 ### PyPi
-*surfinBH* is available through [PyPi](https://pypi.org/project/surfinBH/).
+_**surfinBH**_ is available through [PyPi](https://pypi.org/project/surfinBH/).
 
 ```shell
 pip install surfinBH
