@@ -6,8 +6,10 @@
 <br/>
 <br/>
 
-*surfinBH* provides fits for *Surrogate Final Black Hole* properties from mergers of binary black holes. Just like Point Break, but with black holes! This
-package lives on [GitHub](https://github.com/vijayvarma392/surfinBH).
+*surfinBH* provides fits for *Surrogate Final Black Hole* properties from
+mergers of binary black holes (BBH). Just like Point Break, but with black
+holes (BH)! This package lives on
+[GitHub](https://github.com/vijayvarma392/surfinBH).
 
 These fits are described in the following papers:
 
@@ -62,7 +64,8 @@ Pick your favorite fit and get some basic information about it.
 ```python
 fit_name = '7dq2'
 surfinBH.fits_collection[fit_name].desc
->>> 'Fits for remnant mass, spin and kick veclocity for genrically precessing BBH systems.'
+>>> 'Fits for remnant mass, spin and kick veclocity for generically precessing
+BBH systems.'
 
 surfinBH.fits_collection[fit_name].refs
 >>> 'Varma:2018_inprep'
