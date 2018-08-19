@@ -54,7 +54,60 @@ import surfinBH
 
 See list of available fits
 ```python
-print(surfinBH.FIT_CLASSES.keys())
+print(surfinBH.fits_collection.keys()))
 >>> ['7dq2', '3dq8']
 ```
 
+Pick your favorite fit and get some basic information about it.
+```python
+fit_name = '7dq2'
+surfinBH.fits_collection[fit_name].desc
+>>> 'Fits for remnant mass, spin and kick veclocity for genrically precessing BBH systems.'
+
+surfinBH.fits_collection[fit_name].refs
+>>> 'Varma:2018_inprep'
+
+surfinBH.fits_collection[fit_name].refs_url
+>>> 'arxiv.2018.xxxx'
+```
+
+Get data for the fit. This only needs to done **once, ever**.
+```python
+surfinBH.DownloadData(fit_name)
+>>> fit_7dq2.h5  100%[======================>]  42.85M  495KB/s  in 60s
+```
+
+Load the fit. This only needs to be done **once** at the start of your script.
+```python
+fit = surfinBH.LoadFits(fit_name)
+>>> Loaded surfinBH7dq2 fit.
+```
+
+The evaluation of each fit is different, so be sure to read the documentation.
+This also defines the frames in which different quantities are defined.
+```python
+help(fit)
+```
+
+Evaluate the fit. Here we show the evaluation for the surfinBH7dq2 model.
+```python
+q = 1.2
+chiA = [0.1, 0.2, 0.3]
+chiB = [0.2, -0.5, 0.3]
+x = [q] + chiA + chiB
+
+print(x)
+>>> [1.2, 0.1, 0.2, 0.3, 0.2, -0.5, 0.3]
+
+# Final mass and its 1-sigma error etimate
+mC, mC_err_est = fit('mC', x)
+
+# Final spin vector and its 1-sigma error estimate
+chiC, chiC_err_est = fit('chiC', x)
+
+# Final kick vector and its 1-sigma error estimate
+velC, velC_err_est = fit('velC', x)
+```
+## Credits
+The code is developed and maintained by [Vijay Varma](http://www.tapir.caltech.edu/~vvarma/). Please, report bugs to
+[&#118;&#118;&#097;&#114;&#109;&#097;&#064;&#099;&#097;&#108;&#116;&#101;&#099;&#104;&#046;&#101;&#100;&#117;](mailto:&#118;&#118;&#097;&#114;&#109;&#097;&#064;&#099;&#097;&#108;&#116;&#101;&#099;&#104;&#046;&#101;&#100;&#117;).
