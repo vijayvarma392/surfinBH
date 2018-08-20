@@ -28,7 +28,7 @@ def LoadFits(name):
 
 #-------------------------------------------------------------------------
 def DownloadData(name):
-    """ Downloads fit data to surfinBH/data diretory.
+    """ Downloads fit data to DataPath() diretory.
     """
     if name not in fits_collection.keys():
         raise Exception('Invalid fit name : %s'%name)
