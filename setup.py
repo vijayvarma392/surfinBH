@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="surfinBH",
-    version="0.0.5.dev1",
+    version="0.0.6.dev0",
     author="Vijay Varma",
     author_email="vvarma@caltech.edu",
     description="Surrogate Final BH properties.",
