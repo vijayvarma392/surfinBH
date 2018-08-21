@@ -7,7 +7,7 @@
 <br/>
 
 _**surfinBH**_ provides _**sur**rogate **fin**al **B**lack_ _**H**ole_
-properties from mergers of binary black holes (BBH). Just like Point Break, but
+properties for mergers of binary black holes (BBH). Just like Point Break, but
 with black holes! This package lives on
 [GitHub](https://github.com/vijayvarma392/surfinBH).
 
@@ -34,6 +34,8 @@ pip install surfinBH
 ```shell
 git clone https://github.com/vijayvarma392/surfinBH
 cd surfinBH
+git submodule init
+git submodule update
 python setup.py install
 ```
 
