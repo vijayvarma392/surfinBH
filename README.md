@@ -13,7 +13,7 @@ with black holes! This package lives on
 
 These fits are described in the following papers:
 
-[1] Vijay Varma, Davide Gerosa, Francois Hebert and Leo C. Stein, in
+[1] Vijay Varma, Davide Gerosa, Francois Hebert and Leo C. Stein, 2018, in
 preparation.
 
 If you find this package useful in your work, please cite reference [1] and,
@@ -90,6 +90,13 @@ This also defines the frames in which different quantities are defined.
 ```python
 help(fit)
 ```
+
+We also provide ipython examples for usage of different fits:
+
+* [surfinBH3dq8](http://htmlpreview.github.io/?https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_3dq8.html)
+
+* [surfinBH7dq2](http://htmlpreview.github.io/?https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq2.html)
+
 
 ## Credits
 The code is developed and maintained by [Vijay Varma](http://www.tapir.caltech.edu/~vvarma/). Please, report bugs to
