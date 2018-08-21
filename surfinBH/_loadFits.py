@@ -23,7 +23,7 @@ def LoadFits(name):
         raise Exception('Invalid fit name : %s'%name)
     else:
         fit = fits_collection[name].fit_class(name.split('surfinBH')[-1])
-        print('Loaded surfinBH%s fit.'%name)
+        print('Loaded %s fit.'%name)
         return fit
 
 #-------------------------------------------------------------------------
@@ -64,7 +64,7 @@ fits_collection['surfinBH3dq8'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit3dq8,
     desc = 'Fits for remnant mass, spin and kick veclocity for nonprecessing'
         ' BBH systems.',
-    data_url = 'https://www.dropbox.com/s/046g2eqvabjjtyl/fit_3dq8.h5',
+    data_url = 'https://www.dropbox.com/s/06mrxalxqjhzy9d/fit_3dq8.h5',
     refs = 'Varma:2018_inprep',
     refs_url = 'arxiv.2018.xxxx',
     )
@@ -73,7 +73,7 @@ fits_collection['surfinBH7dq2'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit7dq2,
     desc = 'Fits for remnant mass, spin and kick veclocity for genrically'
         ' precessing BBH systems.',
-    data_url = 'https://www.dropbox.com/s/np1rh9ijmdnu9ko/fit_7dq2.h5',
+    data_url = 'https://www.dropbox.com/s/8b4o7n5aswrnami/fit_7dq2.h5',
     refs = 'Varma:2018_inprep',
     refs_url = 'arxiv.2018.xxxx',
     )

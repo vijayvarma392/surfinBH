@@ -91,25 +91,6 @@ This also defines the frames in which different quantities are defined.
 help(fit)
 ```
 
-Evaluate the fit. Here we show the evaluation for the surfinBH7dq2 model.
-```python
-q = 1.2
-chiA = [0.1, 0.2, 0.3]
-chiB = [0.2, -0.5, 0.3]
-x = [q] + chiA + chiB
-
-print(x)
->>> [1.2, 0.1, 0.2, 0.3, 0.2, -0.5, 0.3]
-
-# Final mass and its 1-sigma error etimate
-mC, mC_err_est = fit('mC', x)
-
-# Final spin vector and its 1-sigma error estimate
-chiC, chiC_err_est = fit('chiC', x)
-
-# Final kick vector and its 1-sigma error estimate
-velC, velC_err_est = fit('velC', x)
-```
 ## Credits
 The code is developed and maintained by [Vijay Varma](http://www.tapir.caltech.edu/~vvarma/). Please, report bugs to
 [&#118;&#118;&#097;&#114;&#109;&#097;&#064;&#099;&#097;&#108;&#116;&#101;&#099;&#104;&#046;&#101;&#100;&#117;](mailto:&#118;&#118;&#097;&#114;&#109;&#097;&#064;&#099;&#097;&#108;&#116;&#101;&#099;&#104;&#046;&#101;&#100;&#117;).
