@@ -65,6 +65,7 @@ print(surfinBH.fits_collection.keys())
 Pick your favorite fit and get some basic information about it.
 ```python
 fit_name = 'surfinBH7dq2'
+
 surfinBH.fits_collection[fit_name].desc
 >>> 'Fits for remnant mass, spin and kick veclocity for generically precessing BBH systems.'
 
