@@ -92,9 +92,9 @@ help(fit)
 
 We also provide ipython examples for usage of different fits:
 
-* [surfinBH3dq8](http://htmlpreview.github.io/?https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_3dq8.html)
+* [surfinBH3dq8](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_3dq8.ipynb)
 
-* [surfinBH7dq2](http://htmlpreview.github.io/?https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq2.html)
+* [surfinBH7dq2](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq2.ipynb)
 
 
 ## Credits
