@@ -47,8 +47,8 @@ If you do not have root permissions, replace the last step with
 All of these can be installed through pip or conda.
 * numpy
 * scipy
-* scikit-learn (at least 0.19.1)
 * h5py
+* scikit-learn (at least 0.19.1)
 
 ## Usage
 
