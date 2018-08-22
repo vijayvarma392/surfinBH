@@ -22,7 +22,7 @@ if available, the relevant paper describing the particular model.
 ## Installation
 
 ### PyPi
-_**surfinBH**_ is available through [PyPi](https://pypi.org/project/surfinBH/).
+_**surfinBH**_ is available through [PyPI](https://pypi.org/project/surfinBH/).
 
 ```shell
 pip install surfinBH
