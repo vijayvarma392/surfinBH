@@ -2,6 +2,7 @@
 *.pyc
 *.swp
 .ipynb_checkpoints
+.pytest_cache
 
 # directory for fit data h5 files
 surfinBH_data
