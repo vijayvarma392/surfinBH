@@ -30,14 +30,6 @@ import warnings
 import _eval_pysur
 from _dataPath import DataPath
 
-# Ignore this specific GPR warning.
-# This warning was mentioned in issues:
-# https://github.com/autoreject/autoreject/issues/35
-# https://github.com/scikit-learn/scikit-learn/issues/8748
-# But it seems like we can ignore it
-warnings.filterwarnings("ignore", message="Predicted variances smaller than 0."
-        " Setting those variances to 0.")
-
 
 #=============================================================================
 class SurFinBH(object):
