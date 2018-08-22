@@ -10,3 +10,8 @@ surfinBH_data
 build
 dist
 *.egg-info
+
+# For testing you can symlink from examples to the base directory, ignoring
+# those links.
+/example_3dq8.ipynb
+/example_7dq2.ipynb
