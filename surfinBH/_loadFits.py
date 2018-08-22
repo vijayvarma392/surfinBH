@@ -26,7 +26,7 @@ def LoadFits(name):
         return fit
 
 #-------------------------------------------------------------------------
-def DownloadData(name):
+def DownloadData(name, data_dir=DataPath() ):
     """ Downloads fit data to DataPath() diretory.
     """
     if name not in fits_collection.keys():
@@ -34,7 +34,6 @@ def DownloadData(name):
 
     data_url = fits_collection[name].data_url
     fname = os.path.basename(data_url)
-    data_dir = DataPath()
 
     # If file already exists, move it to backup dir with time stamp
     if os.path.isfile('%s/%s'%(data_dir, fname)):
@@ -50,8 +49,8 @@ def DownloadData(name):
             print('There are a lot of backup files in %s, consider removing'
                 ' some.'%backup_dir)
 
-    os.system('wget -q --show-progress --directory-prefix=%s %s'%(data_dir, \
-        data_url))
+    os.system('mkdir -p {0}; cd {0}; curl -# -L -O {1}'.format(data_dir,
+            data_url))
 
 
 ##############################################################################
