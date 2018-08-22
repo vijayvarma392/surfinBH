@@ -69,9 +69,6 @@ surfinBH.fits_collection[fit_name].desc
 >>> 'Fits for remnant mass, spin and kick veclocity for generically precessing BBH systems.'
 
 surfinBH.fits_collection[fit_name].refs
->>> 'Varma:2018_inprep'
-
-surfinBH.fits_collection[fit_name].refs_url
 >>> 'arxiv.2018.xxxx'
 ```
 

@@ -15,7 +15,6 @@ class FitAttributes(object):
         self.desc = kwargs['desc']
         self.data_url =  kwargs['data_url']
         self.refs =  kwargs['refs']
-        self.refs_url =  kwargs['refs_url']
 
 #-------------------------------------------------------------------------
 def LoadFits(name):
@@ -65,8 +64,7 @@ fits_collection['surfinBH3dq8'] = FitAttributes( \
     desc = 'Fits for remnant mass, spin and kick veclocity for nonprecessing'
         ' BBH systems.',
     data_url = 'https://www.dropbox.com/s/06mrxalxqjhzy9d/fit_3dq8.h5',
-    refs = 'Varma:2018_inprep',
-    refs_url = 'arxiv.2018.xxxx',
+    refs = 'arxiv.2018.xxxx',
     )
 
 fits_collection['surfinBH7dq2'] = FitAttributes( \
@@ -74,6 +72,5 @@ fits_collection['surfinBH7dq2'] = FitAttributes( \
     desc = 'Fits for remnant mass, spin and kick veclocity for genrically'
         ' precessing BBH systems.',
     data_url = 'https://www.dropbox.com/s/8b4o7n5aswrnami/fit_7dq2.h5',
-    refs = 'Varma:2018_inprep',
-    refs_url = 'arxiv.2018.xxxx',
+    refs = 'arxiv.2018.xxxx',
     )
