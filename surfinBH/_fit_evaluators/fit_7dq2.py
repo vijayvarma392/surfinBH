@@ -1,5 +1,6 @@
 import numpy as np
 from surfinBH import surfinBH
+import warnings
 
 #=============================================================================
 class Fit7dq2(surfinBH.SurFinBH):
@@ -54,25 +55,9 @@ velC, velC_err_est = fit('velC', x)
 
     #-------------------------------------------------------------------------
     def __init__(self, name):
-        # soft_lims -> raise warning when outside lims
-        # hard_lim -> raise error when outside lims
-        # Same order as x in the call function. Each element is
-        # a [minVal, maxVal] pair.
-        soft_param_lims = [[0.99, 2.01],
-                [-0.801, 0.801],
-                [-0.801, 0.801],
-                [-0.801, 0.801],
-                [-0.801, 0.801],
-                [-0.801, 0.801],
-                [-0.801, 0.801]]
-        hard_param_lims = [[0.99, 3.01],
-                [-1, 1],
-                [-1, 1],
-                [-1, 1],
-                [-1, 1],
-                [-1, 1],
-                [-1, 1]]
-
+        # We will set limits by overriding check_param_limits()
+        soft_param_lims = None
+        hard_param_lims = None
         super(Fit7dq2, self).__init__(name, soft_param_lims, hard_param_lims)
 
     #-------------------------------------------------------------------------
@@ -85,9 +70,40 @@ velC, velC_err_est = fit('velC', x)
             fits[key] = self.load_vector_fit(key, h5file)
         return fits
 
+    #-------------------------------------------------------------------------
+    def check_param_limits(self, x):
+        """ Checks that x is within allowed range of paramters.
+            Raises a warning if outside self.soft_param_lims and
+            raises an error if outside self.hard_param_lims.
+            If these are None, skips the checks.
+        """
+        q = x[0]
+        chiAmag = np.sqrt(np.sum(x[1:4]**2))
+        chiBmag = np.sqrt(np.sum(x[4:7]**2))
+
+        if q < 1:
+            raise ValueError('Mass ratio should be >= 1.')
+        elif q > 3.01:
+            raise Exception('Mass ratio outside allowed range.')
+        elif q > 2.01:
+            warnings.warn('Mass ratio outside training range.')
+
+        if chiAmag > 1.:
+            raise Exception('Spin magnitude of BhA outside allowed range.')
+        elif chiAmag > 0.81:
+            warnings.warn('Spin magnitude of BhA outside training range.')
+
+        if chiBmag > 1.:
+            raise Exception('Spin magnitude of BhB outside allowed range.')
+        elif chiBmag > 0.81:
+            warnings.warn('Spin magnitude of BhB outside training range.')
+
+
 
     #-------------------------------------------------------------------------
     def __call__(self, fit_key, x, **kwargs):
+
+        x = np.array(x)
 
         # Warn/Exit if extrapolating
         self.check_param_limits(x)

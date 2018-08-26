@@ -139,9 +139,10 @@ See _fit_evaluators.fit_7dq2.py for an example.
             raises an error if outside self.hard_param_lims.
             If these are None, skips the checks.
         """
-        if len(x) != len(self.soft_param_lims):
-            raise Exception("Expected x to be of len=%d"\
-                %len(self.soft_param_lims))
+        if self.soft_param_lims is not None:
+            if len(x) != len(self.soft_param_lims):
+                raise Exception("Expected x to be of len=%d"\
+                    %len(self.soft_param_lims))
 
         if self.hard_param_lims is not None:
             for i in range(len(x)):
