@@ -11,16 +11,18 @@
 
 _**surfinBH**_ provides _**sur**rogate **fin**al **B**lack_ _**H**ole_
 properties for mergers of binary black holes (BBH). Just like Point Break, but
-with black holes! This package lives on
-[GitHub](https://github.com/vijayvarma392/surfinBH).
+with black holes!
 
-These fits are described in the following papers:
-
+These fits are described in the following papers: <br/>
 [1] Vijay Varma, Davide Gerosa, Francois Hebert and Leo C. Stein, 2018, in
 preparation.
 
 If you find this package useful in your work, please cite reference [1] and,
 if available, the relevant paper describing the particular model.
+
+This package lives on [GitHub](https://github.com/vijayvarma392/surfinBH) and
+is tested every day with [Travis CI](https://travis-ci.org/). You can see the
+current build status of the master branch at the top of this page.
 
 ## Installation
 
