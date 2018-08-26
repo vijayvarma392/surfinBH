@@ -50,10 +50,10 @@ If you do not have root permissions, replace the last step with
 
 ## Dependencies
 All of these can be installed through pip or conda.
-* numpy
-* scipy
-* h5py
-* scikit-learn (at least 0.19.1)
+* [numpy](https://docs.scipy.org/doc/numpy/user/install.html)
+* [scipy](https://www.scipy.org/install.html)
+* [h5py](http://docs.h5py.org/en/latest/build.html)
+* [scikit-learn](http://scikit-learn.org/stable/install.html) (at least 0.19.1)
 
 ## Usage
 
@@ -101,6 +101,11 @@ We also provide ipython examples for usage of different fits:
 * [surfinBH3dq8](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_3dq8.ipynb)
 
 * [surfinBH7dq2](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq2.ipynb)
+
+## Making contributions
+See this
+[README](https://github.com/vijayvarma392/surfinBH/blob/master/README_developers.md)
+for instructions on how to make contributions to this package.
 
 
 ## Credits
