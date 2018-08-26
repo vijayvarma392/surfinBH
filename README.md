@@ -81,7 +81,7 @@ surfinBH.fits_collection[fit_name].refs
 Get data for the fit. This only needs to done **once, ever**.
 ```python
 surfinBH.DownloadData(fit_name)
->>> fit_7dq2.h5  100%[======================>]  42.85M  495KB/s  in 60s
+>>> ################################################################ 100.0%
 ```
 
 Load the fit. This only needs to be done **once** at the start of your script.
