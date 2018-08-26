@@ -5,9 +5,15 @@ import warnings
 
 import surfinBH
 
-# Ignore this specific warning.
+# Ignore these specific warning.
 warnings.filterwarnings("ignore", message="Parameter x[[0-9]+] outside"
         " training range.")
+warnings.filterwarnings("ignore", message="Mass ratio outside training range.")
+warnings.filterwarnings("ignore", message="Spin magnitude of BhA outside"
+        " training range.")
+warnings.filterwarnings("ignore", message="Spin magnitude of BhB outside"
+        " training range.")
+
 
 def test_fit_regression():
     """ Compares all existing fits against saved regression data.

@@ -37,9 +37,10 @@ class SurFinBH(object):
 Class to load and evaluate surrogate fits for final BH properties.
 Each derived class should do the following:
 
-    1. load_fits(self, h5file)
-    2. __call__(self, fit_key, x, **kwargs)
-    3. define soft_param_lims and hard_param_lims, the limits for parameters
+    1. define load_fits(self, h5file)
+    2. define get_fit_params(self, x, fit_key)
+    3. define __call__(self, fit_key, x, **kwargs)
+    4. define soft_param_lims and hard_param_lims, the limits for parameters
        beyond which warnings/errors are raised.
 
 See _fit_evaluators.fit_7dq2.py for an example.
@@ -119,11 +120,12 @@ See _fit_evaluators.fit_7dq2.py for an example.
         return vector_fit
 
     #-------------------------------------------------------------------------
-    def evaluate_fits(self, fit_params, fit_key):
+    def evaluate_fits(self, x, fit_key):
         """ Evaluates a particular fit by passing fit_key to self.fits.
-            Assumes input params x have been mapped to fitParams.
+            Assumes self.get_fit_params() has been overriden.
         """
         fit = self.fits[fit_key]
+        fit_params = self.get_fit_params(x, fit_key)
         if type(fit) == list:
             res = []
             for i in range(len(fit)):
@@ -159,10 +161,22 @@ See _fit_evaluators.fit_7dq2.py for an example.
                     warnings.warn('Parameter x[%d] outside training range.'%i)
 
     #-------------------------------------------------------------------------
+    #----------------------  Override these  ---------------------------------
+    #-------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------
     def load_fits(self, h5file):
         """ Loads fits from h5file and returns a dictionary of fits. """
         raise NotImplementedError("Please override me.")
         return fits
+
+    #-------------------------------------------------------------------------
+    def get_fit_params(self, x, fit_key):
+        """ Maps from input params x to the fit_params used to evaluate the
+            fit.
+        """
+        raise NotImplementedError("Please override me.")
+        return fit_params
 
     #-------------------------------------------------------------------------
     def __call__(self, fit_key, x, **kwargs):

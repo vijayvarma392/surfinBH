@@ -74,37 +74,41 @@ velCx_err_est, velCy_err_est = velC_err_est
             fits[key] = self.load_scalar_fit(fit_key=key, h5file=h5file)
         return fits
 
+    #-------------------------------------------------------------------------
+    def get_fit_params(self, x, fit_key):
+        """
+Transforms the input parameter to fit parameters for the 3dq8 model.
+That is, maps from [q, chi1z, chi2z] to [np.log(q), chiHat, chi_a]
+chiHat is defined in Eq.(3) of 1508.07253.
+chi_a = (chi1z - chi2z)/2.
+        """
+        q, chi1z, chi2z = x
+        eta = q/(1.+q)**2
+        chi_wtAvg = (q*chi1z+chi2z)/(1.+q)
+        chiHat = (chi_wtAvg - 38.*eta/113.*(chi1z + chi2z))/(1. - 76.*eta/113.)
+        chi_a = (chi1z - chi2z)/2.
+        fit_params = [np.log(q), chiHat, chi_a]
+        return fit_params
+
 
     #-------------------------------------------------------------------------
     def __call__(self, fit_key, x, **kwargs):
         """
 Evaluates fits for the 3dq8 model.
 
-Transforms the input parameter to fit parameters before evaluating the fit.
-That is, maps from [q, chi1z, chi2z] to [np.log(q), chiHat, chi_a]
-chiHat is defined in Eq.(3) of 1508.07253.
-chi_a = (chi1z - chi2z)/2.
         """
         # Warn/Exit if extrapolating
         self.check_param_limits(x)
 
-        q, chi1z, chi2z = x
-        eta = q/(1.+q)**2
-        chi_wtAvg = (q*chi1z+chi2z)/(1.+q)
-        chiHat = (chi_wtAvg - 38.*eta/113.*(chi1z + chi2z))/(1. - 76.*eta/113.)
-        chi_a = (chi1z - chi2z)/2.
-
-        fit_params = [np.log(q), chiHat, chi_a]
-
         if fit_key == 'mC':
-            mC, mC_err = self.evaluate_fits(fit_params, 'mC')
+            mC, mC_err = self.evaluate_fits(x, 'mC')
             return mC, mC_err
         elif fit_key == 'chiC':
-            chiCz, chiCz_err = self.evaluate_fits(fit_params, 'chiCz')
+            chiCz, chiCz_err = self.evaluate_fits(x, 'chiCz')
             return chiCz, chiCz_err
         elif fit_key == 'velC':
-            velCx, velCx_err = self.evaluate_fits(fit_params, 'velCx')
-            velCy, velCy_err = self.evaluate_fits(fit_params, 'velCy')
+            velCx, velCx_err = self.evaluate_fits(x, 'velCx')
+            velCy, velCy_err = self.evaluate_fits(x, 'velCy')
             return np.array([velCx, velCy]), np.array([velCx_err, velCy_err])
         else:
             raise ValueError('Invalid fit_key')

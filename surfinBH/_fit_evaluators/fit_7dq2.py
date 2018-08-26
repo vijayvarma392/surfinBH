@@ -55,9 +55,20 @@ velC, velC_err_est = fit('velC', x)
 
     #-------------------------------------------------------------------------
     def __init__(self, name):
-        # We will set limits by overriding check_param_limits()
+
+        #NOTE: These are not the actual limits.
+        # We override check_param_limits() to set limits, the
+        # only purpose these serve is to generate regression data in
+        # surfinBH/test/generate_regression_data.py
         soft_param_lims = None
-        hard_param_lims = None
+        hard_param_lims = [[0.99, 3.01],
+                [-0.6, 0.6],
+                [-0.6, 0.6],
+                [-0.6, 0.6],
+                [-0.6, 0.6],
+                [-0.6, 0.6],
+                [-0.6, 0.6]]
+
         super(Fit7dq2, self).__init__(name, soft_param_lims, hard_param_lims)
 
     #-------------------------------------------------------------------------
@@ -69,6 +80,31 @@ velC, velC_err_est = fit('velC', x)
         for key in ['chiC', 'velC']:
             fits[key] = self.load_vector_fit(key, h5file)
         return fits
+
+    #-------------------------------------------------------------------------
+    def get_fit_params(self, x, fit_key):
+        """
+Transforms the input parameter to fit parameters for the 7dq2 model.
+That is, maps from
+x = [q, chi1x, chi1y, chi1z, chi2x, chi2y, chi2z]
+fit_params = [np.log(q), chi1x, chi1y, chiHat, chi2x, chi2y, chi_a]
+
+chiHat is defined in Eq.(3) of 1508.07253, but with chi1z and chi2z instead
+of chi1 and chi2.
+chi_a = (chi1z - chi2z)/2.
+        """
+        q, chi1z, chi2z = x[0], x[3], x[6]
+        eta = q/(1.+q)**2
+        chi_wtAvg = (q*chi1z+chi2z)/(1.+q)
+        chiHat = (chi_wtAvg - 38.*eta/113.*(chi1z + chi2z))/(1. - 76.*eta/113.)
+        chi_a = (chi1z - chi2z)/2.
+
+        fit_params = x
+        fit_params[0] = np.log(q)
+        fit_params[3] = chiHat
+        fit_params[6] = chi_a
+
+        return fit_params
 
     #-------------------------------------------------------------------------
     def check_param_limits(self, x):
