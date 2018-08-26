@@ -109,9 +109,10 @@ chi_a = (chi1z - chi2z)/2.
     #-------------------------------------------------------------------------
     def check_param_limits(self, x):
         """ Checks that x is within allowed range of paramters.
-            Raises a warning if outside self.soft_param_lims and
-            raises an error if outside self.hard_param_lims.
-            If these are None, skips the checks.
+            Raises a warning if outside training limits and
+            raises an error if outside allowed limits.
+            Training limits: q <= 2.01, chiAmag <= 0.81, chiBmag <= 0.81.
+            Allowed limits: q <= 3.01, chiAmag <= 1, chiBmag <= 1.
         """
         q = x[0]
         chiAmag = np.sqrt(np.sum(x[1:4]**2))
