@@ -6,27 +6,26 @@ import warnings
 
 #=============================================================================
 class Fit7dq2(surfinBH.SurFinBH):
-    """
-A class for the surfinBH7dq2 model presented in Varma et al., 2018, in prep.
-This model predicts the final mass mC, final spin vector chiC and final kick
-velocity vector velC, for the remnants of precessing binary black hole systems.
-The fits are done using Gaussian Process Regression (GPR) and also provide an
-error estimate along with the fit value.
+    """ A class for the surfinBH7dq2 model presented in Varma et al., 2018,
+    in prep. This model predicts the final mass mC, final spin vector chiC and
+    final kick velocity vector velC, for the remnants of precessing binary
+    black hole systems.  The fits are done using Gaussian Process Regression
+    (GPR) and also provide an error estimate along with the fit value.
 
-This model has been trained in the parameter space:
-    q <= 2, |chiA| <= 0.8, |chiB| <= 0.8
+    This model has been trained in the parameter space:
+        q <= 2, |chiA| <= 0.8, |chiB| <= 0.8
 
-However, it extrapolates reasonably to:
-    q <= 3, |chiA| <= 1, |chiB| <= 1
+    However, it extrapolates reasonably to:
+        q <= 3, |chiA| <= 1, |chiB| <= 1
 
-See __call__ method for evaluation.
+    See __call__ method for evaluation.
     """
 
     #-------------------------------------------------------------------------
     def __init__(self, name, load_nrsur=False):
 
         #NOTE: These are not the actual limits.
-        # We override check_param_limits() to set limits, the
+        # We override _check_param_limits() to set limits, the
         # only purpose these serve is to generate regression data in
         # surfinBH/test/generate_regression_data.py
         soft_param_lims = None
@@ -47,32 +46,31 @@ See __call__ method for evaluation.
         print('Loaded NRSur7dq2 waveform model')
 
     #-------------------------------------------------------------------------
-    def load_fits(self, h5file):
+    def _load_fits(self, h5file):
         """ Loads fits from h5file and returns a dictionary of fits. """
         fits = {}
         for key in ['mC']:
-            fits[key] = self.load_scalar_fit(fit_key=key, h5file=h5file)
+            fits[key] = self._load_scalar_fit(fit_key=key, h5file=h5file)
         for key in ['chiC', 'velC']:
-            fits[key] = self.load_vector_fit(key, h5file)
+            fits[key] = self._load_vector_fit(key, h5file)
         return fits
 
     #-------------------------------------------------------------------------
-    def get_fit_params(self, x, fit_key):
-        """
-Transforms the input parameter to fit parameters for the 7dq2 model.
-That is, maps from
-x = [q, chi1x, chi1y, chi1z, chi2x, chi2y, chi2z]
-fit_params = [np.log(q), chi1x, chi1y, chiHat, chi2x, chi2y, chi_a]
+    def _get_fit_params(self, x, fit_key):
+        """ Transforms the input parameter to fit parameters for the 7dq2 model.
+    That is, maps from
+    x = [q, chiAx, chiAy, chiAz, chiBx, chiBy, chiBz]
+    fit_params = [np.log(q), chiAx, chiAy, chiHat, chiBx, chiBy, chi_a]
 
-chiHat is defined in Eq.(3) of 1508.07253, but with chi1z and chi2z instead
-of chi1 and chi2.
-chi_a = (chi1z - chi2z)/2.
+    chiHat is defined in Eq.(3) of 1508.07253, but with chiAz and chiBz instead
+    of chiA and chiB.
+    chi_a = (chiAz - chiBz)/2.
         """
-        q, chi1z, chi2z = x[0], x[3], x[6]
+        q, chiAz, chiBz = x[0], x[3], x[6]
         eta = q/(1.+q)**2
-        chi_wtAvg = (q*chi1z+chi2z)/(1.+q)
-        chiHat = (chi_wtAvg - 38.*eta/113.*(chi1z + chi2z))/(1. - 76.*eta/113.)
-        chi_a = (chi1z - chi2z)/2.
+        chi_wtAvg = (q*chiAz+chiBz)/(1.+q)
+        chiHat = (chi_wtAvg - 38.*eta/113.*(chiAz + chiBz))/(1. - 76.*eta/113.)
+        chi_a = (chiAz - chiBz)/2.
 
         fit_params = x
         fit_params[0] = np.log(q)
@@ -82,12 +80,12 @@ chi_a = (chi1z - chi2z)/2.
         return fit_params
 
     #-------------------------------------------------------------------------
-    def check_param_limits(self, x):
+    def _check_param_limits(self, x):
         """ Checks that x is within allowed range of paramters.
-            Raises a warning if outside training limits and
-            raises an error if outside allowed limits.
-            Training limits: q <= 2.01, chiAmag <= 0.81, chiBmag <= 0.81.
-            Allowed limits: q <= 3.01, chiAmag <= 1, chiBmag <= 1.
+        Raises a warning if outside training limits and
+        raises an error if outside allowed limits.
+        Training limits: q <= 2.01, chiAmag <= 0.81, chiBmag <= 0.81.
+        Allowed limits: q <= 3.01, chiAmag <= 1, chiBmag <= 1.
         """
         q = x[0]
         chiAmag = np.sqrt(np.sum(x[1:4]**2))
@@ -112,6 +110,24 @@ chi_a = (chi1z - chi2z)/2.
 
     def _evolve_spins(self, q, chiA0, chiB0, omega0, PN_approximant,
             PN_dt, PN_spin0, PN_phase0):
+        """ Evolves spins of the component BHs from an initial orbital
+        frequency = omega0 until t=-100 M from the peak of the waveform.
+        If omega0 < 0.018, use PN to evolve the spins until
+        orbital frequency = omega0. Then evolves further with the NRSur7dq2
+        waveform model until t=-100M from the peak.
+
+        Assumes chiA0 and chiB0 are defined in the inertial frame defined
+        at orbital frequency = omega0 as:
+            The z-axis is along the Newtonian orbital angular momentum when the
+                PN orbital frequency = omega0.
+            The x-axis is along the line of separation from the smaller BH to
+                the larger BH at this frequency.
+            The y-axis completes the triad.
+
+        Returns spins in the coorbital frame at t=-100M, as well as the
+        coprecessing frame quaternion and orbital phase in the coprecessing
+        frame at this time.
+        """
 
         # obrbital frequency beyond which we use the NRSur7dq2 model.
         omega0_nrsur = 0.018
@@ -223,11 +239,14 @@ chi_a = (chi1z - chi2z)/2.
             Default: 7
 
     Returns:
-        If fit_key='mC', returns mC, mC_err_est:
+        If fit_key='mC':
+            returns mC, mC_err_est
             The value and 1-sigma error estimate in remnant mass.
-        If fit_key='chiC', returns chiC, chiC_err_est:
+        If fit_key='chiC':
+            returns chiC, chiC_err_est
             The value and 1-sigma error estimate in remnant spin vector.
-        If fit_key='velC', returns velC, velC_err_est:
+        If fit_key='velC':
+            returns velC, velC_err_est
             The value and 1-sigma error estimate in remnant kick vector.
 
         By default, these vectors are defined in the coorbital frame at
@@ -239,7 +258,7 @@ chi_a = (chi1z - chi2z)/2.
         x = np.array(x)
 
         # Warn/Exit if extrapolating
-        self.check_param_limits(x)
+        self._check_param_limits(x)
 
         omega0 = kwargs.pop('omega0', None)
         PN_approximant = kwargs.pop('PN_approximant', 'SpinTaylorT4')
@@ -263,9 +282,9 @@ chi_a = (chi1z - chi2z)/2.
             x = np.concatenate(([q], chiA_coorb_fitnode, chiB_coorb_fitnode))
 
         if fit_key == 'mC':
-            fit_val, fit_err = self.evaluate_fits(x, fit_key)
+            fit_val, fit_err = self._evaluate_fits(x, fit_key)
         elif fit_key == 'chiC' or fit_key == 'velC':
-            res = self.evaluate_fits(x, fit_key)
+            res = self._evaluate_fits(x, fit_key)
             fit_val = res.T[0]
             fit_err = res.T[1]
             if omega0 is not None:

@@ -37,8 +37,8 @@ class SurFinBH(object):
 Class to load and evaluate surrogate fits for final BH properties.
 Each derived class should do the following:
 
-    1. define load_fits(self, h5file)
-    2. define get_fit_params(self, x, fit_key)
+    1. define _load_fits(self, h5file)
+    2. define _get_fit_params(self, x, fit_key)
     3. define __call__(self, fit_key, x, **kwargs)
     4. define soft_param_lims and hard_param_lims, the limits for parameters
        beyond which warnings/errors are raised.
@@ -59,7 +59,7 @@ See _fit_evaluators.fit_7dq2.py for an example.
         """
         self.name = name
         h5file = h5py.File('%s/fit_%s.h5'%(DataPath(), name), 'r')
-        self.fits = self.load_fits(h5file)
+        self.fits = self._load_fits(h5file)
         h5file.close()
 
         self.soft_param_lims = soft_param_lims
@@ -89,7 +89,7 @@ See _fit_evaluators.fit_7dq2.py for an example.
         return d
 
     #-------------------------------------------------------------------------
-    def load_scalar_fit(self, fit_key=None, h5file=None, fit_data=None):
+    def _load_scalar_fit(self, fit_key=None, h5file=None, fit_data=None):
         """ Loads a single fit
         """
         if (fit_key is None) ^ (h5file is None):
@@ -110,22 +110,22 @@ See _fit_evaluators.fit_7dq2.py for an example.
         return fit
 
     #-------------------------------------------------------------------------
-    def load_vector_fit(self, fit_key, h5file):
+    def _load_vector_fit(self, fit_key, h5file):
         """ Loads a vector of fits
         """
         vector_fit = []
         for i in range(len(h5file[fit_key].keys())):
             fit_data = self._read_dict(h5file[fit_key]['comp_%d'%i])
-            vector_fit.append(self.load_scalar_fit(fit_data=fit_data))
+            vector_fit.append(self._load_scalar_fit(fit_data=fit_data))
         return vector_fit
 
     #-------------------------------------------------------------------------
-    def evaluate_fits(self, x, fit_key):
+    def _evaluate_fits(self, x, fit_key):
         """ Evaluates a particular fit by passing fit_key to self.fits.
-            Assumes self.get_fit_params() has been overriden.
+            Assumes self._get_fit_params() has been overriden.
         """
         fit = self.fits[fit_key]
-        fit_params = self.get_fit_params(x, fit_key)
+        fit_params = self._get_fit_params(x, fit_key)
         if type(fit) == list:
             res = []
             for i in range(len(fit)):
@@ -135,7 +135,7 @@ See _fit_evaluators.fit_7dq2.py for an example.
             return fit(fit_params)
 
     #-------------------------------------------------------------------------
-    def check_param_limits(self, x):
+    def _check_param_limits(self, x):
         """ Checks that x is within allowed range of paramters.
             Raises a warning if outside self.soft_param_lims and
             raises an error if outside self.hard_param_lims.
@@ -165,13 +165,13 @@ See _fit_evaluators.fit_7dq2.py for an example.
     #-------------------------------------------------------------------------
 
     #-------------------------------------------------------------------------
-    def load_fits(self, h5file):
+    def _load_fits(self, h5file):
         """ Loads fits from h5file and returns a dictionary of fits. """
         raise NotImplementedError("Please override me.")
         return fits
 
     #-------------------------------------------------------------------------
-    def get_fit_params(self, x, fit_key):
+    def _get_fit_params(self, x, fit_key):
         """ Maps from input params x to the fit_params used to evaluate the
             fit.
         """
@@ -189,7 +189,7 @@ See _fit_evaluators.fit_7dq2.py for an example.
             vector of errors estimates (if available).
 
             Each derived class should have its own __call__ function but
-            call self.check_param_limits() first to do some sanity checks.
+            call self._check_param_limits() first to do some sanity checks.
             See _fit_evaluators.fit_7dq2.py for an example.
         """
         raise NotImplementedError("Please override me.")
