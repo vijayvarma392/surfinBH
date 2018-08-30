@@ -42,6 +42,8 @@ Each derived class should do the following:
     3. define __call__(self, fit_key, x, **kwargs)
     4. define soft_param_lims and hard_param_lims, the limits for parameters
        beyond which warnings/errors are raised.
+    5. define _extra_regression_kwargs, to test any additional kwargs used in
+          the __call__ method.
 
 See _fit_evaluators.fit_7dq2.py for an example.
     """
@@ -177,6 +179,12 @@ See _fit_evaluators.fit_7dq2.py for an example.
         """
         raise NotImplementedError("Please override me.")
         return fit_params
+
+    def _extra_regression_kwargs(self):
+        """ Add additional kwargs for regression tests. If not overriden,
+            this will be empty. See _fit_evaluators.fit_7dq2.py for an example.
+        """
+        return []
 
     #-------------------------------------------------------------------------
     def __call__(self, fit_key, x, **kwargs):

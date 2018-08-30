@@ -40,6 +40,7 @@ class Fit7dq2(surfinBH.SurFinBH):
         super(Fit7dq2, self).__init__(name, soft_param_lims, hard_param_lims)
         self.nrsur = None
 
+    #-------------------------------------------------------------------------
     def _load_NRSur7dq2(self):
         import NRSur7dq2
         self.nrsur = NRSur7dq2.NRSurrogate7dq2()
@@ -179,6 +180,42 @@ class Fit7dq2(surfinBH.SurFinBH):
         return chiA_coorb_fitnode, chiB_coorb_fitnode, quat_fitnode, \
             orbphase_fitnode
 
+
+    #-------------------------------------------------------------------------
+    def _extra_regression_kwargs(self):
+        """ List of additional kwargs to use in regression tests.
+        """
+        extra_args = []
+        extra_args.append({
+            'omega0': 5e-3,
+            'PN_approximant': 'SpinTaylorT4',
+            'PN_dt': 0.1,
+            'PN_spin_order': 7,
+            'PN_phase_order': 7,
+            })
+
+
+        extra_args.append({
+            'omega0': 6e-3,
+            'PN_approximant': 'SpinTaylorT1',
+            'PN_dt': 0.5,
+            'PN_spin_order': 5,
+            'PN_phase_order': 7,
+            })
+
+        extra_args.append({
+            'omega0': 7e-3,
+            'PN_approximant': 'SpinTaylorT1',
+            'PN_dt': 1,
+            'PN_spin_order': 7,
+            'PN_phase_order': 5,
+            })
+
+        # These should be pure NRSur7dq2
+        extra_args.append({'omega0': 3e-2})
+        extra_args.append({'omega0': 5e-2})
+
+        return extra_args
 
     #-------------------------------------------------------------------------
     def __call__(self, fit_key, x, **kwargs):

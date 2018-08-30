@@ -13,6 +13,7 @@ warnings.filterwarnings("ignore", message="Spin magnitude of BhA outside"
         " training range.")
 warnings.filterwarnings("ignore", message="Spin magnitude of BhB outside"
         " training range.")
+warnings.filterwarnings("ignore", message="Extrapolating dynamics to q")
 
 
 def test_fit_regression():
@@ -39,20 +40,36 @@ def test_fit_regression():
         regression_h5file = h5py.File('test/regression_data/fit_%s.h5'%(
                 short_name))
 
-        # Compare fit and regression data for each regression test
-        test_keys = regression_h5file.keys()
-        for test in test_keys:
-            print('... running %s'%test)
-            test_h5grp = regression_h5file[test]
-            x = test_h5grp['x'].value
-            fit_keys = test_h5grp['y'].keys()
-            for key in fit_keys:
-                print('...... testing %s'%key)
-                y_reg = test_h5grp['y/%s'%key].value
-                y_fit = fit(key, x)
-                # lower rtol seems to make the test fail for the GPR error
-                # estimates when testing on a different machine. This seems to
-                # happen even with the same version of sklearn.
-                np.testing.assert_allclose(y_fit, y_reg, rtol=1e-6)
+        extra_kwargs_list = fit._extra_regression_kwargs()
+
+        # Each group in the h5file can have different kwargs to test
+        kwargs_grp_keys = regression_h5file.keys()
+        for kw_grp_key in kwargs_grp_keys:
+            kw_h5grp = regression_h5file[kw_grp_key]
+
+            print('\nrunning %s'%kw_grp_key)
+
+            if kw_grp_key == 'No_kwargs':
+                kwargs = {}
+            else:
+                kwargs = extra_kwargs_list[int(kw_grp_key.split('_set_')[-1])]
+
+            # Compare fit and regression data for each regression test
+            test_keys = kw_h5grp.keys()
+            for test in test_keys:
+                print('... running %s'%test)
+                test_h5grp = kw_h5grp[test]
+                x = test_h5grp['x'].value
+                fit_keys = test_h5grp['y'].keys()
+                for key in fit_keys:
+                    print('...... testing %s'%key)
+                    y_reg = test_h5grp['y/%s'%key].value
+                    y_fit = fit(key, x, **kwargs)
+                    # lower rtol seems to make the test fail for the GPR error
+                    # estimates when testing on a different machine. This
+                    # seems to happen even with the same version of sklearn.
+                    np.testing.assert_allclose(y_fit, y_reg, rtol=1e-6)
 
         regression_h5file.close()
+
+test_fit_regression()
