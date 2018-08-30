@@ -132,17 +132,28 @@ class Fit7dq2(surfinBH.SurFinBH):
         # obrbital frequency beyond which we use the NRSur7dq2 model.
         omega0_nrsur = 0.018
 
-        # If omega0 is below the NRSur7dq2 start frequency, we use PN
-        # to evolve the spins until orbital frequency = omega0_nrsur.
         if omega0 < omega0_nrsur:
+            # If omega0 is below the NRSur7dq2 start frequency, we use PN
+            # to evolve the spins until orbital frequency = omega0_nrsur.
+
             # Note that we update omega0_nrsur here with the PN
             # frequency that was closest to the input omega0_nrsur.
-            chiA0_nrsur_copr, chiB0_nrsur_copr, quat0_nrsur_copr, phi0_nrsur, \
-                omega0_nrsur \
+            chiA0_nrsur_copr, chiB0_nrsur_copr, quat0_nrsur_copr, \
+                phi0_nrsur, omega0_nrsur \
                 = evolve_pn_spins(q, chiA0, chiB0, omega0,
                     omega0_nrsur, approximant=PN_approximant,
                     dt=PN_dt, spinO=PN_spin0,
                     phaseO=PN_phase0)
+        else:
+            # If omega0>= omega0_nrsur, we evolve spins directly with NRSur7dq2
+            # waveform model. We set the coprecessing frame quaternion to
+            # identity and orbital phase to 0 at omega=omega0, hence the
+            # coprecessing frame is the same as the inertial frame here.
+
+            # Note that we update omega0_nrsur here and set it to omega0
+            chiA0_nrsur_copr, chiB0_nrsur_copr, quat0_nrsur_copr, \
+                phi0_nrsur, omega0_nrsur \
+                = chiA0, chiB0, [1,0,0,0], 0, omega0
 
         # Load NRSur7dq2 if needed
         if self.nrsur is None:
