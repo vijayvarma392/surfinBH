@@ -21,6 +21,14 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/vijayvarma392/surfinBH",
     packages=setuptools.find_packages(),
+    install_requires=[
+        'numpy>=1.13.3',
+        'scipy>=1.1.0',
+        'h5py>=2.7.1',
+        'scikit-learn>=0.19.1',
+        'lalsuite',
+        'NRSur7dq2',
+    ],
     classifiers=[
         "Intended Audience :: Science/Research",
         "Natural Language :: English",
