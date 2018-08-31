@@ -27,7 +27,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/vijayvarma392/surfinBH",
     packages=setuptools.find_packages(),
-    package_data={'surfinBH':['data/fit_*.h5']},
+    package_data={'surfinBH':['data/*']},
     include_package_data=True,
     install_requires=[
         'numpy>=1.13.3',
