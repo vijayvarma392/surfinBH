@@ -1,3 +1,9 @@
+'''
+Standard setup.py to upload the code on pypi.
+Do:
+    python setup.py sdist bdist_wheel
+    twine upload dist/*
+'''
 import setuptools
 
 with open("README.md", "r") as fh:
