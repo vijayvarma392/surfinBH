@@ -30,7 +30,7 @@ def test_fit_regression():
         if not os.path.isfile('%s/fit_%s.h5'%(surfinBH._dataPath.DataPath(),
                 short_name)):
 
-            surfinBH.DownloadData(name)
+            surfinBH.DownloadData(name=name)
 
 
         # Load fit
@@ -71,5 +71,3 @@ def test_fit_regression():
                     np.testing.assert_allclose(y_fit, y_reg, rtol=1e-6)
 
         regression_h5file.close()
-
-test_fit_regression()

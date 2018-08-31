@@ -17,7 +17,7 @@ def test_download_links():
     # List of all available fits
     fit_names = surfinBH.fits_collection.keys()
     for name in fit_names:
-        surfinBH.DownloadData(name, data_dir=out_dir)
+        surfinBH.DownloadData(name=name, data_dir=out_dir)
 
         short_name = name.split('surfinBH')[-1]
         # check that it has the right name

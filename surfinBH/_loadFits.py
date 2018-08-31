@@ -26,29 +26,20 @@ def LoadFits(name):
         return fit
 
 #-------------------------------------------------------------------------
-def DownloadData(name, data_dir=DataPath() ):
+def DownloadData(name='all', data_dir=DataPath()):
     """ Downloads fit data to DataPath() diretory.
+        If name='all', gets all fit data.
     """
+    if name == 'all':
+        for tmp_name in fits_collection.keys():
+            DownloadData(name=tmp_name, data_dir=data_dir)
+        return
+
     if name not in fits_collection.keys():
         raise Exception('Invalid fit name : %s'%name)
 
+    print 'Downloading %s data'%name
     data_url = fits_collection[name].data_url
-    fname = os.path.basename(data_url)
-
-    # If file already exists, move it to backup dir with time stamp
-    if os.path.isfile('%s/%s'%(data_dir, fname)):
-        timestamp=strftime("%Y%b%d_%Hh:%Mm:%Ss", gmtime())
-        backup_fname = '%s_%s'%(timestamp, fname)
-        backup_dir = '%s/backup'%(data_dir)
-        os.system('mkdir -p %s'%backup_dir)
-        print('\n%s file exits, moving to %s/%s.'%(fname, backup_dir, \
-            backup_fname))
-        os.system('mv %s/%s %s/%s'%(data_dir, fname, backup_dir, backup_fname))
-        number_of_backup_files = glob('%s/*_%s'%(backup_dir, fname))
-        if len(number_of_backup_files) > 5:
-            print('There are a lot of backup files in %s, consider removing'
-                ' some.'%backup_dir)
-
     os.system('mkdir -p {0}; cd {0}; curl -# -L -O {1}'.format(data_dir,
             data_url))
 
