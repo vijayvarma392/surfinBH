@@ -1,7 +1,14 @@
+"""surfinBH
+========
+
+Surrogate final black hole properties for mergers of binary black holes.
+See https://pypi.org/project/surfinBH/ for more details.
+"""
 __copyright__ = "Copyright (C) 2018 Vijay Varma"
 __email__ = "vvarma@caltech.edu"
 __status__ = "testing"
 __author__ = "Vijay Varma"
+__version__ = "0.0.8.dev1"
 __license__ = """
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
