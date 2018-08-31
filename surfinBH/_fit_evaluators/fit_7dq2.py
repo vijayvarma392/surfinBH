@@ -29,7 +29,7 @@ class Fit7dq2(surfinBH.SurFinBH):
         # only purpose these serve is to generate regression data in
         # surfinBH/test/generate_regression_data.py
         soft_param_lims = None
-        hard_param_lims = [[0.99, 3.01],
+        hard_param_lims = [[0.99, 2.5],
                 [-0.6, 0.6],
                 [-0.6, 0.6],
                 [-0.6, 0.6],
@@ -205,7 +205,7 @@ class Fit7dq2(surfinBH.SurFinBH):
 
         extra_args.append({
             'omega0': 7e-3,
-            'PN_approximant': 'SpinTaylorT1',
+            'PN_approximant': 'SpinTaylorT2',
             'PN_dt': 1,
             'PN_spin_order': 7,
             'PN_phase_order': 5,
@@ -269,7 +269,7 @@ class Fit7dq2(surfinBH.SurFinBH):
 
         PN_approximant:
             Approximant used to do the PN spin evolution. Choose from
-            'SpinTaylorT1', 'SpinTaylorT4' or 'SpinTaylorT5'.
+            'SpinTaylorT4', 'SpinTaylorT1' or 'SpinTaylorT2'.
             Default: 'SpinTaylorT4'.
 
         PN_dt:
