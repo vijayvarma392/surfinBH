@@ -18,26 +18,97 @@ class Fit7dq2(surfinBH.SurFinBH):
     However, it extrapolates reasonably to:
         q <= 3, |chiA| <= 1, |chiB| <= 1
 
-    See __call__ method for evaluation.
+    =========================================================================
+    Usage:
+
+    import surfinBH
+
+    # Load the fit
+    fit = surfinBH.LoadFits('surfinBH7dq2')
+
+    We provide the following call methods:
+        # remnant mass and 1-sigma error estimate
+        mC, mC_err = fit.mC(q, chiA, chiB, **kwargs)
+
+        # remnant spin and 1-sigma error estimate
+        chiC, chiC_err = fit.chiC(q, chiA, chiB, **kwargs)
+
+        # remnant recoil kick and 1-sigma error estimate
+        velC, velC_err = fit.velC(q, chiA, chiB, **kwargs)
+
+        # All of these together
+        mC, chiC, velC, mC_err, chiC_err, velC_err
+            = fit.all(q, chiA, chiB, **kwargs)
+
+    The arguments for each of these call methods are as follows:
+    Arguments:
+        q:      Mass ratio (q>=1)
+
+        chiA:   Dimensionless spin of the larger BH (array of size 3)
+
+        chiB:   Dimensionless spin of the smaller BH (array of size 3)
+
+            By default, the spins are assumed to be the component spins at
+            t=-100 M from the peak of the waveform, and in the coorbital frame,
+            defined as:
+            The z-axis is along the orbital angular momentum at t=-100M.
+            The x-axis is along the line of separation from the smaller BH to
+                the larger BH at this time.
+            The y-axis completes the triad.
+            We obtain this frame from the waveform as defined in
+            arxiv:1705.07089.
+            The returned spin and kick vectors are also in the same frame.
+
+            If 'omega0' is given, instead the spins are assumed to be the
+            component spins when the PN orbital frequency = omega0. The
+            spins are assumed to be in the inertial frame, defined as:
+            The z-axis is along the Newtonian orbital angular momentum when the
+                PN orbital frequency = omega0.
+            The x-axis is along the line of separation from the smaller BH to
+                the larger BH at this frequency.
+            The y-axis completes the triad.
+            We obtain this frame from PN.
+            Given the spins at omega0, we evolve the spins using PN until
+            the orbital frequency = 0.018 M, then we further evolve the spins
+            using the NRSur7dq2 model (arxiv:1705.07089) until t=-100M from the
+            peak of the waveform.  Then we evaluate the fits using the spins at
+            t=-100 M.  Finally, we transform the remnant spin and kick vectors
+            back to the inertial frame defined above.
+
+    Optional PN arguments:
+
+        omega0:
+            Initial dimensionless orbital frequency in units of 1/M, where M is
+            the total mass. If this is given, the spins in x are assumed to be
+            the component spins at this orbital frequency, and in the inertial
+            frame as defined above. The returned remnant spin and kick vectors
+            are also in the same frame.
+            Default: None.
+
+        PN_approximant:
+            Approximant used to do the PN spin evolution. Choose from
+            'SpinTaylorT4', 'SpinTaylorT1' or 'SpinTaylorT2'.
+            Default: 'SpinTaylorT4'.
+
+        PN_dt:
+            Dimensionless time step size in units of M (total mass), used for
+            the PN evolution. You may need to increase this if omega0 is very
+            low.
+            Default: 0.1
+
+        PN_spin_order:
+            Twice the PN order of spin effects. E.g., use 7 for 3.5PN.
+            Default: 7
+
+        PN_phase_order
+            Twice the PN order in phase. E.g., use 7 for 3.5PN.
+            Default: 7
+
     """
 
     #-------------------------------------------------------------------------
     def __init__(self, name, load_nrsur=False):
-
-        #NOTE: These are not the actual limits.
-        # We override _check_param_limits() to set limits, the
-        # only purpose these serve is to generate regression data in
-        # surfinBH/test/generate_regression_data.py
-        soft_param_lims = None
-        hard_param_lims = [[0.99, 2.5],
-                [-0.6, 0.6],
-                [-0.6, 0.6],
-                [-0.6, 0.6],
-                [-0.6, 0.6],
-                [-0.6, 0.6],
-                [-0.6, 0.6]]
-
-        super(Fit7dq2, self).__init__(name, soft_param_lims, hard_param_lims)
+        super(Fit7dq2, self).__init__(name)
         self.nrsur = None
 
     #-------------------------------------------------------------------------
@@ -81,16 +152,15 @@ class Fit7dq2(surfinBH.SurFinBH):
         return fit_params
 
     #-------------------------------------------------------------------------
-    def _check_param_limits(self, x):
+    def _check_param_limits(self, q, chiA, chiB, **kwargs):
         """ Checks that x is within allowed range of paramters.
         Raises a warning if outside training limits and
         raises an error if outside allowed limits.
         Training limits: q <= 2.01, chiAmag <= 0.81, chiBmag <= 0.81.
         Allowed limits: q <= 3.01, chiAmag <= 1, chiBmag <= 1.
         """
-        q = x[0]
-        chiAmag = np.sqrt(np.sum(x[1:4]**2))
-        chiBmag = np.sqrt(np.sum(x[4:7]**2))
+        chiAmag = np.sqrt(np.sum(chiA**2))
+        chiBmag = np.sqrt(np.sum(chiB**2))
 
         if q < 1:
             raise ValueError('Mass ratio should be >= 1.')
@@ -109,6 +179,7 @@ class Fit7dq2(surfinBH.SurFinBH):
         elif chiBmag > 0.81:
             warnings.warn('Spin magnitude of BhB outside training range.')
 
+    #-------------------------------------------------------------------------
     def _evolve_spins(self, q, chiA0, chiB0, omega0, PN_approximant,
             PN_dt, PN_spin0, PN_phase0):
         """ Evolves spins of the component BHs from an initial orbital
@@ -180,133 +251,15 @@ class Fit7dq2(surfinBH.SurFinBH):
         return chiA_coorb_fitnode, chiB_coorb_fitnode, quat_fitnode, \
             orbphase_fitnode
 
-
     #-------------------------------------------------------------------------
-    def _extra_regression_kwargs(self):
-        """ List of additional kwargs to use in regression tests.
-        """
-        extra_args = []
-        extra_args.append({
-            'omega0': 5e-3,
-            'PN_approximant': 'SpinTaylorT4',
-            'PN_dt': 0.1,
-            'PN_spin_order': 7,
-            'PN_phase_order': 7,
-            })
-
-
-        extra_args.append({
-            'omega0': 6e-3,
-            'PN_approximant': 'SpinTaylorT1',
-            'PN_dt': 0.5,
-            'PN_spin_order': 5,
-            'PN_phase_order': 7,
-            })
-
-        extra_args.append({
-            'omega0': 7e-3,
-            'PN_approximant': 'SpinTaylorT2',
-            'PN_dt': 1,
-            'PN_spin_order': 7,
-            'PN_phase_order': 5,
-            })
-
-        # These should be pure NRSur7dq2
-        extra_args.append({'omega0': 3e-2})
-        extra_args.append({'omega0': 5e-2})
-
-        return extra_args
-
-    #-------------------------------------------------------------------------
-    def __call__(self, fit_key, x, **kwargs):
+    def _eval_wrapper(self, fit_key, q, chiA, chiB, **kwargs):
         """Evaluates the surfinBH7dq2 model.
-
-    Arguments:
-        fit_key:
-            'mC', 'chiC' or 'velC', for remnant mass, spin vector and kick
-            vector respectively.
-
-        x:
-            Array of [q, chiAx, chiAy, chiAz, chiBx, chiBy, chiBz], where q >=
-            1 is the mass ratio and chiA (chiB) is the dimensionless spin of
-            the larger (smaller) BH.
-
-            By default, the spins are assumed to be the component spins at
-            t=-100 M from the peak of the waveform, and in the coorbital frame,
-            defined as:
-            The z-axis is along the orbital angular momentum at t=-100M.
-            The x-axis is along the line of separation from the smaller BH to
-                the larger BH at this time.
-            The y-axis completes the triad.
-            We obtain this frame from the waveform as defined in
-            arxiv:1705.07089.
-
-            If 'omega0' is given, instead the spins are assumed to be the
-            component spins when the PN orbital frequency = omega0. The
-            spins are assumed to be in the inertial frame, defined as:
-            The z-axis is along the Newtonian orbital angular momentum when the
-                PN orbital frequency = omega0.
-            The x-axis is along the line of separation from the smaller BH to
-                the larger BH at this frequency.
-            The y-axis completes the triad.
-            We obtain this frame from PN.
-            Given the spins at omega0, we evolve the spins using PN until
-            the orbital frequency = 0.018 M, then we further evolve the spins
-            using the NRSur7dq2 model (arxiv:1705.07089) until t=-100M from the
-            peak of the waveform.  Then we evaluate the fits using the spins at
-            t=-100 M.  Finally, we transform the remnant spin and kick vectors
-            back to the inertial frame defined above.
-
-    Optional PN arguments:
-
-        omega0:
-            Initial dimensionless orbital frequency in units of 1/M, where M is
-            the total mass. If this is given, the spins in x are assumed to be
-            the component spins at this orbital frequency, and in the inertial
-            frame as defined above. The returned remnant spin and kick vectors
-            are also in the same frame.
-            Default: None.
-
-        PN_approximant:
-            Approximant used to do the PN spin evolution. Choose from
-            'SpinTaylorT4', 'SpinTaylorT1' or 'SpinTaylorT2'.
-            Default: 'SpinTaylorT4'.
-
-        PN_dt:
-            Dimensionless time step size in units of M (total mass), used for
-            the PN evolution. You may need to increase this if omega0 is very
-            low.
-            Default: 0.1
-
-        PN_spin_order:
-            Twice the PN order of spin effects. E.g., use 7 for 3.5PN.
-            Default: 7
-
-        PN_phase_order
-            Twice the PN order in phase. E.g., use 7 for 3.5PN.
-            Default: 7
-
-    Returns:
-        If fit_key='mC':
-            returns mC, mC_err_est
-            The value and 1-sigma error estimate in remnant mass.
-        If fit_key='chiC':
-            returns chiC, chiC_err_est
-            The value and 1-sigma error estimate in remnant spin vector.
-        If fit_key='velC':
-            returns velC, velC_err_est
-            The value and 1-sigma error estimate in remnant kick vector.
-
-        By default, these vectors are defined in the coorbital frame at
-            t=-100 M, as described above.
-        If 'omega0' is not None, these are defined in the inertial frame at
-            orbital frequency = omega0, as described above.
         """
-
-        x = np.array(x)
+        chiA = np.array(chiA)
+        chiB = np.array(chiB)
 
         # Warn/Exit if extrapolating
-        self._check_param_limits(x)
+        self._check_param_limits(q, chiA, chiB, **kwargs)
 
         omega0 = kwargs.pop('omega0', None)
         PN_approximant = kwargs.pop('PN_approximant', 'SpinTaylorT4')
@@ -314,24 +267,25 @@ class Fit7dq2(surfinBH.SurFinBH):
         PN_spin_order = kwargs.pop('PN_spin_order', 7)
         PN_phase_order = kwargs.pop('PN_phase_order', 7)
 
-        # If omega0 is given, evolve the spins from omega0
-        # to t = -100 M from the peak. Replace x with these spins.
-        if omega0 is not None:
-            q = x[0]
-            chiA0 = x[1:4]
-            chiB0 = x[4:7]
+        self._check_unused_kwargs(kwargs)
+
+        if omega0 is None:
+            # If omega0 is given, assume chiA, chiB are the coorbital frame
+            # spins at t=-100 M.
+            x = np.concatenate(([q], chiA, chiB))
+        else:
+            # If omega0 is given, evolve the spins from omega0
+            # to t = -100 M from the peak.
             chiA_coorb_fitnode, chiB_coorb_fitnode, quat_fitnode, \
                 orbphase_fitnode \
-                = self._evolve_spins(q, chiA0, chiB0, omega0,
+                = self._evolve_spins(q, chiA, chiB, omega0,
                     PN_approximant, PN_dt, PN_spin_order,
                     PN_phase_order)
-
-            # Update x to contain coorbital frame spins at t=-100M
+            # x should contain coorbital frame spins at t=-100M
             x = np.concatenate(([q], chiA_coorb_fitnode, chiB_coorb_fitnode))
 
-        if fit_key == 'mC':
-            fit_val, fit_err = self._evaluate_fits(x, fit_key)
-        elif fit_key == 'chiC' or fit_key == 'velC':
+
+        def eval_vector_fit(x, fit_key):
             res = self._evaluate_fits(x, fit_key)
             fit_val = res.T[0]
             fit_err = res.T[1]
@@ -342,15 +296,23 @@ class Fit7dq2(surfinBH.SurFinBH):
                     orbphase_fitnode, quat_fitnode)
                 fit_err = utils.transform_error_coorb_to_inertial(fit_val,
                     fit_err, orbphase_fitnode, quat_fitnode)
-        else:
-            raise ValueError('Invalid fit_key')
+            return fit_val, fit_err
 
-        if len(kwargs.keys()) != 0:
-            unused = ""
-            for k in kwargs.keys():
-                unused += "'%s', "%k
-            if unused[-2:] == ", ":     # get rid of trailing comma
-                unused = unused[:-2]
-            raise Exception('Unused keys in kwargs: %s'%unused)
 
-        return fit_val, fit_err
+        if fit_key == 'mC' or fit_key == 'all':
+            mC, mC_err = self._evaluate_fits(x, 'mC')
+            if fit_key == 'mC':
+                return mC, mC_err
+
+        if fit_key == 'chiC' or fit_key == 'all':
+            chiC, chiC_err = eval_vector_fit(x, 'chiC')
+            if fit_key == 'chiC':
+                return chiC, chiC_err
+
+        if fit_key == 'velC' or fit_key == 'all':
+            velC, velC_err = eval_vector_fit(x, 'velC')
+            if fit_key == 'velC':
+                return velC, velC_err
+
+        if fit_key == 'all':
+            return mC, chiC, velC, mC_err, chiC_err, velC_err

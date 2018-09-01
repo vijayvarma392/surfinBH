@@ -46,33 +46,21 @@ Each derived class should do the following:
 
     1. define _load_fits(self, h5file)
     2. define _get_fit_params(self, x, fit_key)
-    3. define __call__(self, fit_key, x, **kwargs)
-    4. define soft_param_lims and hard_param_lims, the limits for parameters
-       beyond which warnings/errors are raised.
-    5. define _extra_regression_kwargs, to test any additional kwargs used in
-          the __call__ method.
+    3. define _eval_wrapper(self, fit_key, x, **kwargs)
+    4. define _check_param_limits(self, q, chiA, chiB)
 
 See _fit_evaluators.fit_7dq2.py for an example.
     """
 
     #-------------------------------------------------------------------------
-    def __init__(self, name, soft_param_lims, hard_param_lims):
+    def __init__(self, name):
         """
         name:           Name of the fit excluding the surfinBH prefix. Ex: 7dq2.
-        soft_param_lims: Parameter bounds beyond which a warning is raised.
-        hard_param_lims: Parameter bounds beyond which an error is raised.
-                         Same order and len as x in the __call__ function.
-                         Each element is a [minVal, maxVal] pair.
-                         Setting soft_param_lims/hard_param_lims to None will
-                         skip that particular check.
         """
         self.name = name
         h5file = h5py.File('%s/fit_%s.h5'%(DataPath(), name), 'r')
         self.fits = self._load_fits(h5file)
         h5file.close()
-
-        self.soft_param_lims = soft_param_lims
-        self.hard_param_lims = hard_param_lims
 
     #-------------------------------------------------------------------------
     def _read_dict(self, f):
@@ -134,7 +122,7 @@ See _fit_evaluators.fit_7dq2.py for an example.
             Assumes self._get_fit_params() has been overriden.
         """
         fit = self.fits[fit_key]
-        fit_params = self._get_fit_params(x, fit_key)
+        fit_params = self._get_fit_params(np.copy(x), fit_key)
         if type(fit) == list:
             res = []
             for i in range(len(fit)):
@@ -144,30 +132,17 @@ See _fit_evaluators.fit_7dq2.py for an example.
             return fit(fit_params)
 
     #-------------------------------------------------------------------------
-    def _check_param_limits(self, x):
-        """ Checks that x is within allowed range of paramters.
-            Raises a warning if outside self.soft_param_lims and
-            raises an error if outside self.hard_param_lims.
-            If these are None, skips the checks.
+    def _check_unused_kwargs(self, kwargs):
+        """ Call this at the end of call module to check if all the kwargs have
+        been used. Assumes kwargs were extracted using pop.
         """
-        if self.soft_param_lims is not None:
-            if len(x) != len(self.soft_param_lims):
-                raise Exception("Expected x to be of len=%d"\
-                    %len(self.soft_param_lims))
-
-        if self.hard_param_lims is not None:
-            for i in range(len(x)):
-                if x[i] < self.hard_param_lims[i][0] \
-                        or x[i] > self.hard_param_lims[i][1]:
-
-                    raise Exception('Parameter x[%d] outside allowed range.'%i)
-
-        if self.soft_param_lims is not None:
-            for i in range(len(x)):
-                if x[i] < self.soft_param_lims[i][0] \
-                        or x[i] > self.soft_param_lims[i][1]:
-
-                    warnings.warn('Parameter x[%d] outside training range.'%i)
+        if len(kwargs.keys()) != 0:
+            unused = ""
+            for k in kwargs.keys():
+                unused += "'%s', "%k
+            if unused[-2:] == ", ":     # get rid of trailing comma
+                unused = unused[:-2]
+            raise Exception('Unused keys in kwargs: %s'%unused)
 
     #-------------------------------------------------------------------------
     #----------------------  Override these  ---------------------------------
@@ -187,24 +162,60 @@ See _fit_evaluators.fit_7dq2.py for an example.
         raise NotImplementedError("Please override me.")
         return fit_params
 
-    def _extra_regression_kwargs(self):
-        """ Add additional kwargs for regression tests. If not overriden,
-            this will be empty. See _fit_evaluators.fit_7dq2.py for an example.
+    def _check_param_limits(self, q, chiA, chiB, **kwargs):
+        """ Checks that the params are withing allowed range.
         """
-        return []
+        raise NotImplementedError("Please override me.")
 
     #-------------------------------------------------------------------------
-    def __call__(self, fit_key, x, **kwargs):
+    def _eval_wrapper(self, fit_key, q, chiA, chiB, **kwargs):
         """ Evaluates a particular fit. This varies for each surrogate.
-            Allowed values for fit_key are 'mC', 'chiC' and 'velC'.
-            If fit_key is a scalar, returns the fit value and error
-            estimate (if available).
-            If fit_key is a scalar, returns two arrays. The first array
-            is a vector of fit values and the second is the corresponding
-            vector of errors estimates (if available).
+            Allowed values for fit_key are 'mC', 'chiC' and 'velC' and 'all'.
+            chiA and chiB should have size 3.
 
-            Each derived class should have its own __call__ function but
+            Each derived class should have its own _eval_wrapper function but
             call self._check_param_limits() first to do some sanity checks.
             See _fit_evaluators.fit_7dq2.py for an example.
         """
         raise NotImplementedError("Please override me.")
+
+
+    #-------------------------------------------------------------------------
+    #----------------------   Call methods   ---------------------------------
+    #-------------------------------------------------------------------------
+
+    def mC(self, *args, **kwargs):
+        """ Evaluates fit and 1-sigma error estimate for remnant mass.
+        Returns:
+            mC, mC_err_est
+        """
+        return self._eval_wrapper('mC', *args, **kwargs)
+
+    def chiC(self, *args, **kwargs):
+        """ Evaluates fit and 1-sigma error estimate for remnant spin.
+        Returns:
+            chiC, chiC_err_est
+
+        chiC and chiC_err_est are arrays of size 3.
+        """
+        return self._eval_wrapper('chiC', *args, **kwargs)
+
+    def velC(self, *args, **kwargs):
+        """ Evaluates fit and 1-sigma error estimate for remnant kick velocity.
+        Returns:
+            velC, velC_err_est
+
+        velC and velC_err_est are arrays of size 3.
+        """
+        return self._eval_wrapper('velC', *args, **kwargs)
+
+    def all(self, *args, **kwargs):
+        """ Evaluates fit and 1-sigma error estimate for remnant mass, spin
+        and kick velocity.
+        Returns:
+            mC, chiC, velC, mC_err_est, chiC_err_est, velC_err_est
+
+        chiC, velC, chiC_err_est and velC_err_est are arrays of size 3.
+        """
+        return self._eval_wrapper('all', *args, **kwargs)
+
