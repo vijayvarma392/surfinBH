@@ -5,16 +5,18 @@ import warnings
 
 import surfinBH
 
-# Ignore these specific warning.
-warnings.filterwarnings("ignore", message="Parameter x[[0-9]+] outside"
-        " training range.")
+# Ignore these specific warnings.
 warnings.filterwarnings("ignore", message="Mass ratio outside training range.")
 warnings.filterwarnings("ignore", message="Spin magnitude of BhA outside"
         " training range.")
 warnings.filterwarnings("ignore", message="Spin magnitude of BhB outside"
         " training range.")
-warnings.filterwarnings("ignore", message="Extrapolating dynamics to q")
+warnings.filterwarnings("ignore", message="Extrapolating dynamics to")
 
+# lower rtol seems to make the test fail for the GPR error
+# estimates when testing on a different machine. This
+# seems to happen even with the same version of sklearn.
+rtol = 1e-6
 
 def test_fit_regression():
     """ Compares all existing fits against saved regression data.
@@ -25,13 +27,6 @@ def test_fit_regression():
     fit_names = surfinBH.fits_collection.keys()
     for name in fit_names:
         short_name = name.split('surfinBH')[-1]
-
-        # Download fit data if needed
-        if not os.path.isfile('%s/fit_%s.h5'%(surfinBH._dataPath.DataPath(),
-                short_name)):
-
-            surfinBH.DownloadData(name=name)
-
 
         # Load fit
         fit = surfinBH.LoadFits(name)
@@ -59,15 +54,23 @@ def test_fit_regression():
             for test in test_keys:
                 print('... running %s'%test)
                 test_h5grp = kw_h5grp[test]
-                x = test_h5grp['x'].value
-                fit_keys = test_h5grp['y'].keys()
-                for key in fit_keys:
-                    print('...... testing %s'%key)
-                    y_reg = test_h5grp['y/%s'%key].value
-                    y_fit = fit(key, x, **kwargs)
-                    # lower rtol seems to make the test fail for the GPR error
-                    # estimates when testing on a different machine. This
-                    # seems to happen even with the same version of sklearn.
-                    np.testing.assert_allclose(y_fit, y_reg, rtol=1e-6)
+                q = test_h5grp['q'].value
+                chiA = test_h5grp['chiA'].value
+                chiB = test_h5grp['chiB'].value
+
+                # remnant mass
+                y_reg = test_h5grp['y/mC'].value
+                y_fit = fit.mC(q, chiA, chiB, **kwargs)
+                np.testing.assert_allclose(y_fit, y_reg, rtol=rtol)
+
+                # remnant spin
+                y_reg = test_h5grp['y/chiC'].value
+                y_fit = fit.chiC(q, chiA, chiB, **kwargs)
+                np.testing.assert_allclose(y_fit, y_reg, rtol=rtol)
+
+                # remnant kick
+                y_reg = test_h5grp['y/velC'].value
+                y_fit = fit.velC(q, chiA, chiB, **kwargs)
+                np.testing.assert_allclose(y_fit, y_reg, rtol=rtol)
 
         regression_h5file.close()
