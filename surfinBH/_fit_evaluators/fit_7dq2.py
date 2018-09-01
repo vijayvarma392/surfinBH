@@ -108,7 +108,22 @@ class Fit7dq2(surfinBH.SurFinBH):
 
     #-------------------------------------------------------------------------
     def __init__(self, name, load_nrsur=False):
-        super(Fit7dq2, self).__init__(name)
+
+        # Param limits beyond which to raise a warning
+        soft_param_lims = {
+            'q': 2.1,
+            'chiAmag': 0.81,
+            'chiBmag': 0.81,
+                }
+
+        # Param limits beyond which to raise an error
+        hard_param_lims = {
+            'q': 3.1,
+            'chiAmag': 1,
+            'chiBmag': 1,
+                }
+
+        super(Fit7dq2, self).__init__(name, soft_param_lims, hard_param_lims)
         self.nrsur = None
 
     #-------------------------------------------------------------------------
@@ -126,6 +141,42 @@ class Fit7dq2(surfinBH.SurFinBH):
         for key in ['chiC', 'velC']:
             fits[key] = self._load_vector_fit(key, h5file)
         return fits
+
+    #-------------------------------------------------------------------------
+    def _extra_regression_kwargs(self):
+        """ List of additional kwargs to use in regression tests.
+        """
+        extra_args = []
+        extra_args.append({
+            'omega0': 5e-3,
+            'PN_approximant': 'SpinTaylorT4',
+            'PN_dt': 0.1,
+            'PN_spin_order': 7,
+            'PN_phase_order': 7,
+            })
+
+
+        extra_args.append({
+            'omega0': 6e-3,
+            'PN_approximant': 'SpinTaylorT1',
+            'PN_dt': 0.5,
+            'PN_spin_order': 5,
+            'PN_phase_order': 7,
+            })
+
+        extra_args.append({
+            'omega0': 7e-3,
+            'PN_approximant': 'SpinTaylorT2',
+            'PN_dt': 1,
+            'PN_spin_order': 7,
+            'PN_phase_order': 5,
+            })
+
+        # These should be pure NRSur7dq2
+        extra_args.append({'omega0': 3e-2})
+        extra_args.append({'omega0': 5e-2})
+
+        return extra_args
 
     #-------------------------------------------------------------------------
     def _get_fit_params(self, x, fit_key):
@@ -150,34 +201,6 @@ class Fit7dq2(surfinBH.SurFinBH):
         fit_params[6] = chi_a
 
         return fit_params
-
-    #-------------------------------------------------------------------------
-    def _check_param_limits(self, q, chiA, chiB, **kwargs):
-        """ Checks that x is within allowed range of paramters.
-        Raises a warning if outside training limits and
-        raises an error if outside allowed limits.
-        Training limits: q <= 2.01, chiAmag <= 0.81, chiBmag <= 0.81.
-        Allowed limits: q <= 3.01, chiAmag <= 1, chiBmag <= 1.
-        """
-        chiAmag = np.sqrt(np.sum(chiA**2))
-        chiBmag = np.sqrt(np.sum(chiB**2))
-
-        if q < 1:
-            raise ValueError('Mass ratio should be >= 1.')
-        elif q > 3.01:
-            raise Exception('Mass ratio outside allowed range.')
-        elif q > 2.01:
-            warnings.warn('Mass ratio outside training range.')
-
-        if chiAmag > 1.:
-            raise Exception('Spin magnitude of BhA outside allowed range.')
-        elif chiAmag > 0.81:
-            warnings.warn('Spin magnitude of BhA outside training range.')
-
-        if chiBmag > 1.:
-            raise Exception('Spin magnitude of BhB outside allowed range.')
-        elif chiBmag > 0.81:
-            warnings.warn('Spin magnitude of BhB outside training range.')
 
     #-------------------------------------------------------------------------
     def _evolve_spins(self, q, chiA0, chiB0, omega0, PN_approximant,

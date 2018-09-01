@@ -54,8 +54,22 @@ class Fit3dq8(surfinBH.SurFinBH):
 
     #-------------------------------------------------------------------------
     def __init__(self, name):
-        super(Fit3dq8, self).__init__(name)
 
+        # Param limits beyond which to raise a warning
+        soft_param_lims = {
+            'q': 8.1,
+            'chiAmag': 0.81,
+            'chiBmag': 0.81,
+                }
+
+        # Param limits beyond which to raise an error
+        hard_param_lims = {
+            'q': 10.1,
+            'chiAmag': 1,
+            'chiBmag': 1,
+                }
+        super(Fit3dq8, self).__init__(name, soft_param_lims, hard_param_lims,
+                aligned_spin_only=True)
 
     #-------------------------------------------------------------------------
     def _load_fits(self, h5file):
@@ -79,37 +93,6 @@ class Fit3dq8(surfinBH.SurFinBH):
         chi_a = (chiAz - chiBz)/2.
         fit_params = [np.log(q), chiHat, chi_a]
         return fit_params
-
-    #-------------------------------------------------------------------------
-    def _check_param_limits(self, q, chiA, chiB, **kwargs):
-        """ Checks that x is within allowed range of paramters.
-        Raises a warning if outside training limits and
-        raises an error if outside allowed limits.
-        Training limits: q <= 8.01, |chiAz| <= 0.81, |chiBz| <= 0.81.
-        Allowed limits: q <= 10.01, |chiAz| <= 1, |chiBz| <= 1.
-        """
-        if np.sqrt(np.sum(chiA[:2]**2)) > 1e-10:
-            raise ValueError('The x and y components of chiA should be zero.')
-
-        if np.sqrt(np.sum(chiB[:2]**2)) > 1e-10:
-            raise ValueError('The x and y components of chiB should be zero.')
-
-        if q < 1:
-            raise ValueError('Mass ratio should be >= 1.')
-        elif q > 10.01:
-            raise Exception('Mass ratio outside allowed range.')
-        elif q > 8.01:
-            warnings.warn('Mass ratio outside training range.')
-
-        if abs(chiA[2]) > 1.:
-            raise Exception('Spin magnitude of BhA outside allowed range.')
-        elif abs(chiA[2]) > 0.81:
-            warnings.warn('Spin magnitude of BhA outside training range.')
-
-        if abs(chiB[2]) > 1.:
-            raise Exception('Spin magnitude of BhB outside allowed range.')
-        elif abs(chiB[2]) > 0.81:
-            warnings.warn('Spin magnitude of BhB outside training range.')
 
     #-------------------------------------------------------------------------
     def _eval_wrapper(self, fit_key, q, chiA, chiB, **kwargs):
