@@ -64,7 +64,7 @@ All of these can be installed through pip or conda.
 import surfinBH
 ```
 
-See list of available fits
+### See list of available fits
 ```python
 print(surfinBH.fits_collection.keys())
 >>> ['surfinBH3dq8', 'surfinBH7dq2']
@@ -81,20 +81,29 @@ surfinBH.fits_collection[fit_name].refs
 >>> 'arxiv.2018.xxxx'
 ```
 
-Get data for the fit. This only needs to done **once, ever**.
+### Get data for fits
+This is not required with the pip installation. With the source installation,
+this only needs to done **once, ever**.
 ```python
-surfinBH.DownloadData(fit_name)
->>> ################################################################ 100.0%
+#NOTE: Not required if installed with pip
+surfinBH.DownloadData()
 ```
 
-Load the fit. This only needs to be done **once** at the start of your script.
+You can also get only the particular fit you want.
+```python
+#NOTE: Not required if installed with pip
+surfinBH.DownloadData(fit_name)
+```
+
+### Load the fit
+This only needs to be done **once** at the start of your script.
 ```python
 fit = surfinBH.LoadFits(fit_name)
 >>> Loaded surfinBH7dq2 fit.
 ```
-
+### Evaluation
 The evaluation of each fit is different, so be sure to read the documentation.
-This also defines the frames in which different quantities are defined.
+This also describes the frames in which different quantities are defined.
 ```python
 help(fit)
 ```
