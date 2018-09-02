@@ -156,11 +156,22 @@ See _fit_evaluators.fit_7dq2.py for an example.
             raise Exception('Unused keys in kwargs: %s'%unused)
 
     #-------------------------------------------------------------------------
-    def _check_param_limits(self, q, chiA, chiB, **kwargs):
+    def _check_param_limits(self, q, chiA, chiB, allow_extrap):
         """ Checks that params are within allowed range of paramters.
         Raises a warning if outside self.soft_param_lims limits and
         raises an error if outside self.hard_param_lims.
+        If allow_extrap=True, skips these checks.
         """
+
+        if q < 1:
+            raise ValueError('Mass ratio should be >= 1.')
+
+        chiAmag = np.sqrt(np.sum(chiA**2))
+        chiBmag = np.sqrt(np.sum(chiB**2))
+        if chiAmag > 1:
+            raise ValueError('Spin magnitude of BhA > 1.')
+        if chiBmag > 1:
+            raise ValueError('Spin magnitude of BhB > 1.')
 
         if self.aligned_spin_only:
             if np.sqrt(np.sum(chiA[:2]**2)) > 1e-10:
@@ -168,12 +179,11 @@ See _fit_evaluators.fit_7dq2.py for an example.
             if np.sqrt(np.sum(chiB[:2]**2)) > 1e-10:
                 raise ValueError('The x & y components of chiB should be zero.')
 
-        chiAmag = np.sqrt(np.sum(chiA**2))
-        chiBmag = np.sqrt(np.sum(chiB**2))
+        # Do not check param limits if allow_extrap=True
+        if allow_extrap:
+            return
 
-        if q < 1:
-            raise ValueError('Mass ratio should be >= 1.')
-        elif q > self.hard_param_lims['q']:
+        if q > self.hard_param_lims['q']:
             raise ValueError('Mass ratio outside allowed range.')
         elif q > self.soft_param_lims['q']:
             warnings.warn('Mass ratio outside training range.')

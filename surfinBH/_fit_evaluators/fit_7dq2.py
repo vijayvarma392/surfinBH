@@ -16,7 +16,7 @@ class Fit7dq2(surfinBH.SurFinBH):
         q <= 2, |chiA| <= 0.8, |chiB| <= 0.8
 
     However, it extrapolates reasonably to:
-        q <= 3, |chiA| <= 1, |chiB| <= 1
+        q <= 4, |chiA| <= 1, |chiB| <= 1
 
     =========================================================================
     Usage:
@@ -75,7 +75,13 @@ class Fit7dq2(surfinBH.SurFinBH):
             t=-100 M.  Finally, we transform the remnant spin and kick vectors
             back to the inertial frame defined above.
 
-    Optional PN arguments:
+    Optional arguments:
+        allow_extrap:
+            If False, raises a warning when q > 2.1 or |chiA|,|chiB| > 0.81,
+                and raises an error when q > 4.1 or |chiA|,|chiB| > 1.
+            If True, allows extrapolation to any q and |chiA|,|chiB| <= 1.
+                Use at your own risk.
+            Default: False.
 
         omega0:
             Initial dimensionless orbital frequency in units of 1/M, where M is
@@ -118,7 +124,7 @@ class Fit7dq2(surfinBH.SurFinBH):
 
         # Param limits beyond which to raise an error
         hard_param_lims = {
-            'q': 3.1,
+            'q': 4.1,
             'chiAmag': 1,
             'chiBmag': 1,
                 }
@@ -282,7 +288,8 @@ class Fit7dq2(surfinBH.SurFinBH):
         chiB = np.array(chiB)
 
         # Warn/Exit if extrapolating
-        self._check_param_limits(q, chiA, chiB, **kwargs)
+        allow_extrap = kwargs.pop('allow_extrap', False)
+        self._check_param_limits(q, chiA, chiB, allow_extrap)
 
         omega0 = kwargs.pop('omega0', None)
         PN_approximant = kwargs.pop('PN_approximant', 'SpinTaylorT4')

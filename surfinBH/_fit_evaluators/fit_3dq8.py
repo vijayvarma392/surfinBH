@@ -24,24 +24,37 @@ class Fit3dq8(surfinBH.SurFinBH):
     # Load the fit
     fit = surfinBH.LoadFits('surfinBH3dq8')
 
-    # Define params
-    q = 4.3             # Mass ratio q>=1
-    chiA = [0,0,0.6]    # Spin of larger BH (z-direction only)
-    chiB = [0,0,-0.7]   # Spin of smaller BH (z-direction only)
+    We provide the following call methods:
+        # remnant mass and 1-sigma error estimate
+        mC, mC_err = fit.mC(q, chiA, chiB, **kwargs)
 
-    ## Evaluate fits
+        # remnant spin and 1-sigma error estimate
+        chiC, chiC_err = fit.chiC(q, chiA, chiB, **kwargs)
 
-    # remnant mass and 1-sigma error estimate
-    mC, mC_err = fit.mC(q, chiA, chiB)
+        # remnant recoil kick and 1-sigma error estimate
+        velC, velC_err = fit.velC(q, chiA, chiB, **kwargs)
 
-    # remnant spin and 1-sigma error estimate
-    chiC, chiC_err = fit.chiC(q, chiA, chiB)
+        # All of these together
+        mC, chiC, velC, mC_err, chiC_err, velC_err
+            = fit.all(q, chiA, chiB, **kwargs)
 
-    # remnant recoil kick and 1-sigma error estimate
-    velC, velC_err = fit.velC(q, chiA, chiB)
+    The arguments for each of these call methods are as follows:
+    Arguments:
+        q:      Mass ratio (q>=1)
 
-    # All of these together
-    mC, chiC, velC, mC_err, chiC_err, velC_err = fit.all(q, chiA, chiB)
+        chiA:   Dimensionless spin of the larger BH (array of size 3).
+
+        chiB:   Dimensionless spin of the smaller BH (array of size 3).
+                This model allows only nonprecessing spins, so only the
+                z-components of these arrays should be non-zero.
+
+    Optional arguments:
+        allow_extrap:
+            If False, raises a warning when q > 8.1 or |chiA|,|chiB| > 0.81,
+                and raises an error when q > 10.1 or |chiA|,|chiB| > 1.
+            If True, allows extrapolation to any q and |chiA|,|chiB| <= 1.
+                Use at your own risk.
+            Default: False.
 
     The spin and kick vectors are defined in the coorbital frame at t=-100 M
     from the peak of the waveform. This frame is defined as:
@@ -102,7 +115,8 @@ class Fit3dq8(surfinBH.SurFinBH):
         chiB = np.array(chiB)
 
         # Warn/Exit if extrapolating
-        self._check_param_limits(q, chiA, chiB, **kwargs)
+        allow_extrap = kwargs.pop('allow_extrap', False)
+        self._check_param_limits(q, chiA, chiB, allow_extrap)
 
         self._check_unused_kwargs(kwargs)
 
