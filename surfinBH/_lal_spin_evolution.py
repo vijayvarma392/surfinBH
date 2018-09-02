@@ -20,7 +20,7 @@ def lal_spin_evloution_wrapper(approximant, q, omega0, chiA0, chiB0,
         Omega:    Dimensionless orbital frequency.
         Phi:            Orbital phase (radians)
         ChiA:           Dimensionless spin of BhA
-        ChiB"           Dimensionless spin of BhB
+        ChiB:           Dimensionless spin of BhB
         LNhat:          Orbital angular momentum direction
         E1:             Orbital plane basis vector
 
