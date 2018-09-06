@@ -38,7 +38,7 @@ def DownloadData(name='all', data_dir=DataPath()):
     if name not in fits_collection.keys():
         raise Exception('Invalid fit name : %s'%name)
 
-    print 'Downloading %s data'%name
+    print('Downloading %s data'%name)
     data_url = fits_collection[name].data_url
     os.system('mkdir -p {0}; cd {0}; curl -# -L -O {1}'.format(data_dir,
             data_url))
