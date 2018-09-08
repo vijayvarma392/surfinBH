@@ -207,7 +207,9 @@ See _fit_evaluators.fit_7dq2.py for an example.
         chiAmag= np.random.uniform(0, self.hard_param_lims['chiAmag'])
         chiBmag= np.random.uniform(0, self.hard_param_lims['chiBmag'])
         if self.aligned_spin_only:
-            chiAth, chiBth, chiAph, chiBph = 0,0,0,0
+            chiAph, chiBph = 0, 0
+            chiAth, chiBth = np.random.choice([0, np.pi]), \
+                np.random.choice([0, np.pi])
         else:
             chiAth = np.random.uniform(0, np.pi)
             chiBth = np.random.uniform(0, np.pi)
