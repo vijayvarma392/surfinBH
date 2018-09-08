@@ -198,6 +198,32 @@ See _fit_evaluators.fit_7dq2.py for an example.
         elif chiBmag > self.soft_param_lims['chiBmag']:
             warnings.warn('Spin magnitude of BhB outside training range.')
 
+    #-------------------------------------------------------------------------
+    def _generate_random_params_for_tests(self):
+        """ Generate random parameters to use in tests.
+        """
+        # Generate params randomly within allowed values
+        q = np.random.uniform(1, self.hard_param_lims['q'])
+        chiAmag= np.random.uniform(0, self.hard_param_lims['chiAmag'])
+        chiBmag= np.random.uniform(0, self.hard_param_lims['chiBmag'])
+        if self.aligned_spin_only:
+            chiAth, chiBth, chiAph, chiBph = 0,0,0,0
+        else:
+            chiAth = np.random.uniform(0, np.pi)
+            chiBth = np.random.uniform(0, np.pi)
+            chiAph = np.random.uniform(0, 2*np.pi)
+            chiBph = np.random.uniform(0, 2*np.pi)
+
+        chiA = [chiAmag*np.sin(chiAth)*np.cos(chiAph),
+                chiAmag*np.sin(chiAth)*np.sin(chiAph),
+                chiAmag*np.cos(chiAth)]
+
+        chiB = [chiBmag*np.sin(chiBth)*np.cos(chiBph),
+                chiBmag*np.sin(chiBth)*np.sin(chiBph),
+                chiBmag*np.cos(chiBth)]
+
+        return q, chiA, chiB
+
 
     #-------------------------------------------------------------------------
     #----------------------  Override these  ---------------------------------
@@ -208,6 +234,7 @@ See _fit_evaluators.fit_7dq2.py for an example.
         """ Loads fits from h5file and returns a dictionary of fits. """
         raise NotImplementedError("Please override me.")
         return fits
+
 
     #-------------------------------------------------------------------------
     def _extra_regression_kwargs(self):
