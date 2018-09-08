@@ -7,36 +7,12 @@ import surfinBH
 
 def save_data(h5grp, fit, num_tests, kwargs={}):
 
-    # get allowed range of params
-    param_lims = fit.hard_param_lims
-
-    # get bool for whether aligned_spin_only
-    aligned_spin_only = fit.aligned_spin_only
-
     for i in range(num_tests):
         # save each test evaluation as group
         test_h5grp = h5grp.create_group('test_%d'%i)
 
         # Generate params randomly within allowed values
-        q = np.random.uniform(1, param_lims['q'])
-        chiAmag= np.random.uniform(0, param_lims['chiAmag'])
-        chiBmag= np.random.uniform(0, param_lims['chiBmag'])
-        if aligned_spin_only:
-            chiAth, chiBth, chiAph, chiBph = 0,0,0,0
-        else:
-            chiAth = np.random.uniform(0, np.pi)
-            chiBth = np.random.uniform(0, np.pi)
-            chiAph = np.random.uniform(0, 2*np.pi)
-            chiBph = np.random.uniform(0, 2*np.pi)
-
-        chiA = [chiAmag*np.sin(chiAth)*np.cos(chiAph),
-                chiAmag*np.sin(chiAth)*np.sin(chiAph),
-                chiAmag*np.cos(chiAth)]
-
-        chiB = [chiBmag*np.sin(chiBth)*np.cos(chiBph),
-                chiBmag*np.sin(chiBth)*np.sin(chiBph),
-                chiBmag*np.cos(chiBth)]
-
+        q, chiA, chiB = fit._generate_random_params_for_tests()
 
         # save params
         test_h5grp.create_dataset('q', data=q)

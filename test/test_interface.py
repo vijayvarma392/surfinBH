@@ -15,32 +15,9 @@ warnings.filterwarnings("ignore", message="Extrapolating dynamics to")
 
 def single_kwargs_test(fit, num_tests, kwargs={}):
 
-    # get range of params
-    param_lims = fit.soft_param_lims
-
-    # get bool for whether aligned_spin_only
-    aligned_spin_only = fit.aligned_spin_only
-
     for i in range(num_tests):
         # Generate params randomly within allowed values
-        q = np.random.uniform(1, param_lims['q'])
-        chiAmag= np.random.uniform(0, param_lims['chiAmag'])
-        chiBmag= np.random.uniform(0, param_lims['chiBmag'])
-        if aligned_spin_only:
-            chiAth, chiBth, chiAph, chiBph = 0,0,0,0
-        else:
-            chiAth = np.random.uniform(0, np.pi)
-            chiBth = np.random.uniform(0, np.pi)
-            chiAph = np.random.uniform(0, 2*np.pi)
-            chiBph = np.random.uniform(0, 2*np.pi)
-
-        chiA = [chiAmag*np.sin(chiAth)*np.cos(chiAph),
-                chiAmag*np.sin(chiAth)*np.sin(chiAph),
-                chiAmag*np.cos(chiAth)]
-
-        chiB = [chiBmag*np.sin(chiBth)*np.cos(chiBph),
-                chiBmag*np.sin(chiBth)*np.sin(chiBph),
-                chiBmag*np.cos(chiBth)]
+        q, chiA, chiB = fit._generate_random_params_for_tests() 
 
         # Check evaluation of different call modules
 
