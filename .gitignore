@@ -13,3 +13,6 @@ dist
 # those links.
 /example_3dq8.ipynb
 /example_7dq2.ipynb
+
+# outdir of test/smoothness_tests.py
+/smoothness_tests
