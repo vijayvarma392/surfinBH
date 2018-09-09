@@ -261,9 +261,12 @@ class Fit7dq2(surfinBH.SurFinBH):
             self._load_NRSur7dq2()
 
         # evaluate NRSur7dq2 dynamics
+        # We set allow_extrapolation=True always since we test param limits
+        # independently
         quat, orbphase, chiA_copr, chiB_copr = self.nrsur.get_dynamics(q,
             chiA0_nrsur_copr, chiB0_nrsur_copr, init_quat=quat0_nrsur_copr,
-            init_phase=phi0_nrsur, omega_ref=omega0_nrsur)
+            init_phase=phi0_nrsur, omega_ref=omega0_nrsur,
+            allow_extrapolation=True)
 
         # get data at time node where remnant fits are done
         fitnode_time = -100
