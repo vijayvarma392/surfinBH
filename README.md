@@ -15,7 +15,7 @@ properties for mergers of binary black holes (BBH). Just like Point Break, but
 with black holes!
 
 These fits are described in the following papers: <br/>
-[1] Vijay Varma, Davide Gerosa, Francois Hebert and Leo C. Stein, 2018, in
+[1] Vijay Varma, Davide Gerosa, François Hébert and Leo C. Stein, 2018, in
 preparation.
 
 If you find this package useful in your work, please cite reference [1] and,
