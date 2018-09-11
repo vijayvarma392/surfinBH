@@ -21,6 +21,9 @@ def LoadFits(name):
     if name not in fits_collection.keys():
         raise Exception('Invalid fit name : %s'%name)
     else:
+        testPath = DataPath() + '/' + fits_collection[name].data_url.split('/')[-1]
+        if (not os.path.isfile(testPath)):
+            DownloadData(name)
         fit = fits_collection[name].fit_class(name.split('surfinBH')[-1])
         print('Loaded %s fit.'%name)
         return fit
