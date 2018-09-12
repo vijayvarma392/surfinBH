@@ -35,7 +35,7 @@ setuptools.setup(
         'h5py>=2.7.1',
         'scikit-learn>=0.19.1',
         'lalsuite',
-        'NRSur7dq2',
+        'NRSur7dq2>=1.0.5',
     ],
     classifiers=[
         "Intended Audience :: Science/Research",
