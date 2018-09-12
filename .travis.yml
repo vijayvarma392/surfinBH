@@ -5,7 +5,6 @@ python:
 cache: pip
 install:
   - pip install .
-  - cd; python -c "import surfinBH; surfinBH.DownloadData()"; cd -
 script:
   - py.test
 addons:
