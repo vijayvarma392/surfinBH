@@ -230,7 +230,7 @@ def test_smoothness(x_param, x_param_label):
             x_list, label, params_list = generate_params_along_line(x_param)
 
         # final mass plots along the 1d line
-        test_smoothness_wrapper(axarr[:2], x_list, fit.mC, '$m$', params_list, \
+        test_smoothness_wrapper(axarr[:2], x_list, fit.mf, '$m$', params_list, \
             label)
 
         # final spin, but plot only z values for aligned-spins
@@ -238,7 +238,7 @@ def test_smoothness(x_param, x_param_label):
         for idx in range(3):
             if (idx == 2) or (not aligned_spin_only):
                 test_smoothness_wrapper(\
-                    axarr[2+2*chi_idx:4+2*chi_idx], x_list, fit.chiC, \
+                    axarr[2+2*chi_idx:4+2*chi_idx], x_list, fit.chif, \
                     '$\chi_{%s}$'%comp_labels[idx], params_list, label, \
                     y_index=idx)
                 chi_idx += 1
@@ -249,7 +249,7 @@ def test_smoothness(x_param, x_param_label):
             if (idx in [0,1]) or (not aligned_spin_only):
                 test_smoothness_wrapper(\
                     axarr[2+2*chi_idx+2*vel_idx:4+2*chi_idx+2*vel_idx], \
-                    x_list, fit.velC, '$v_{%s}$'%comp_labels[idx], \
+                    x_list, fit.vf, '$v_{%s}$'%comp_labels[idx], \
                     params_list, label, y_index=idx)
                 vel_idx += 1
 

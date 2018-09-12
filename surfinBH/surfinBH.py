@@ -256,7 +256,7 @@ See _fit_evaluators.fit_7dq2.py for an example.
     #-------------------------------------------------------------------------
     def _eval_wrapper(self, fit_key, q, chiA, chiB, **kwargs):
         """ Evaluates a particular fit. This varies for each surrogate.
-            Allowed values for fit_key are 'mC', 'chiC' and 'velC' and 'all'.
+            Allowed values for fit_key are 'mf', 'chif' and 'vf' and 'all'.
             chiA and chiB should have size 3.
 
             Each derived class should have its own _eval_wrapper function but
@@ -270,38 +270,38 @@ See _fit_evaluators.fit_7dq2.py for an example.
     #----------------------   Call methods   ---------------------------------
     #-------------------------------------------------------------------------
 
-    def mC(self, *args, **kwargs):
+    def mf(self, *args, **kwargs):
         """ Evaluates fit and 1-sigma error estimate for remnant mass.
         Returns:
-            mC, mC_err_est
+            mf, mf_err_est
         """
-        return self._eval_wrapper('mC', *args, **kwargs)
+        return self._eval_wrapper('mf', *args, **kwargs)
 
-    def chiC(self, *args, **kwargs):
+    def chif(self, *args, **kwargs):
         """ Evaluates fit and 1-sigma error estimate for remnant spin.
         Returns:
-            chiC, chiC_err_est
+            chif, chif_err_est
 
-        chiC and chiC_err_est are arrays of size 3.
+        chif and chif_err_est are arrays of size 3.
         """
-        return self._eval_wrapper('chiC', *args, **kwargs)
+        return self._eval_wrapper('chif', *args, **kwargs)
 
-    def velC(self, *args, **kwargs):
+    def vf(self, *args, **kwargs):
         """ Evaluates fit and 1-sigma error estimate for remnant kick velocity.
         Returns:
-            velC, velC_err_est
+            vf, vf_err_est
 
-        velC and velC_err_est are arrays of size 3.
+        vf and vf_err_est are arrays of size 3.
         """
-        return self._eval_wrapper('velC', *args, **kwargs)
+        return self._eval_wrapper('vf', *args, **kwargs)
 
     def all(self, *args, **kwargs):
         """ Evaluates fit and 1-sigma error estimate for remnant mass, spin
         and kick velocity.
         Returns:
-            mC, chiC, velC, mC_err_est, chiC_err_est, velC_err_est
+            mf, chif, vf, mf_err_est, chif_err_est, vf_err_est
 
-        chiC, velC, chiC_err_est and velC_err_est are arrays of size 3.
+        chif, vf, chif_err_est and vf_err_est are arrays of size 3.
         """
         return self._eval_wrapper('all', *args, **kwargs)
 

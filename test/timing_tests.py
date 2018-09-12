@@ -45,13 +45,13 @@ if __name__ == "__main__":
     num_tests = 1000
 
     # remnant mass
-    eval_time = eval_fits(fit, num_tests, fit.mC)
-    print('Time per evaluation of mC: %.3e s'%eval_time)
+    eval_time = eval_fits(fit, num_tests, fit.mf)
+    print('Time per evaluation of mf: %.3e s'%eval_time)
 
     # remnant spin
-    eval_time = eval_fits(fit, num_tests, fit.chiC)
-    print('Time per evaluation of chiC: %.3e s'%eval_time)
+    eval_time = eval_fits(fit, num_tests, fit.chif)
+    print('Time per evaluation of chif: %.3e s'%eval_time)
 
     # remnant kick
-    eval_time = eval_fits(fit, num_tests, fit.velC)
-    print('Time per evaluation of velC: %.3e s'%eval_time)
+    eval_time = eval_fits(fit, num_tests, fit.vf)
+    print('Time per evaluation of vf: %.3e s'%eval_time)

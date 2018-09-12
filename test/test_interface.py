@@ -22,38 +22,38 @@ def single_kwargs_test(fit, num_tests, kwargs={}):
         # Check evaluation of different call modules
 
         # remnant mass
-        mC_and_err = fit.mC(q, chiA, chiB, **kwargs)
+        mf_and_err = fit.mf(q, chiA, chiB, **kwargs)
 
         # remnant spin
-        chiC_and_err = fit.chiC(q, chiA, chiB, **kwargs)
+        chif_and_err = fit.chif(q, chiA, chiB, **kwargs)
 
         # remnant kick
-        velC_and_err = fit.velC(q, chiA, chiB, **kwargs)
+        vf_and_err = fit.vf(q, chiA, chiB, **kwargs)
 
         # all together
-        #mC, chiC, velC, mC_err_est, chiC_err_est, velC_err_est \
+        #mf, chif, vf, mf_err_est, chif_err_est, vf_err_est \
         all_data = fit.all(q, chiA, chiB, **kwargs)
 
         # Check that all_data has the right ordering
         rtol = 1e-11
 
-        if hasattr(mC_and_err, '__len__'):      # has both fit val and err_est
-            np.testing.assert_allclose(mC_and_err[0], all_data[0], rtol=rtol)
-            np.testing.assert_allclose(mC_and_err[1], all_data[3], rtol=rtol)
+        if hasattr(mf_and_err, '__len__'):      # has both fit val and err_est
+            np.testing.assert_allclose(mf_and_err[0], all_data[0], rtol=rtol)
+            np.testing.assert_allclose(mf_and_err[1], all_data[3], rtol=rtol)
         else:
-            np.testing.assert_allclose(mC_and_err, all_data[0], rtol=rtol)
+            np.testing.assert_allclose(mf_and_err, all_data[0], rtol=rtol)
 
-        if hasattr(chiC_and_err, '__len__'):      # has both fit val and err_est
-            np.testing.assert_allclose(chiC_and_err[0], all_data[1], rtol=rtol)
-            np.testing.assert_allclose(chiC_and_err[1], all_data[4], rtol=rtol)
+        if hasattr(chif_and_err, '__len__'):      # has both fit val and err_est
+            np.testing.assert_allclose(chif_and_err[0], all_data[1], rtol=rtol)
+            np.testing.assert_allclose(chif_and_err[1], all_data[4], rtol=rtol)
         else:
-            np.testing.assert_allclose(chiC_and_err, all_data[1], rtol=rtol)
+            np.testing.assert_allclose(chif_and_err, all_data[1], rtol=rtol)
 
-        if hasattr(velC_and_err, '__len__'):      # has both fit val and err_est
-            np.testing.assert_allclose(velC_and_err[0], all_data[2], rtol=rtol)
-            np.testing.assert_allclose(velC_and_err[1], all_data[5], rtol=rtol)
+        if hasattr(vf_and_err, '__len__'):      # has both fit val and err_est
+            np.testing.assert_allclose(vf_and_err[0], all_data[2], rtol=rtol)
+            np.testing.assert_allclose(vf_and_err[1], all_data[5], rtol=rtol)
         else:
-            np.testing.assert_allclose(velC_and_err, all_data[2], rtol=rtol)
+            np.testing.assert_allclose(vf_and_err, all_data[2], rtol=rtol)
 
 
 def test_interface():

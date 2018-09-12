@@ -7,8 +7,8 @@ import warnings
 #=============================================================================
 class Fit7dq2(surfinBH.SurFinBH):
     """ A class for the surfinBH7dq2 model presented in Varma et al., 2018,
-    in prep. This model predicts the final mass mC, final spin vector chiC and
-    final kick velocity vector velC, for the remnants of precessing binary
+    in prep. This model predicts the final mass mf, final spin vector chif and
+    final kick velocity vector vf, for the remnants of precessing binary
     black hole systems.  The fits are done using Gaussian Process Regression
     (GPR) and also provide an error estimate along with the fit value.
 
@@ -28,16 +28,16 @@ class Fit7dq2(surfinBH.SurFinBH):
 
     We provide the following call methods:
         # remnant mass and 1-sigma error estimate
-        mC, mC_err = fit.mC(q, chiA, chiB, **kwargs)
+        mf, mf_err = fit.mf(q, chiA, chiB, **kwargs)
 
         # remnant spin and 1-sigma error estimate
-        chiC, chiC_err = fit.chiC(q, chiA, chiB, **kwargs)
+        chif, chif_err = fit.chif(q, chiA, chiB, **kwargs)
 
         # remnant recoil kick and 1-sigma error estimate
-        velC, velC_err = fit.velC(q, chiA, chiB, **kwargs)
+        vf, vf_err = fit.vf(q, chiA, chiB, **kwargs)
 
         # All of these together
-        mC, chiC, velC, mC_err, chiC_err, velC_err
+        mf, chif, vf, mf_err, chif_err, vf_err
             = fit.all(q, chiA, chiB, **kwargs)
 
     The arguments for each of these call methods are as follows:
@@ -142,9 +142,9 @@ class Fit7dq2(surfinBH.SurFinBH):
     def _load_fits(self, h5file):
         """ Loads fits from h5file and returns a dictionary of fits. """
         fits = {}
-        for key in ['mC']:
+        for key in ['mf']:
             fits[key] = self._load_scalar_fit(fit_key=key, h5file=h5file)
-        for key in ['chiC', 'velC']:
+        for key in ['chif', 'vf']:
             fits[key] = self._load_vector_fit(key, h5file)
         return fits
 
@@ -332,20 +332,20 @@ class Fit7dq2(surfinBH.SurFinBH):
             return fit_val, fit_err
 
 
-        if fit_key == 'mC' or fit_key == 'all':
-            mC, mC_err = self._evaluate_fits(x, 'mC')
-            if fit_key == 'mC':
-                return mC, mC_err
+        if fit_key == 'mf' or fit_key == 'all':
+            mf, mf_err = self._evaluate_fits(x, 'mf')
+            if fit_key == 'mf':
+                return mf, mf_err
 
-        if fit_key == 'chiC' or fit_key == 'all':
-            chiC, chiC_err = eval_vector_fit(x, 'chiC')
-            if fit_key == 'chiC':
-                return chiC, chiC_err
+        if fit_key == 'chif' or fit_key == 'all':
+            chif, chif_err = eval_vector_fit(x, 'chif')
+            if fit_key == 'chif':
+                return chif, chif_err
 
-        if fit_key == 'velC' or fit_key == 'all':
-            velC, velC_err = eval_vector_fit(x, 'velC')
-            if fit_key == 'velC':
-                return velC, velC_err
+        if fit_key == 'vf' or fit_key == 'all':
+            vf, vf_err = eval_vector_fit(x, 'vf')
+            if fit_key == 'vf':
+                return vf, vf_err
 
         if fit_key == 'all':
-            return mC, chiC, velC, mC_err, chiC_err, velC_err
+            return mf, chif, vf, mf_err, chif_err, vf_err

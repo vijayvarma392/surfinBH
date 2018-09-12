@@ -59,18 +59,18 @@ def test_fit_regression():
                 chiB = test_h5grp['chiB'].value
 
                 # remnant mass
-                y_reg = test_h5grp['y/mC'].value
-                y_fit = fit.mC(q, chiA, chiB, **kwargs)
+                y_reg = test_h5grp['y/mf'].value
+                y_fit = fit.mf(q, chiA, chiB, **kwargs)
                 np.testing.assert_allclose(y_fit, y_reg, rtol=rtol)
 
                 # remnant spin
-                y_reg = test_h5grp['y/chiC'].value
-                y_fit = fit.chiC(q, chiA, chiB, **kwargs)
+                y_reg = test_h5grp['y/chif'].value
+                y_fit = fit.chif(q, chiA, chiB, **kwargs)
                 np.testing.assert_allclose(y_fit, y_reg, rtol=rtol)
 
                 # remnant kick
-                y_reg = test_h5grp['y/velC'].value
-                y_fit = fit.velC(q, chiA, chiB, **kwargs)
+                y_reg = test_h5grp['y/vf'].value
+                y_fit = fit.vf(q, chiA, chiB, **kwargs)
                 np.testing.assert_allclose(y_fit, y_reg, rtol=rtol)
 
         regression_h5file.close()

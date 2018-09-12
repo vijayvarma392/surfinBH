@@ -23,16 +23,16 @@ def save_data(h5grp, fit, num_tests, kwargs={}):
         y_h5grp = test_h5grp.create_group('y')
 
         # remnant mass
-        y = fit.mC(q, chiA, chiB, **kwargs)
-        y_h5grp.create_dataset('mC', data=y)
+        y = fit.mf(q, chiA, chiB, **kwargs)
+        y_h5grp.create_dataset('mf', data=y)
 
         # remnant spin
-        y = fit.chiC(q, chiA, chiB, **kwargs)
-        y_h5grp.create_dataset('chiC', data=y)
+        y = fit.chif(q, chiA, chiB, **kwargs)
+        y_h5grp.create_dataset('chif', data=y)
 
         # remnant kick
-        y = fit.velC(q, chiA, chiB, **kwargs)
-        y_h5grp.create_dataset('velC', data=y)
+        y = fit.vf(q, chiA, chiB, **kwargs)
+        y_h5grp.create_dataset('vf', data=y)
 
 
 if __name__ == "__main__":
