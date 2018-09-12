@@ -30,9 +30,9 @@ setuptools.setup(
     package_data={'surfinBH':['data/*']},
     include_package_data=True,
     install_requires=[
-        'numpy>=1.13.3',
-        'scipy>=1.1.0',
-        'h5py>=2.7.1',
+        'numpy',
+        'scipy',
+        'h5py',
         'scikit-learn>=0.19.1',
         'lalsuite',
         'NRSur7dq2>=1.0.5',
