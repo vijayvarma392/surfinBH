@@ -81,20 +81,6 @@ surfinBH.fits_collection[fit_name].refs
 >>> 'arxiv.2018.xxxx'
 ```
 
-### Get data for fits
-This is not required with the pip installation. With the source installation,
-this only needs to done **once, ever**.
-```python
-#NOTE: Not required if installed with pip
-surfinBH.DownloadData()
-```
-
-You can also get only the particular fit you want.
-```python
-#NOTE: Not required if installed with pip
-surfinBH.DownloadData(fit_name)
-```
-
 ### Load the fit
 This only needs to be done **once** at the start of your script.
 ```python

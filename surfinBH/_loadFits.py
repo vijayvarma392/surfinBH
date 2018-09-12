@@ -18,6 +18,9 @@ class FitAttributes(object):
 
 #-------------------------------------------------------------------------
 def LoadFits(name):
+    """ Loads data for a fit.
+    If data is not available, downloads it before loading.
+    """
     if name not in fits_collection.keys():
         raise Exception('Invalid fit name : %s'%name)
     else:
