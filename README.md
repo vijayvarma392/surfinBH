@@ -4,19 +4,12 @@
 
 # Welcome to surfinBH!
 
-<img src="https://raw.githubusercontent.com/vijayvarma392/surfinBH/master/images/point_break.jpeg" alt="Point Break" width="400px"/>
-
-
-<br/>
-<br/>
-
 _**surfinBH**_ provides _**sur**rogate **fin**al **B**lack_ _**H**ole_
-properties for mergers of binary black holes (BBH). Just like Point Break, but
-with black holes!
+properties for mergers of binary black holes (BBH).
 
 These fits are described in the following papers: <br/>
-[1] Vijay Varma, Davide Gerosa, François Hébert and Leo C. Stein, 2018, in
-preparation.
+[1] Vijay Varma, Davide Gerosa, François Hébert, Leo C. Stein and Hao Zhang,
+2018, in preparation.
 
 If you find this package useful in your work, please cite reference [1] and,
 if available, the relevant paper describing the particular model.
