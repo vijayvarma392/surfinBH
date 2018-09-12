@@ -49,7 +49,7 @@ All of these can be installed through pip or conda.
 * [h5py](http://docs.h5py.org/en/latest/build.html)
 * [scikit-learn](http://scikit-learn.org/stable/install.html) (at least 0.19.1)
 * [lalsuite](https://pypi.org/project/lalsuite)
-* [NRSur7dq2](https://pypi.org/project/NRSur7dq2)
+* [NRSur7dq2](https://pypi.org/project/NRSur7dq2) (at least 1.0.5)
 
 ## Usage
 
