@@ -11,7 +11,8 @@ elif python_version[:2] == '3.':
 
 def test_example_notebooks():
     """ Tests that all the example ipython notebooks of format
-    surfinBH/examples/example_*.ipynb are working.
+    surfinBH/examples/example_*.ipynb are working. Since we expect these to be
+    used by our users, it would be emabarassing if our own examples failed.
     """
     # List of all available fits
     fit_names = surfinBH.fits_collection.keys()
