@@ -69,11 +69,11 @@ class Fit7dq2(surfinBH.SurFinBH):
             The y-axis completes the triad.
             We obtain this frame from PN.
             Given the spins at omega0, we evolve the spins using PN until
-            the orbital frequency = 0.018 M, then we further evolve the spins
-            using the NRSur7dq2 model (arxiv:1705.07089) until t=-100M from the
-            peak of the waveform.  Then we evaluate the fits using the spins at
-            t=-100 M.  Finally, we transform the remnant spin and kick vectors
-            back to the inertial frame defined above.
+            the orbital frequency = omega_switch, then we further evolve the
+            spins using the NRSur7dq2 model (arxiv:1705.07089) until t=-100M
+            from the peak of the waveform. Then we evaluate the fits using the
+            spins at t=-100 M. Finally, we transform the remnant spin and kick
+            vectors back to the inertial frame defined above.
 
     Optional arguments:
         allow_extrap:
@@ -106,10 +106,16 @@ class Fit7dq2(surfinBH.SurFinBH):
             Twice the PN order of spin effects. E.g., use 7 for 3.5PN.
             Default: 7
 
-        PN_phase_order
+        PN_phase_order:
             Twice the PN order in phase. E.g., use 7 for 3.5PN.
             Default: 7
 
+        omega_switch:
+            Dimensionless orbital frequency at which to switch from PN to
+            NRSur7dq2 model. You may need to increase this if the NRSur7dq2
+            model raises an exception like:
+            "Got omega_ref = 0.0180 < 0.0184 = omega_0, too small!"
+            Default: 0.018
     """
 
     #-------------------------------------------------------------------------
@@ -152,6 +158,10 @@ class Fit7dq2(surfinBH.SurFinBH):
     def _extra_regression_kwargs(self):
         """ List of additional kwargs to use in regression tests.
         """
+
+        # larger than default sometimes needed when extrapolating
+        omega_switch_test = 0.019
+
         extra_args = []
         extra_args.append({
             'omega0': 5e-3,
@@ -159,6 +169,7 @@ class Fit7dq2(surfinBH.SurFinBH):
             'PN_dt': 0.1,
             'PN_spin_order': 7,
             'PN_phase_order': 7,
+            'omega_switch': omega_switch_test,
             })
 
 
@@ -168,6 +179,7 @@ class Fit7dq2(surfinBH.SurFinBH):
             'PN_dt': 0.5,
             'PN_spin_order': 5,
             'PN_phase_order': 7,
+            'omega_switch': omega_switch_test,
             })
 
         extra_args.append({
@@ -176,6 +188,7 @@ class Fit7dq2(surfinBH.SurFinBH):
             'PN_dt': 1,
             'PN_spin_order': 7,
             'PN_phase_order': 5,
+            'omega_switch': omega_switch_test,
             })
 
         # These should be pure NRSur7dq2
@@ -210,10 +223,10 @@ class Fit7dq2(surfinBH.SurFinBH):
 
     #-------------------------------------------------------------------------
     def _evolve_spins(self, q, chiA0, chiB0, omega0, PN_approximant,
-            PN_dt, PN_spin0, PN_phase0):
+            PN_dt, PN_spin0, PN_phase0, omega0_nrsur):
         """ Evolves spins of the component BHs from an initial orbital
         frequency = omega0 until t=-100 M from the peak of the waveform.
-        If omega0 < 0.018, use PN to evolve the spins until
+        If omega0 < omega0_nrsur, use PN to evolve the spins until
         orbital frequency = omega0. Then evolves further with the NRSur7dq2
         waveform model until t=-100M from the peak.
 
@@ -229,9 +242,6 @@ class Fit7dq2(surfinBH.SurFinBH):
         coprecessing frame quaternion and orbital phase in the coprecessing
         frame at this time.
         """
-
-        # obrbital frequency beyond which we use the NRSur7dq2 model.
-        omega0_nrsur = 0.018
 
         if omega0 < omega0_nrsur:
             # If omega0 is below the NRSur7dq2 start frequency, we use PN
@@ -299,6 +309,7 @@ class Fit7dq2(surfinBH.SurFinBH):
         PN_dt = kwargs.pop('PN_dt', 0.1)
         PN_spin_order = kwargs.pop('PN_spin_order', 7)
         PN_phase_order = kwargs.pop('PN_phase_order', 7)
+        omega_switch = kwargs.pop('omega_switch', 0.018)
 
         self._check_unused_kwargs(kwargs)
 
@@ -313,7 +324,7 @@ class Fit7dq2(surfinBH.SurFinBH):
                 orbphase_fitnode \
                 = self._evolve_spins(q, chiA, chiB, omega0,
                     PN_approximant, PN_dt, PN_spin_order,
-                    PN_phase_order)
+                    PN_phase_order, omega_switch)
             # x should contain coorbital frame spins at t=-100M
             x = np.concatenate(([q], chiA_coorb_fitnode, chiB_coorb_fitnode))
 
