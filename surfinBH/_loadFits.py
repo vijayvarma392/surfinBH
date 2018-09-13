@@ -1,4 +1,9 @@
 import os
+import errno
+try:
+    from urllib.request import urlretrieve # py 3
+except ImportError:
+    from urllib import  urlretrieve # py 2
 from time import gmtime, strftime
 from glob import glob
 
@@ -46,8 +51,15 @@ def DownloadData(name='all', data_dir=DataPath()):
 
     print('Downloading %s data'%name)
     data_url = fits_collection[name].data_url
-    os.system('mkdir -p {0}; cd {0}; curl -# -L -O {1}'.format(data_dir,
-            data_url))
+    filename = data_url.split('/')[-1]
+    try:
+        os.makedirs(data_dir)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(data_dir):
+            pass
+        else:
+            raise
+    urlretrieve(data_url, data_dir + '/' + filename)
 
 
 ##############################################################################
@@ -59,7 +71,7 @@ fits_collection['surfinBH3dq8'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit3dq8,
     desc = 'Fits for remnant mass, spin and kick veclocity for nonprecessing'
         ' BBH systems.',
-    data_url = 'https://www.dropbox.com/s/06mrxalxqjhzy9d/fit_3dq8.h5',
+    data_url = 'https://duetosymmetry.com/files/fit_3dq8.h5',
     refs = 'arxiv.2018.xxxx',
     )
 
@@ -67,6 +79,6 @@ fits_collection['surfinBH7dq2'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit7dq2,
     desc = 'Fits for remnant mass, spin and kick veclocity for genrically'
         ' precessing BBH systems.',
-    data_url = 'https://www.dropbox.com/s/8b4o7n5aswrnami/fit_7dq2.h5',
+    data_url = 'https://duetosymmetry.com/files/fit_7dq2.h5',
     refs = 'arxiv.2018.xxxx',
     )
