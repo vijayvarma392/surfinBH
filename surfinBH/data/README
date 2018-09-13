@@ -1,0 +1,8 @@
+# data directory
+
+This directory contains the fit data. Fit data gets downloaded to this
+directory using surfinBH.DownloadData().
+
+DO NOT commit the files in this directory.
+However, make sure that this directory contains data for all fits before
+uploading a new version to pip.
