@@ -99,6 +99,9 @@ See this
 [README](https://github.com/vijayvarma392/surfinBH/blob/master/README_developers.md)
 for instructions on how to make contributions to this package.
 
+You can find the list of contributors
+[here](https://github.com/vijayvarma392/surfinBH/graphs/contributors).
+
 
 ## Credits
 The code is developed and maintained by [Vijay Varma](http://www.tapir.caltech.edu/~vvarma/). Please, report bugs to
