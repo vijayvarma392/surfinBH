@@ -1,7 +1,7 @@
 import numpy as np
 import lalsimulation as lalsim
 from lal import MSUN_SI, MTSUN_SI, PC_SI, C_SI
-import _utils as utils
+from . import _utils
 
 def lal_spin_evloution_wrapper(approximant, q, omega0, chiA0, chiB0,
         dt, spinO, phaseO):
@@ -200,10 +200,12 @@ def evolve_pn_spins(q, chiA0, chiB0, omega0, omegaTimesM_final,
 
     # Align the z-direction along orbital angular momentum direction
     # at end_idx. This moves us in to the coprecessing frame.
-    q_copr_end = utils.alignVec_quat(lNhat_end)
-    chiA_end_copr = utils.transformTimeDependentVector(np.array([q_copr_end]).T,
+    q_copr_end = _utils.alignVec_quat(lNhat_end)
+    chiA_end_copr = _utils.transformTimeDependentVector(
+            np.array([q_copr_end]).T,
             np.array([chiA_end]).T, inverse=1).T[0]
-    chiB_end_copr = utils.transformTimeDependentVector(np.array([q_copr_end]).T,
+    chiB_end_copr = _utils.transformTimeDependentVector(
+            np.array([q_copr_end]).T,
             np.array([chiB_end]).T, inverse=1).T[0]
 
     return chiA_end_copr, chiB_end_copr, q_copr_end, phi_end, omegaTimesM_end

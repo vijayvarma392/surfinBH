@@ -34,8 +34,8 @@ import os, sys
 import h5py
 import warnings
 
-import _eval_pysur
-from _dataPath import DataPath
+from . import _eval_pysur
+from ._dataPath import DataPath
 
 
 #=============================================================================
@@ -78,7 +78,7 @@ See _fit_evaluators.fit_7dq2.py for an example.
         """ Converts h5 groups to dictionaries
         """
         d = {}
-        for k, item in f.iteritems():
+        for k, item in f.items():
             if type(item) == h5py._hl.dataset.Dataset:
                 v = item.value
                 if type(v) == np.string_:
@@ -87,8 +87,11 @@ See _fit_evaluators.fit_7dq2.py for an example.
                     d[k] = None
                 elif type(v) == str and v == "EMPTYARR":
                     d[k] = np.array([])
+                elif isinstance(v, bytes):
+                    d[k] = v.decode('utf-8')
                 else:
                     d[k] = v
+
             elif k[:5] == "DICT_":
                 d[k[5:]] = self._read_dict(item)
             elif k[:5] == "LIST_":

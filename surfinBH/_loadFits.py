@@ -2,8 +2,8 @@ import os
 from time import gmtime, strftime
 from glob import glob
 
-import _fit_evaluators
-from _dataPath import DataPath
+from . import _fit_evaluators
+from ._dataPath import DataPath
 
 #=============================================================================
 class FitAttributes(object):
