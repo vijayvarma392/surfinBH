@@ -3,6 +3,8 @@ python:
   - "2.7"
   - "3.6"
 cache: pip
+before_install:
+  - pip install jupyter
 install:
   - pip install .
 script:
