@@ -14,6 +14,7 @@ These fits are described in the following papers: <br/>
 If you find this package useful in your work, please cite reference [1] and,
 if available, the relevant paper describing the particular model.
 
+This package is compatible with both python2 and python3.
 This package lives on [GitHub](https://github.com/vijayvarma392/surfinBH) and
 is tested every day with [Travis CI](https://travis-ci.org/). You can see the
 current build status of the master branch at the top of this page.
