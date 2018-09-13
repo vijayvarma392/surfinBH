@@ -23,7 +23,7 @@ current build status of the master branch at the top of this page.
 ## Installation
 
 ### PyPI
-_**surfinBH**_ is available through [PyPI](https://pypi.org/project/surfinBH/).
+_**surfinBH**_ is available through [PyPI](https://pypi.org/project/surfinBH/):
 
 ```shell
 pip install surfinBH
