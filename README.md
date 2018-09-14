@@ -9,7 +9,7 @@
 
 
 <br/>
-<br/
+<br/>
 
 _**surfinBH**_ provides _**sur**rogate **fin**al **B**lack_ _**H**ole_
 properties for mergers of binary black holes (BBH).
