@@ -26,6 +26,39 @@ import matplotlib.animation as animation
 from matplotlib.patches import FancyArrowPatch
 
 
+colors_dict ={
+        'BhA_traj': 'indianred',
+        'BhB_traj': 'rebeccapurple',
+        'BhA_spin': 'goldenrod',
+        'BhB_spin': 'steelblue',
+        'BhC_spin': 'forestgreen',
+        }
+
+
+class Arrow3D(FancyArrowPatch):
+    def __init__(self, vecs, *args, **kwargs):
+        FancyArrowPatch.__init__(self, (0,0), (0,0), *args, **kwargs)
+        self._verts3d = vecs
+
+    def set_BH_spin_arrow(self, Bh_loc, chi_vec, scale_factor=10):
+        x, y, z =  Bh_loc
+        u, v, w =  chi_vec
+        xs = [x, x+u*scale_factor] 
+        ys = [y, y+v*scale_factor] 
+        zs = [z, z+w*scale_factor] 
+        self._verts3d = xs, ys, zs
+
+    def reset(self):
+        self._verts3d = None
+
+    def draw(self, renderer):
+        if self._verts3d is not None:
+            xs3d, ys3d, zs3d = self._verts3d
+            xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, renderer.M)
+            self.set_positions((xs[0],ys[0]),(xs[1],ys[1]))
+            FancyArrowPatch.draw(self, renderer)
+
+
 #----------------------------------------------------------------------------
 def spline_interp(newX, oldX, oldY, allowExtrapolation=False):
     """ Interpolates using splnes.
@@ -113,17 +146,19 @@ def get_quivers(Bh_loc, chi_vec, scale_factor=10):
     """
     X, Y, Z =  Bh_loc
     u, v, w =  chi_vec
-    segments = (X, Y, Z, X+v*scale_factor, Y+u*scale_factor, Z+w*scale_factor)
+    segments = (X, Y, Z, X+u*scale_factor, Y+v*scale_factor, Z+w*scale_factor)
     segments = np.array(segments).reshape(6,-1)
     return [[[x, y, z], [u, v, w]] for x, y, z, u, v, w in zip(*list(segments))]
 
 #----------------------------------------------------------------------------
 def update_lines(num, lines, hist_frames, t, dataLines_binary, \
-        dataLines_remnant, time_text, BhA_traj, BhB_traj, BhC_traj, \
-        chiA_nrsur, chiB_nrsur, chif, zero_idx):
+        dataLines_remnant, time_text, properties_text, \
+        BhA_traj, BhB_traj, BhC_traj, \
+        q, chiA_nrsur, chiB_nrsur, mf, chif, vf, zero_idx):
     """ The function that goes into animation
     """
     current_time = t[num]
+    time_text.set_text('$t=%.1f\,M$'%current_time)
     if current_time < 0:
 
         if num == 0:
@@ -132,10 +167,15 @@ def update_lines(num, lines, hist_frames, t, dataLines_binary, \
             line.set_data([], [])
             line.set_3d_properties([])
             line = lines[7]
-            line.set_segments([])
+            line.reset()
 
         for idx in range(len(dataLines_binary)):
-            time_text.set_text('time = %.1f M'%current_time)
+            properties_text.set_text('q=%.1f\n' \
+                '$\chi_{A}=[%.2f, %.2f, %.2f]$\n' \
+                '$\chi_{B}=[%.2f, %.2f, %.2f]$\n'%(q, \
+                chiA_nrsur[num-1][0],chiA_nrsur[num-1][1],chiA_nrsur[num-1][2],\
+                chiB_nrsur[num-1][0],chiB_nrsur[num-1][1],chiB_nrsur[num-1][2],\
+                ))
 
             line = lines[idx]
             data = dataLines_binary[idx]
@@ -158,7 +198,7 @@ def update_lines(num, lines, hist_frames, t, dataLines_binary, \
                     Bh_loc = BhB_traj[:,num-1]
                     chi_vec = chiB_nrsur[num-1]
 
-                line.set_segments(get_quivers(Bh_loc, chi_vec))
+                line.set_BH_spin_arrow(Bh_loc, chi_vec)
     else:
         num = num - zero_idx
         if num == 0:
@@ -169,10 +209,15 @@ def update_lines(num, lines, hist_frames, t, dataLines_binary, \
                 line.set_3d_properties([])
             for idx in range(4,6):
                 line = lines[idx]
-                line.set_segments([])
+                line.reset()
+
+
+            properties_text.set_text('$m_f=%.2f\,M$\n' \
+                '$\chi_f=[%.2f, %.2f, %.2f]$\n' \
+                '$v_f = [%.2f, %.2f, %.2f] \\times 10^{-3} c$'%(mf, \
+                chif[0], chif[1], chif[2], vf[0]*1e3, vf[1]*1e3, vf[2]*1e3))
 
         for idx in range(len(dataLines_remnant)):
-            time_text.set_text('time = %.1f M'%current_time)
             line = lines[6+idx]
             data = dataLines_remnant[idx]
 
@@ -183,140 +228,146 @@ def update_lines(num, lines, hist_frames, t, dataLines_binary, \
             else:
                 Bh_loc = BhC_traj[:,num-1]
                 chi_vec = chif
-                line.set_segments(get_quivers(Bh_loc, chi_vec))
+                line.set_BH_spin_arrow(Bh_loc, chi_vec)
 
     return lines
 
 
 #----------------------------------------------------------------------------
-pause = False
-def BBH_scattering(q, chiA0, chiB0, omega0):
+def BBH_scattering(q, chiA0, chiB0, omega0, return_fig=False):
+
+    chiA0 = np.array(chiA0)
+    chiB0 = np.array(chiB0)
 
     # evaluate remnant fit
     fit_name = 'surfinBH7dq2'
     fit = surfinBH.LoadFits(fit_name)
     mf, chif, vf, mf_err, chif_err, vf_err \
         = fit.all(q, chiA0, chiB0, omega0=omega0)
-    
+
     mA = q/(1.+q)
     mB = 1./(1.+q)
-    
+
     nr_sur = NRSur7dq2.NRSurrogate7dq2()
-    
+
     # get NRSur dynamics
     quat_nrsur, orbphase_nrsur, _, _ \
         = nr_sur.get_dynamics(q, chiA0, chiB0, omega_ref=omega0, \
         allow_extrapolation=True)
-    
+
     pts_per_orbit = 20
     t_binary = get_uniform_in_orbits_times(nr_sur.tds, orbphase_nrsur, \
         pts_per_orbit)
-    
+
     # interpolate dynamics on to t_binary
     quat_nrsur = np.array([spline_interp(t_binary, nr_sur.tds, tmp) \
         for tmp in quat_nrsur])
     orbphase_nrsur = spline_interp(t_binary, nr_sur.tds, orbphase_nrsur)
-    
+
     omega_nrsur = get_omegaOrb_from_sparse_data(t_binary, orbphase_nrsur)
-    
+
     h_nrsur, chiA_nrsur, chiB_nrsur = nr_sur(q, chiA0, chiB0, \
         f_ref=omega0/np.pi, return_spins=True, allow_extrapolation=True, LMax=2,
         t=t_binary)
-    
+
     #LHat = rotations.lHat_from_quat(quat_nrsur)
-    
+
     separation = get_separation_from_omega(omega_nrsur)
     BhA_traj = get_trajectory(separation * mB, quat_nrsur, orbphase_nrsur, 'A')
     BhB_traj = get_trajectory(separation * mA, quat_nrsur, orbphase_nrsur, 'B')
-    
-    
+
+
     # time array for remnant
     t_remnant = np.arange(0, 10000, 100)
-    
+
     # assume merger is at origin
     BhC_traj = np.array([tmp*t_remnant for tmp in vf])
-    
+
     # Attaching 3D axis to the figure
     fig = P.figure()
     ax = axes3d.Axes3D(fig)
-    
+
     # FIXME check that this makes sense
     markersize_BhA = mA*50
     markersize_BhB = mB*50
     markersize_BhC = mf*50
-    
+
     time_text = ax.text2D(0.05, 0.9, '', transform=ax.transAxes, fontsize=14)
-    
+    properties_text = ax.text2D(0.05, 0.7, '', transform=ax.transAxes, \
+        fontsize=10)
+
     # NOTE: Can't pass empty arrays into 3d version of plot()
     dataLines_binary = [BhA_traj, BhB_traj, BhA_traj, BhB_traj, 1, 1]
-    
+
+    marker_alpha = 0.9
+    traj_alpha = 0.8
     lines = [\
         # These two are for plotting component tracjectories
-        ax.plot(BhA_traj[0,0:1], BhA_traj[1,0:1], BhA_traj[2,0:1])[0], \
-        ax.plot(BhB_traj[0,0:1], BhB_traj[1,0:1], BhB_traj[2,0:1])[0], \
-    
+        ax.plot(BhA_traj[0,0:1]-1e10, BhA_traj[1,0:1], BhA_traj[2,0:1], \
+            color=colors_dict['BhA_traj'], lw=2, alpha=traj_alpha)[0], \
+        ax.plot(BhB_traj[0,0:1]-1e10, BhB_traj[1,0:1], BhB_traj[2,0:1], \
+            color=colors_dict['BhB_traj'], lw=2, alpha=traj_alpha)[0], \
+
         # These two are for plotting component BHs
-        ax.plot(BhA_traj[0,0:1], BhA_traj[1,0:1], BhA_traj[2,0:1], \
+        ax.plot(BhA_traj[0,0:1]-1e10, BhA_traj[1,0:1], BhA_traj[2,0:1], \
             marker='o', markersize=markersize_BhA, markerfacecolor='k', \
-            markeredgewidth=0)[0], \
-        ax.plot(BhB_traj[0,0:1], BhB_traj[1,0:1], BhB_traj[2,0:1], \
+            markeredgewidth=0, alpha=marker_alpha)[0], \
+        ax.plot(BhB_traj[0,0:1]-1e10, BhB_traj[1,0:1], BhB_traj[2,0:1], \
             marker='o', markersize=markersize_BhB, markerfacecolor='k',
-            markeredgewidth=0)[0], \
-    
-        # These two are plotting component BH spins
-        ax.quiver(0,0,0,1,1,1),
-        ax.quiver(0,0,0,1,1,1),
-    
+            markeredgewidth=0, alpha=marker_alpha)[0], \
+
+        # These two are for plotting component BH spins
+        ax.add_artist(Arrow3D(None, mutation_scale=20, lw=3, arrowstyle="-|>", \
+            color=colors_dict['BhA_spin'])), \
+        ax.add_artist(Arrow3D(None, mutation_scale=20, lw=3, arrowstyle="-|>", \
+            color=colors_dict['BhB_spin'])), \
+
         # This is for plotting remnant BH
         ax.plot(BhC_traj[0,0:1]-1e10, BhC_traj[1,0:1], BhC_traj[2,0:1], \
             marker='o', markersize=markersize_BhC, markerfacecolor='k', \
-            markeredgewidth=0)[0], \
+            markeredgewidth=0, alpha=marker_alpha)[0], \
         # This is for plotting remnant spin
-        ax.quiver(-1e10,0,0,-1e10,-1e10,-1e10),
+        ax.add_artist(Arrow3D(None, mutation_scale=20, lw=3, arrowstyle="-|>", \
+            color=colors_dict['BhC_spin'])), \
+
         ]
-    
+
     dataLines_remnant = [BhC_traj, 1]
-    
+
     max_range = np.nanmax(separation)
-    
+
     # Setting the axes properties
     ax.set_xlim3d([-max_range, max_range])
     ax.set_xlabel('X')
-    
+
     ax.set_ylim3d([-max_range, max_range])
     ax.set_ylabel('Y')
-    
+
     ax.set_zlim3d([-max_range, max_range])
     ax.set_zlabel('Z')
-    
+
     ax.set_title(fit_name, fontsize=16)
-    
+
     # Creating the Animation object
     hist_frames = 15
-    
-    
+
+
     zero_idx = np.argmin(np.abs(t_binary))
-    
+
     # common time array
     t = np.append(t_binary[:zero_idx], t_remnant)
-    
+
     line_ani = animation.FuncAnimation(fig, update_lines, len(t), \
         fargs=(lines, hist_frames, t, dataLines_binary, dataLines_remnant, \
-            time_text, BhA_traj, BhB_traj, BhC_traj, chiA_nrsur, chiB_nrsur, \
-            chif, zero_idx), \
+            time_text, properties_text, BhA_traj, BhB_traj, BhC_traj, \
+            q, chiA_nrsur, chiB_nrsur, mf, chif, vf, zero_idx), \
         interval=50, blit=False, repeat=True, repeat_delay=5e3)
-    
-    # Pause settings
-    def onClick(event):
-        global pause
-        if pause:
-            line_ani.event_source.start()
-            pause = False
-        else:
-            line_ani.event_source.stop()
-            pause = True
-    fig.canvas.mpl_connect('button_press_event', onClick)
-    P.show()
+
+    if return_fig:
+        return line_ani, fig
+    else:
+        return line_ani
+
 
 #############################    main    ##################################
 if __name__ == '__main__':
@@ -331,7 +382,20 @@ if __name__ == '__main__':
         help='Spin of BhA at omega0. Array of size 3.')
     parser.add_argument('--chiB0', type=float, required=True, nargs=3,
         help='Spin of BhB at omega0. Array of size 3.')
-    
+
     args = parser.parse_args()
-    BBH_scattering(args.q, np.array(args.chiA0), np.array(args.chiB0), \
-        args.omega0)
+    line_ani, fig = BBH_scattering(args.q, args.chiA0, args.chiB0, \
+        args.omega0, return_fig=True)
+
+    # Pause settings
+    pause = False
+    def onClick(event):
+        global pause
+        if pause:
+            line_ani.event_source.start()
+            pause = False
+        else:
+            line_ani.event_source.stop()
+            pause = True
+    fig.canvas.mpl_connect('button_press_event', onClick)
+    P.show()
