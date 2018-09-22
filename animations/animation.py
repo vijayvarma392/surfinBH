@@ -240,8 +240,8 @@ h_nrsur, chiA_nrsur, chiB_nrsur = nr_sur(q, chiA0, chiB0, \
 #LHat = rotations.lHat_from_quat(quat_nrsur)
 
 separation = get_separation_from_omega(omega_nrsur)
-BhA_traj = get_trajectory(separation, quat_nrsur, orbphase_nrsur, 'A')
-BhB_traj = get_trajectory(separation, quat_nrsur, orbphase_nrsur, 'B')
+BhA_traj = get_trajectory(separation * mB, quat_nrsur, orbphase_nrsur, 'A')
+BhB_traj = get_trajectory(separation * mA, quat_nrsur, orbphase_nrsur, 'B')
 
 
 # time array for remnant
