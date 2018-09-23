@@ -6,7 +6,7 @@
 
 # Welcome to surfinBH!
 
-<img src="https://raw.githubusercontent.com/vijayvarma392/surfinBH/master/images/point_break.jpeg" alt="Point Break" width="400px"/>
+<img src="images/point_break.jpeg" alt="Point Break" width="400px"/>
 
 
 <br/>
@@ -99,9 +99,9 @@ help(fit)
 
 We also provide ipython examples for usage of different fits:
 
-* [surfinBH3dq8](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_3dq8.ipynb)
+* [surfinBH3dq8](examples/example_3dq8.ipynb)
 
-* [surfinBH7dq2](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq2.ipynb)
+* [surfinBH7dq2](examples/example_7dq2.ipynb)
 
 ## Animations
 
@@ -116,7 +116,7 @@ Here's an example:
 
 ## Making contributions
 See this
-[README](https://github.com/vijayvarma392/surfinBH/blob/master/README_developers.md)
+[README](README_developers.md)
 for instructions on how to make contributions to this package.
 
 You can find the list of contributors
