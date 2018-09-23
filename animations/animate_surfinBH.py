@@ -25,6 +25,10 @@ from mpl_toolkits.mplot3d import proj3d
 import matplotlib.animation as animation
 from matplotlib.patches import FancyArrowPatch
 
+P.style.use('seaborn')
+
+
+
 
 colors_dict ={
         'BhA_traj': 'indianred',
@@ -43,9 +47,9 @@ class Arrow3D(FancyArrowPatch):
     def set_BH_spin_arrow(self, Bh_loc, chi_vec, scale_factor=10):
         x, y, z =  Bh_loc
         u, v, w =  chi_vec
-        xs = [x, x+u*scale_factor] 
-        ys = [y, y+v*scale_factor] 
-        zs = [z, z+w*scale_factor] 
+        xs = [x, x+u*scale_factor]
+        ys = [y, y+v*scale_factor]
+        zs = [z, z+w*scale_factor]
         self._verts3d = xs, ys, zs
 
     def reset(self):
@@ -170,7 +174,7 @@ def update_lines(num, lines, hist_frames, t, dataLines_binary, \
             line.reset()
 
         for idx in range(len(dataLines_binary)):
-            properties_text.set_text('q=%.1f\n' \
+            properties_text.set_text('$q=%.1f$\n' \
                 '$\chi_{A}=[%.2f, %.2f, %.2f]$\n' \
                 '$\chi_{B}=[%.2f, %.2f, %.2f]$\n'%(q, \
                 chiA_nrsur[num-1][0],chiA_nrsur[num-1][1],chiA_nrsur[num-1][2],\
@@ -292,9 +296,9 @@ def BBH_scattering(q, chiA0, chiB0, omega0, return_fig=False):
     markersize_BhB = mB*50
     markersize_BhC = mf*50
 
-    time_text = ax.text2D(0.05, 0.9, '', transform=ax.transAxes, fontsize=14)
-    properties_text = ax.text2D(0.05, 0.7, '', transform=ax.transAxes, \
-        fontsize=10)
+    time_text = ax.text2D(0.05, 0.075, '', transform=ax.transAxes, fontsize=14)
+    properties_text = ax.text2D(0.05, 0.82, '', transform=ax.transAxes, \
+        fontsize=12)
 
     # NOTE: Can't pass empty arrays into 3d version of plot()
     dataLines_binary = [BhA_traj, BhB_traj, BhA_traj, BhB_traj, 1, 1]
@@ -346,7 +350,36 @@ def BBH_scattering(q, chiA0, chiB0, omega0, return_fig=False):
     ax.set_zlim3d([-max_range, max_range])
     ax.set_zlabel('Z')
 
-    ax.set_title(fit_name, fontsize=16)
+    #ax.xaxis.pane.fill = False
+    #ax.yaxis.pane.fill = False
+    #ax.zaxis.pane.fill = False
+
+    #ax.grid(False)
+    ax.xaxis.pane.set_edgecolor('black')
+    ax.yaxis.pane.set_edgecolor('black')
+    ax.zaxis.pane.set_edgecolor('black')
+
+    ax.set_facecolor('white')
+
+    ax.xaxis._axinfo['tick']['inward_factor'] = 0
+    ax.yaxis._axinfo['tick']['inward_factor'] = 0
+    ax.zaxis._axinfo['tick']['inward_factor'] = 0
+
+    ax.xaxis._axinfo['tick']['outward_factor'] = 0.4
+    ax.yaxis._axinfo['tick']['outward_factor'] = 0.4
+    ax.zaxis._axinfo['tick']['outward_factor'] = 0.4
+
+    ax.tick_params(axis='x', which='major', pad=0)
+    ax.tick_params(axis='y', which='major', pad=0)
+    ax.tick_params(axis='z', which='major', pad=0)
+
+    ax.xaxis.labelpad = 0
+    ax.yaxis.labelpad = 0
+    ax.zaxis.labelpad = 0
+
+
+
+    ax.set_title(fit_name, fontsize=16, y=1.02)
 
     # Creating the Animation object
     hist_frames = 15
