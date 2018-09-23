@@ -5,7 +5,7 @@ Example usage:
 python animate_surfinBH.py --q 2 --omega0 1.8e-2 --chiA0 0.2 0.7 -0.1 --chiB0 0.2 0.6 0.1
 
 Note: Time values displayed in the plot are non-uniform and non-linear:
-During the inspiral there are 20 frames per orbit.
+During the inspiral there are 30 frames per orbit.
 After the merger each frame corresponds to a time step of 100M.
 """
 
@@ -27,9 +27,6 @@ from matplotlib.patches import FancyArrowPatch
 
 P.style.use('seaborn')
 
-
-
-
 colors_dict ={
         'BhA_traj': 'indianred',
         'BhB_traj': 'rebeccapurple',
@@ -44,7 +41,7 @@ class Arrow3D(FancyArrowPatch):
         FancyArrowPatch.__init__(self, (0,0), (0,0), *args, **kwargs)
         self._verts3d = vecs
 
-    def set_BH_spin_arrow(self, Bh_loc, chi_vec, scale_factor=10):
+    def set_BH_spin_arrow(self, Bh_loc, chi_vec, scale_factor=12):
         x, y, z =  Bh_loc
         u, v, w =  chi_vec
         xs = [x, x+u*scale_factor]
@@ -106,6 +103,7 @@ def get_trajectory(separation, quat_nrsur, orbphase_nrsur, bh_label):
     Bh_traj_copr = np.array([x_copr, y_copr, z_copr])
     Bh_traj = surfinBH._utils.transformTimeDependentVector(quat_nrsur, \
         Bh_traj_copr, inverse=0)
+
     return Bh_traj
 
 
@@ -259,7 +257,7 @@ def BBH_scattering(q, chiA0, chiB0, omega0, return_fig=False):
         = nr_sur.get_dynamics(q, chiA0, chiB0, omega_ref=omega0, \
         allow_extrapolation=True)
 
-    pts_per_orbit = 20
+    pts_per_orbit = 30
     t_binary = get_uniform_in_orbits_times(nr_sur.tds, orbphase_nrsur, \
         pts_per_orbit)
 
@@ -288,7 +286,7 @@ def BBH_scattering(q, chiA0, chiB0, omega0, return_fig=False):
     BhC_traj = np.array([tmp*t_remnant for tmp in vf])
 
     # Attaching 3D axis to the figure
-    fig = P.figure()
+    fig = P.figure(figsize=(5,4))
     ax = axes3d.Axes3D(fig)
 
     # FIXME check that this makes sense
@@ -296,9 +294,9 @@ def BBH_scattering(q, chiA0, chiB0, omega0, return_fig=False):
     markersize_BhB = mB*50
     markersize_BhC = mf*50
 
-    time_text = ax.text2D(0.05, 0.075, '', transform=ax.transAxes, fontsize=14)
-    properties_text = ax.text2D(0.05, 0.82, '', transform=ax.transAxes, \
-        fontsize=12)
+    time_text = ax.text2D(0.03, 0.05, '', transform=ax.transAxes, fontsize=12)
+    properties_text = ax.text2D(0.05, 0.8, '', transform=ax.transAxes, \
+        fontsize=10)
 
     # NOTE: Can't pass empty arrays into 3d version of plot()
     dataLines_binary = [BhA_traj, BhB_traj, BhA_traj, BhB_traj, 1, 1]
@@ -375,11 +373,11 @@ def BBH_scattering(q, chiA0, chiB0, omega0, return_fig=False):
 
     ax.xaxis.labelpad = 0
     ax.yaxis.labelpad = 0
-    ax.zaxis.labelpad = 0
+    ax.zaxis.labelpad = -1
 
 
 
-    ax.set_title(fit_name, fontsize=16, y=1.02)
+    ax.set_title('NRSur7dq2 + %s'%fit_name, fontsize=14, x=0.75, y=0.99)
 
     # Creating the Animation object
     hist_frames = 15
@@ -415,20 +413,48 @@ if __name__ == '__main__':
         help='Spin of BhA at omega0. Array of size 3.')
     parser.add_argument('--chiB0', type=float, required=True, nargs=3,
         help='Spin of BhB at omega0. Array of size 3.')
+    parser.add_argument('--save_file', type=str, default=None,
+        help='File (without extension) to save animation to. If given, will' \
+            ' save animation to this file. Else will show animation.')
+    parser.add_argument('--save_format', type=str, default='mp4',
+        help='Format for video file, mp4 or gif.')
 
     args = parser.parse_args()
     line_ani, fig = BBH_scattering(args.q, args.chiA0, args.chiB0, \
         args.omega0, return_fig=True)
 
-    # Pause settings
-    pause = False
-    def onClick(event):
-        global pause
-        if pause:
-            line_ani.event_source.start()
-            pause = False
+    if args.save_file is not None:
+        # Set up formatting for the movie files
+
+        if args.save_format == 'mp4':
+            # Might need: conda install -c conda-forge ffmpeg
+            Writer = animation.writers['ffmpeg']
+        elif args.save_format == 'gif':
+            # Might need: brew install imagemagick
+            Writer = animation.writers['imagemagick']
         else:
-            line_ani.event_source.stop()
-            pause = True
-    fig.canvas.mpl_connect('button_press_event', onClick)
-    P.show()
+            raise Exception('Invalid save_format')
+
+        metadata = {
+            'artist' : 'Vijay Varma',
+            'title' :'surfinBH animation',
+            'genre' : 'Physics',
+            'subject' : 'Animation of binary black hole scattering process.',
+            'copyright' : surfinBH.__copyright__,
+            }
+        writer = Writer(fps=15, metadata=metadata)
+        line_ani.save('%s.%s'%(args.save_file, args.save_format), writer=writer)
+
+    else:
+        # Pause settings
+        pause = False
+        def onClick(event):
+            global pause
+            if pause:
+                line_ani.event_source.start()
+                pause = False
+            else:
+                line_ani.event_source.stop()
+                pause = True
+        fig.canvas.mpl_connect('button_press_event', onClick)
+        P.show()
