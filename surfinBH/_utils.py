@@ -31,6 +31,12 @@ def alignVec_quat(vec):
                      cb*np.sin(0.5*(alpha + gamma))])
 
 #-----------------------------------------------------------------------------
+def lHat_from_quat(quat):
+    qInv = quatInv(quat)
+    return multiplyQuats(quat, multiplyQuats(
+                    np.array([0., 0., 0., 1.]), qInv))[1:]
+
+#-----------------------------------------------------------------------------
 def transformTimeDependentVector(quat, vec, inverse=0):
     """Given (for example) a minimal rotation frame quat, transforms
     vec from the minimal rotation frame to the inertial frame.
