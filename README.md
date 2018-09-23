@@ -108,6 +108,7 @@ We also provide ipython examples for usage of different fits:
 We also provide a tool to visualize the binary black hole scattering process.
 
 Here's an example:
+
 <img src="https://raw.githubusercontent.com/vijayvarma392/surfinBH_animation/master/animations/video.gif" width="500"/>
 
 
