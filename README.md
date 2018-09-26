@@ -17,7 +17,7 @@ properties for mergers of binary black holes (BBH).
 
 These fits are described in the following papers: <br/>
 [1] Vijay Varma, Davide Gerosa, François Hébert, Leo C. Stein and Hao Zhang,
-2018, in preparation.
+[arxiv:1809.09125](https://arxiv.org/abs/1809.09125).
 
 If you find this package useful in your work, please cite reference [1] and,
 if available, the relevant paper describing the particular model. Please also
@@ -81,7 +81,7 @@ surfinBH.fits_collection[fit_name].desc
 >>> 'Fits for remnant mass, spin and kick veclocity for generically precessing BBH systems.'
 
 surfinBH.fits_collection[fit_name].refs
->>> 'arxiv.2018.xxxx'
+>>> 'arxiv:1809.09125'
 ```
 
 ### Load the fit

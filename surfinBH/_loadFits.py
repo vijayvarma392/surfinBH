@@ -72,7 +72,7 @@ fits_collection['surfinBH3dq8'] = FitAttributes( \
     desc = 'Fits for remnant mass, spin and kick veclocity for nonprecessing'
         ' BBH systems.',
     data_url = 'https://zenodo.org/record/1421321/files/remnant_fits/fit_3dq8.h5',
-    refs = 'arxiv.2018.xxxx',
+    refs = 'arxiv:1809.09125',
     )
 
 fits_collection['surfinBH7dq2'] = FitAttributes( \
@@ -80,5 +80,5 @@ fits_collection['surfinBH7dq2'] = FitAttributes( \
     desc = 'Fits for remnant mass, spin and kick veclocity for genrically'
         ' precessing BBH systems.',
     data_url = 'https://zenodo.org/record/1421321/files/remnant_fits/fit_7dq2.h5',
-    refs = 'arxiv.2018.xxxx',
+    refs = 'arxiv:1809.09125',
     )
