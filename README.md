@@ -107,11 +107,10 @@ We also provide ipython examples for usage of different fits:
 
 We also provide a tool to visualize the binary black hole scattering process,
 see 
-[black_hole_scattering](https://github.com/vijayvarma392/black_hole_scattering).
-
+[binary black hole explorer](https://vijayvarma392.github.io/binaryBHexp/).
 Here's an example:
 
-<img src="https://raw.githubusercontent.com/vijayvarma392/black_hole_scattering/master/animations/video.gif" width="500"/>
+<img src="https://raw.githubusercontent.com/vijayvarma392/binaryBHexp/master/animations/video.gif" width="500"/>
 
 
 ## Making contributions
