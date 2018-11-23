@@ -6,10 +6,8 @@
 
 # Welcome to surfinBH!
 
-<img src="https://raw.githubusercontent.com/vijayvarma392/surfinBH/master/images/point_break.jpeg" alt="Point Break" width="400px"/>
+<img src="https://raw.githubusercontent.com/vijayvarma392/surfinBH/master/images/interaction.jpeg" alt="BHScattering" width="600px"/>
 
-
-<br/>
 <br/>
 
 _**surfinBH**_ provides _**sur**rogate **fin**al **B**lack_ _**H**ole_
