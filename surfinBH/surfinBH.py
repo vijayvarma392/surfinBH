@@ -171,32 +171,32 @@ See _fit_evaluators.fit_7dq2.py for an example.
 
         chiAmag = np.sqrt(np.sum(chiA**2))
         chiBmag = np.sqrt(np.sum(chiB**2))
-        if chiAmag > 1:
+        if chiAmag > 1 + 1e-14:
             raise ValueError('Spin magnitude of BhA > 1.')
-        if chiBmag > 1:
+        if chiBmag > 1 + 1e-14:
             raise ValueError('Spin magnitude of BhB > 1.')
 
         if self.aligned_spin_only:
-            if np.sqrt(np.sum(chiA[:2]**2)) > 1e-10:
+            if np.sqrt(np.sum(chiA[:2]**2)) > 1e-14:
                 raise ValueError('The x & y components of chiA should be zero.')
-            if np.sqrt(np.sum(chiB[:2]**2)) > 1e-10:
+            if np.sqrt(np.sum(chiB[:2]**2)) > 1e-14:
                 raise ValueError('The x & y components of chiB should be zero.')
 
         # Do not check param limits if allow_extrap=True
         if allow_extrap:
             return
 
-        if q > self.hard_param_lims['q']:
+        if q > self.hard_param_lims['q']+ 1e-14:
             raise ValueError('Mass ratio outside allowed range.')
         elif q > self.soft_param_lims['q']:
             warnings.warn('Mass ratio outside training range.')
 
-        if chiAmag > self.hard_param_lims['chiAmag']:
+        if chiAmag > self.hard_param_lims['chiAmag']+ 1e-14:
             raise ValueError('Spin magnitude of BhA outside allowed range.')
         elif chiAmag > self.soft_param_lims['chiAmag']:
             warnings.warn('Spin magnitude of BhA outside training range.')
 
-        if chiBmag > self.hard_param_lims['chiBmag']:
+        if chiBmag > self.hard_param_lims['chiBmag']+ 1e-14:
             raise ValueError('Spin magnitude of BhB outside allowed range.')
         elif chiBmag > self.soft_param_lims['chiBmag']:
             warnings.warn('Spin magnitude of BhB outside training range.')
