@@ -214,8 +214,8 @@ See _fit_evaluators.fit_7dq2.py for an example.
             chiAth, chiBth = np.random.choice([0, np.pi]), \
                 np.random.choice([0, np.pi])
         else:
-            chiAth = np.random.uniform(0, np.pi)
-            chiBth = np.random.uniform(0, np.pi)
+            chiAth = np.arccos(np.random.uniform(-1., 1.))
+            chiBth = np.arccos(np.random.uniform(-1., 1.))
             chiAph = np.random.uniform(0, 2*np.pi)
             chiBph = np.random.uniform(0, 2*np.pi)
 
