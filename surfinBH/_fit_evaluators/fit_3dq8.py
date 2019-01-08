@@ -4,11 +4,12 @@ import warnings
 
 #=============================================================================
 class Fit3dq8(surfinBH.SurFinBH):
-    """ A class for the surfinBH3dq8 model presented in Varma et al., 2018,
-    in prep. This model predicts the final mass mf, final spin chif and final
-    kick velocity vf, for the remnants of nonprecessing binary black hole
-    systems. The fits are done using Gaussian Process Regression (GPR) and
-    also provide an error estimate along with the fit value.
+    """ A class for the surfinBH3dq8 model presented in Varma et al.,
+    arxiv:1809.09125. This model predicts the final mass mf, final
+    spin chif and final kick velocity vf, for the remnants of nonprecessing
+    binary black hole systems. The fits are done using Gaussian Process
+    Regression (GPR) and also provide an error estimate along with the fit
+    value.
 
     This model has been trained in the parameter space:
         q <= 8, |chiAz| <= 0.8, |chiBz| <= 0.8

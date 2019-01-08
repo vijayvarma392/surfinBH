@@ -6,11 +6,12 @@ import warnings
 
 #=============================================================================
 class Fit7dq2(surfinBH.SurFinBH):
-    """ A class for the surfinBH7dq2 model presented in Varma et al., 2018,
-    in prep. This model predicts the final mass mf, final spin vector chif and
-    final kick velocity vector vf, for the remnants of precessing binary
-    black hole systems.  The fits are done using Gaussian Process Regression
-    (GPR) and also provide an error estimate along with the fit value.
+    """ A class for the surfinBH7dq2 model presented in Varma et al.,
+    arxiv:1809.09125. This model predicts the final mass mf, final spin vector
+    chif and final kick velocity vector vf, for the remnants of precessing
+    binary black hole systems.  The fits are done using Gaussian Process
+    Regression (GPR) and also provide an error estimate along with the fit
+    value.
 
     This model has been trained in the parameter space:
         q <= 2, |chiA| <= 0.8, |chiB| <= 0.8
