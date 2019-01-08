@@ -14,7 +14,7 @@ _**surfinBH**_ provides _**sur**rogate **fin**al **B**lack_ _**H**ole_
 properties for mergers of binary black holes (BBH).
 
 These fits are described in the following papers: <br/>
-[1] Vijay Varma, Davide Gerosa, François Hébert, Leo C. Stein and Hao Zhang,
+[1] Vijay Varma, Davide Gerosa, Leo C. Stein, François Hébert and Hao Zhang,
 [arxiv:1809.09125](https://arxiv.org/abs/1809.09125).
 
 If you find this package useful in your work, please cite reference [1] and,
