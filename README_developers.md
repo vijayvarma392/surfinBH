@@ -39,3 +39,11 @@ You need to do the following to add this fit to this package:
 
 Note: Do not push the fit data itself, but push the regression data generated
 in `test/regression_data/`.
+
+## PyPI release
+Note: This is currently under Vijay's account, so only he can do this.
+Make sure the fit data for all fits is in surfinBH/data before doing this.
+```shell
+python setup.py sdist bdist_wheel
+twine upload dist/*
+```

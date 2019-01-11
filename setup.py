@@ -1,5 +1,6 @@
 '''
 Standard setup.py to upload the code on pypi.
+Make sure the fit data for all fits is in surfinBH/data before doing this.
 Do:
     python setup.py sdist bdist_wheel
     twine upload dist/*
