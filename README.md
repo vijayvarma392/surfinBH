@@ -104,7 +104,7 @@ We also provide ipython examples for usage of different fits:
 ## Animations
 
 We also provide a tool to visualize the binary black hole scattering process,
-see 
+see
 [binary black hole explorer](https://vijayvarma392.github.io/binaryBHexp/).
 Here's an example:
 
@@ -121,5 +121,6 @@ You can find the list of contributors
 
 
 ## Credits
-The code is developed and maintained by [Vijay Varma](http://www.tapir.caltech.edu/~vvarma/). Please, report bugs to
-[&#118;&#118;&#097;&#114;&#109;&#097;&#064;&#099;&#097;&#108;&#116;&#101;&#099;&#104;&#046;&#101;&#100;&#117;](mailto:&#118;&#118;&#097;&#114;&#109;&#097;&#064;&#099;&#097;&#108;&#116;&#101;&#099;&#104;&#046;&#101;&#100;&#117;).
+The code is developed and maintained by [Vijay
+Varma](http://www.tapir.caltech.edu/~vvarma/). Please report bugs by raising an
+issue on our [GitHub](https://github.com/vijayvarma392/surfinBH) repository.
