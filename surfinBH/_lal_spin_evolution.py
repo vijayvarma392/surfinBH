@@ -67,6 +67,9 @@ def lal_spin_evloution_wrapper(approximant, q, omega0, chiA0, chiB0,
     # twice PN order of tidal effects
     tideO = 0
 
+    # include some L-S terms
+    lscorr = 1
+
     ### This function evolves the orbital equations for a precessing binary
     ### using the "TaylorT1/T2/T4" approximant for solving the orbital dynamics
     ### (see arXiv:0907.0700 for a review of the various PN approximants).
@@ -133,12 +136,13 @@ def lal_spin_evloution_wrapper(approximant, q, omega0, chiA0, chiB0,
     ### spinO,        twice PN order of spin effects
     ### tideO,        twice PN order of tidal effects
     ### phaseO,       twice post-Newtonian order
+    ### lscorr,       Flag to include L-S correction terms
     ### approx        PN approximant (SpinTaylorT1/T2/T4)
     V, Phi, S1x, S1y, S1z, S2x, S2y, S2z, LNhatx, LNhaty, LNhatz, \
         E1x, E1y, E1z = lalsim.SimInspiralSpinTaylorPNEvolveOrbit(deltaT, \
         m1_SI, m2_SI, fStart, fEnd, s1x, s1y, s1z, s2x, s2y, s2z, \
         lnhatx, lnhaty, lnhatz, e1x, e1y, e1z, lambda1, lambda2, \
-        quadparam1, quadparam2, spinO, tideO, phaseO, approxTag)
+        quadparam1, quadparam2, spinO, tideO, phaseO, lscorr, approxTag)
 
     V = np.array(V.data.data)
     Phi = np.array(Phi.data.data)
