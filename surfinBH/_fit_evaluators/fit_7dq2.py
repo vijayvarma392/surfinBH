@@ -215,11 +215,7 @@ class Fit7dq2(surfinBH.SurFinBH):
         chiHat = (chi_wtAvg - 38.*eta/113.*(chiAz + chiBz))/(1. - 76.*eta/113.)
         chi_a = (chiAz - chiBz)/2.
 
-        fit_params = x
-        fit_params[0] = np.log(q)
-        fit_params[3] = chiHat
-        fit_params[6] = chi_a
-
+        fit_params = [np.log(q), x[1], x[2], chiHat, x[4], x[5], chi_a]
         return fit_params
 
     #-------------------------------------------------------------------------
@@ -337,10 +333,11 @@ class Fit7dq2(surfinBH.SurFinBH):
             if omega0 is not None:
                 # If spins were given in inertial frame at omega0,
                 # transform vectors and errors back to the same frame.
+                # This model assumes phi_ref is zero
                 fit_val = utils.transform_vector_coorb_to_inertial(fit_val,
-                    orbphase_fitnode, quat_fitnode)
+                    orbphase_fitnode, quat_fitnode, 0)
                 fit_err = utils.transform_error_coorb_to_inertial(fit_val,
-                    fit_err, orbphase_fitnode, quat_fitnode)
+                    fit_err, orbphase_fitnode, quat_fitnode, 0)
             return fit_val, fit_err
 
 

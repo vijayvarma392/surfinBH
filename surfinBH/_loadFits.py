@@ -32,7 +32,14 @@ def LoadFits(name):
         testPath = DataPath() + '/' + fits_collection[name].data_url.split('/')[-1]
         if (not os.path.isfile(testPath)):
             DownloadData(name)
-        fit = fits_collection[name].fit_class(name.split('surfinBH')[-1])
+
+        # allow for both naming formats surfinBH7dq2 and NRSur7dq4Remnant
+        if 'surfinBH' in name:
+            name_tag = name.split('surfinBH')[-1]
+        else:
+            name_tag = name.split('NRSur')[-1].split('Remnant')[0]
+
+        fit = fits_collection[name].fit_class(name_tag)
         print('Loaded %s fit.'%name)
         return fit
 
@@ -77,8 +84,17 @@ fits_collection['surfinBH3dq8'] = FitAttributes( \
 
 fits_collection['surfinBH7dq2'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit7dq2,
-    desc = 'Fits for remnant mass, spin and kick veclocity for genrically'
+    desc = 'Fits for remnant mass, spin and kick veclocity for generically'
         ' precessing BBH systems.',
     data_url = 'https://zenodo.org/record/1435751/files/remnant_fits/fit_7dq2.h5',
     refs = 'arxiv:1809.09125',
+    )
+
+
+fits_collection['NRSur7dq4Remnant'] = FitAttributes( \
+    fit_class = _fit_evaluators.Fit7dq4,
+    desc = 'Fits for remnant mass, spin and kick veclocity for generically'
+        ' precessing BBH systems up to mass ratio 4.',
+    data_url = 'https://zenodo.org/record/1435751/files/remnant_fits/fit_7dq4.h5',
+    refs = 'arxiv:1905.09300',
     )
