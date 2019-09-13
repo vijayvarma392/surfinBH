@@ -14,8 +14,12 @@ _**surfinBH**_ provides _**sur**rogate **fin**al **B**lack_ _**H**ole_
 properties for mergers of binary black holes (BBH).
 
 These fits are described in the following papers: <br/>
-[1] Vijay Varma, Davide Gerosa, Leo C. Stein, François Hébert and Hao Zhang,
+[1] Vijay Varma, D. Gerosa, L. C. Stein, F. Hébert and H. Zhang,
 [arxiv:1809.09125](https://arxiv.org/abs/1809.09125).
+
+[2] Vijay Varma, S. E. Field, M. A. Scheel, J. Blackman, D. Gerosa, L. C.
+Stein, L. E. Kidder, H. P. Pfeiffer,
+[arxiv:1905.09300](https://arxiv.org/abs/1905.09300).
 
 If you find this package useful in your work, please cite reference [1] and,
 if available, the relevant paper describing the particular model. Please also
@@ -57,7 +61,8 @@ All of these can be installed through pip or conda.
 * [h5py](http://docs.h5py.org/en/latest/build.html)
 * [scikit-learn](http://scikit-learn.org/stable/install.html) (at least 0.19.1)
 * [lalsuite](https://pypi.org/project/lalsuite)
-* [NRSur7dq2](https://pypi.org/project/NRSur7dq2) (at least 1.0.5)
+* [gwsurrogate](https://pypi.org/project/gwsurrogate)
+* [NRSur7dq2](https://pypi.org/project/NRSur7dq2) (only for surfinBH7dq2)
 
 ## Usage
 
@@ -68,25 +73,27 @@ import surfinBH
 ### See list of available fits
 ```python
 print(surfinBH.fits_collection.keys())
->>> ['surfinBH3dq8', 'surfinBH7dq2']
+>>> ['surfinBH3dq8', 'NRSur7dq4Remnant', 'surfinBH7dq2']
 ```
 
 Pick your favorite fit and get some basic information about it.
 ```python
-fit_name = 'surfinBH7dq2'
+fit_name = 'NRSur7dq4Remnant'
 
 surfinBH.fits_collection[fit_name].desc
->>> 'Fits for remnant mass, spin and kick veclocity for generically precessing BBH systems.'
+>>> 'Fits for remnant mass, spin and kick veclocity for generically precessing
+BBH systems up to mass ratio 4.'
 
 surfinBH.fits_collection[fit_name].refs
->>> 'arxiv:1809.09125'
+>>> 'arxiv:1905.09300'
 ```
 
 ### Load the fit
 This only needs to be done **once** at the start of your script.
+If the fit data is not already downloaded, this will also download the data.
 ```python
 fit = surfinBH.LoadFits(fit_name)
->>> Loaded surfinBH7dq2 fit.
+>>> Loaded NRSur7dq4Remnant fit.
 ```
 ### Evaluation
 The evaluation of each fit is different, so be sure to read the documentation.
@@ -97,9 +104,15 @@ help(fit)
 
 We also provide ipython examples for usage of different fits:
 
+#### Current fits
+
+* [NRSur7dq4Remnant](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq4.ipynb)
+
 * [surfinBH3dq8](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_3dq8.ipynb)
 
-* [surfinBH7dq2](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq2.ipynb)
+#### Older fits
+
+* [surfinBH7dq2](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq2.ipynb) (Superseded by NRSur7dq4Remnant)
 
 ## Animations
 
