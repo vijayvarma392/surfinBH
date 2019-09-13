@@ -63,8 +63,6 @@ def test_interface():
     # List of all available fits
     fit_names = surfinBH.fits_collection.keys()
     for name in fit_names:
-        short_name = name.split('surfinBH')[-1]
-
         # Load fit
         fit = surfinBH.LoadFits(name)
 

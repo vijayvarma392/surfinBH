@@ -110,7 +110,7 @@ class Fit7dq4(surfinBH.SurFinBH):
 
         PN_approximant:
             Approximant used to do the PN spin evolution. Choose from
-            'SpinTaylorT4', 'SpinTaylorT1' or 'SpinTaylorT2'.
+            'SpinTaylorT4', 'SpinTaylorT1' or 'SpinTaylorT5'.
             Default: 'SpinTaylorT4'.
 
         PN_dt:
@@ -207,9 +207,6 @@ class Fit7dq4(surfinBH.SurFinBH):
         """ List of additional kwargs to use in regression tests.
         """
 
-        # larger than default sometimes needed when extrapolating
-        omega_switch_test = 0.019
-
         extra_args = []
         extra_args.append({
             'omega0': 5e-3,
@@ -217,7 +214,6 @@ class Fit7dq4(surfinBH.SurFinBH):
             'PN_dt': 0.1,
             'PN_spin_order': 7,
             'PN_phase_order': 7,
-            'omega_switch': omega_switch_test,
             })
 
 
@@ -227,16 +223,14 @@ class Fit7dq4(surfinBH.SurFinBH):
             'PN_dt': 0.5,
             'PN_spin_order': 5,
             'PN_phase_order': 7,
-            'omega_switch': omega_switch_test,
             })
 
         extra_args.append({
             'omega0': 7e-3,
-            'PN_approximant': 'SpinTaylorT2',
+            'PN_approximant': 'SpinTaylorT5',
             'PN_dt': 1,
             'PN_spin_order': 7,
             'PN_phase_order': 5,
-            'omega_switch': omega_switch_test,
             })
 
         # These should be pure NRSur7dq4
