@@ -4,8 +4,10 @@ import warnings
 
 #=============================================================================
 class Fit3dq8(surfinBH.SurFinBH):
-    """ A class for the surfinBH3dq8 model presented in Varma et al.,
-    arxiv:1809.09125. This model predicts the final mass mf, final
+    """ A class for the NRSur3dq8Remnant model presented in Varma et al.,
+    arxiv:1809.09125. This model is referred to as surfinBH3dq8 in the paper.
+    
+    This model predicts the final mass mf, final
     spin chif and final kick velocity vf, for the remnants of nonprecessing
     binary black hole systems. The fits are done using Gaussian Process
     Regression (GPR) and also provide an error estimate along with the fit
@@ -23,7 +25,7 @@ class Fit3dq8(surfinBH.SurFinBH):
     import surfinBH
 
     # Load the fit
-    fit = surfinBH.LoadFits('surfinBH3dq8')
+    fit = surfinBH.LoadFits('NRSur3dq8Remnant')
 
     We provide the following call methods:
         # remnant mass and 1-sigma error estimate
@@ -110,7 +112,7 @@ class Fit3dq8(surfinBH.SurFinBH):
 
     #-------------------------------------------------------------------------
     def _eval_wrapper(self, fit_key, q, chiA, chiB, **kwargs):
-        """ Evaluates the surfinBH3dq8 model.
+        """ Evaluates the NRSur3dq8Remnant model.
         """
         chiA = np.array(chiA)
         chiB = np.array(chiB)
