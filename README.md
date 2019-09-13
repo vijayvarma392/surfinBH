@@ -73,7 +73,7 @@ import surfinBH
 ### See list of available fits
 ```python
 print(surfinBH.fits_collection.keys())
->>> ['surfinBH3dq8', 'NRSur7dq4Remnant', 'surfinBH7dq2']
+>>> ['NRSur3dq8Remnant', 'NRSur7dq4Remnant', 'surfinBH7dq2']
 ```
 
 Pick your favorite fit and get some basic information about it.
@@ -104,15 +104,15 @@ help(fit)
 
 We also provide ipython examples for usage of different fits:
 
-#### Current fits
+##### Current fits
 
-* [NRSur7dq4Remnant](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq4.ipynb)
+* [NRSur7dq4Remnant](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq4.ipynb) (Ref. [2])
 
-* [surfinBH3dq8](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_3dq8.ipynb)
+* [NRSur3dq8Remnant](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_3dq8.ipynb) (called surfinBH3dq8 in Ref. [1])
 
-#### Older fits
+##### Older fits
 
-* [surfinBH7dq2](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq2.ipynb) (Superseded by NRSur7dq4Remnant)
+* [surfinBH7dq2](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq2.ipynb) (Ref. [1]. Superseded by NRSur7dq4Remnant)
 
 ## Animations
 

@@ -74,10 +74,10 @@ def DownloadData(name='all', data_dir=DataPath()):
 #### Add fits here, each name should start with surfinBH.
 fits_collection = {}
 
-fits_collection['surfinBH3dq8'] = FitAttributes( \
+fits_collection['NRSur3dq8Remnant'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit3dq8,
     desc = 'Fits for remnant mass, spin and kick veclocity for nonprecessing'
-        ' BBH systems.',
+        ' BBH systems. This model was called surfinBH3dq8 in the paper.',
     data_url = 'https://zenodo.org/record/1435751/files/remnant_fits/fit_3dq8.h5',
     refs = 'arxiv:1809.09125',
     )
