@@ -35,7 +35,6 @@ setuptools.setup(
         'scikit-learn>=0.19.1',
         'lalsuite',
         'gwsurrogate',
-        'NRSur7dq2>=1.0.5',
     ],
     classifiers=[
         "Intended Audience :: Science/Research",
