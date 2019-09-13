@@ -29,7 +29,7 @@ setuptools.setup(
     url="https://github.com/vijayvarma392/surfinBH",
     packages=setuptools.find_packages(),
     package_data={'surfinBH':['data/*']},
-    include_package_data=True,
+    include_package_data=False,
     install_requires=[
         'numpy',
         'scipy',
