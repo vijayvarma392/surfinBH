@@ -42,7 +42,6 @@ in `test/regression_data/`.
 
 ## PyPI release
 Note: This is currently under Vijay's account, so only he can do this.
-Make sure the fit data for all fits is in surfinBH/data before doing this.
 ```shell
 python setup.py sdist bdist_wheel
 twine upload dist/*
