@@ -33,7 +33,7 @@ setuptools.setup(
         'scipy',
         'h5py',
         'scikit-learn>=0.19.1',
-        'lalsuite',
+        'lalsuite==6.62.1.dev20190912',
         'gwsurrogate',
     ],
     classifiers=[
