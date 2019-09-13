@@ -81,8 +81,7 @@ Pick your favorite fit and get some basic information about it.
 fit_name = 'NRSur7dq4Remnant'
 
 surfinBH.fits_collection[fit_name].desc
->>> 'Fits for remnant mass, spin and kick veclocity for generically precessing
-BBH systems up to mass ratio 4.'
+>>> 'Fits for remnant mass, spin and kick veclocity for generically precessing BBH systems up to mass ratio 4.'
 
 surfinBH.fits_collection[fit_name].refs
 >>> 'arxiv:1905.09300'
