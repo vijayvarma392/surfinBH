@@ -94,7 +94,7 @@ class Fit7dq2(surfinBH.SurFinBH):
 
         PN_approximant:
             Approximant used to do the PN spin evolution. Choose from
-            'SpinTaylorT4', 'SpinTaylorT1' or 'SpinTaylorT2'.
+            'SpinTaylorT4', 'SpinTaylorT1' or 'SpinTaylorT5'.
             Default: 'SpinTaylorT4'.
 
         PN_dt:
@@ -185,7 +185,7 @@ class Fit7dq2(surfinBH.SurFinBH):
 
         extra_args.append({
             'omega0': 7e-3,
-            'PN_approximant': 'SpinTaylorT2',
+            'PN_approximant': 'SpinTaylorT5',
             'PN_dt': 1,
             'PN_spin_order': 7,
             'PN_phase_order': 5,

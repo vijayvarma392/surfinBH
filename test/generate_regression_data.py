@@ -39,15 +39,20 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate regression data for'
             ' fits.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--name", "-n", type=str, required=True, \
-            help="Fit name without the surfinBH prefix. Eg. 7dq2.")
+            help="Fit name. Eg. NRSur7dq4Remnant or surfin7dq2.")
     args = parser.parse_args()
 
+    # allow for both naming formats surfinBH7dq2 and NRSur7dq4Remnant
+    if 'surfinBH' in args.name:
+        name_tag = args.name.split('surfinBH')[-1]
+    else:
+        name_tag = args.name.split('NRSur')[-1].split('Remnant')[0]
+
     # If it gets overwritten, we always have git
-    h5file = h5py.File('test/regression_data/fit_%s.h5'%args.name, 'w')
+    h5file = h5py.File('test/regression_data/fit_%s.h5'%name_tag, 'w')
 
     # Load fit, assuming fit data is already present in surfinBH_data
-    fit_name = 'surfinBH%s'%args.name
-    fit = surfinBH.LoadFits(fit_name)
+    fit = surfinBH.LoadFits(args.name)
 
     # number of test evaluations per fit
     num_tests = 10

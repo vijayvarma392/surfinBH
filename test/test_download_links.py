@@ -19,11 +19,16 @@ def test_download_links():
     for name in fit_names:
         surfinBH.DownloadData(name=name, data_dir=out_dir)
 
-        short_name = name.split('surfinBH')[-1]
+        # allow for both naming formats surfinBH7dq2 and NRSur7dq4Remnant
+        if 'surfinBH' in name:
+            name_tag = name.split('surfinBH')[-1]
+        else:
+            name_tag = name.split('NRSur')[-1].split('Remnant')[0]
+
         # check that it has the right name
-        assert(os.path.isfile('%s/fit_%s.h5'%(out_dir, short_name)))
+        assert(os.path.isfile('%s/fit_%s.h5'%(out_dir, name_tag)))
         # check that the fit_name matches with the name in the attributes
         # of h5 file.
-        h5file = h5py.File('%s/fit_%s.h5'%(out_dir, short_name))
-        assert(short_name == h5file.attrs['name'].decode('utf-8'))
+        h5file = h5py.File('%s/fit_%s.h5'%(out_dir, name_tag))
+        assert(name_tag == h5file.attrs['name'].decode('utf-8'))
         h5file.close()

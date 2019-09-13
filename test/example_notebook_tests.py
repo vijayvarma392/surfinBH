@@ -18,8 +18,13 @@ def test_example_notebooks():
     fit_names = surfinBH.fits_collection.keys()
 
     for name in fit_names:
-        short_name = name.split('surfinBH')[-1]
-        notebook_filename = 'examples/example_%s.ipynb'%short_name
+        # allow for both naming formats surfinBH7dq2 and NRSur7dq4Remnant
+        if 'surfinBH' in name:
+            name_tag = name.split('surfinBH')[-1]
+        else:
+            name_tag = name.split('NRSur')[-1].split('Remnant')[0]
+
+        notebook_filename = 'examples/example_%s.ipynb'%name_tag
         print('testing %s'%notebook_filename)
 
         with open(notebook_filename) as f:

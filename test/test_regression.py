@@ -26,14 +26,19 @@ def test_fit_regression():
     # List of all available fits
     fit_names = surfinBH.fits_collection.keys()
     for name in fit_names:
-        short_name = name.split('surfinBH')[-1]
+
+        # allow for both naming formats surfinBH7dq2 and NRSur7dq4Remnant
+        if 'surfinBH' in name:
+            name_tag = name.split('surfinBH')[-1]
+        else:
+            name_tag = name.split('NRSur')[-1].split('Remnant')[0]
 
         # Load fit
         fit = surfinBH.LoadFits(name)
 
         # Load regression data
         regression_h5file = h5py.File('test/regression_data/fit_%s.h5'%(
-                short_name))
+                name_tag))
 
         extra_kwargs_list = fit._extra_regression_kwargs()
 
