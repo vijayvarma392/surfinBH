@@ -95,6 +95,6 @@ fits_collection['NRSur7dq4Remnant'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit7dq4,
     desc = 'Fits for remnant mass, spin and kick veclocity for generically'
         ' precessing BBH systems up to mass ratio 4.',
-    data_url = 'http://www.tapir.caltech.edu/~vvarma/fit_7dq4.h5',
+    data_url = 'https://zenodo.org/record/3455886/files/remnant_fits/fit_7dq4.h5',
     refs = 'arxiv:1905.09300',
     )
