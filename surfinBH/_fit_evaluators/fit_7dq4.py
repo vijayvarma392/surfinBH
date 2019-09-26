@@ -136,8 +136,8 @@ class Fit7dq4(surfinBH.SurFinBH):
             switch will be made from PN to NRSur7dq4. This should be large
             enough to work for generic parts of the surrogate parameter space.
             You may need to increase this if the NRSur7dq4 model raises an
-            exception like: "Got omega_ref=0.02 < 0.018=omega_0, too small!"
-            Default: 0.02
+            exception like: "Got omega_ref=0.03 < 0.031=omega_0, too small!"
+            Default: 0.03
 
             How t_sur_switch and omega_switch_IG work: The PN data is first
             generated starting at omega0, then the PN spins at omega_switch_IG
@@ -387,8 +387,8 @@ class Fit7dq4(surfinBH.SurFinBH):
         PN_spin_order = kwargs.pop('PN_spin_order', 7)
         PN_phase_order = kwargs.pop('PN_phase_order', 7)
         # Initial guess for surrogate omega0, this should be large enough for
-        # all q=4 cases
-        omega_switch_IG = kwargs.pop('omega_switch_IG', 0.02)
+        # all q=6 cases
+        omega_switch_IG = kwargs.pop('omega_switch_IG', 0.03)
         # The surrogate begins at -4300, use -4100 to be safe
         t_sur_switch = kwargs.pop('t_sur_switch', -4100)
         self._check_unused_kwargs(kwargs)
