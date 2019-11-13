@@ -181,7 +181,6 @@ class Fit7dq4(surfinBH.SurFinBH):
 
     #-------------------------------------------------------------------------
     def _load_NRSur7dq4(self):
-        sys.path.append('/Users/vijay/src/gwsurrogate')
         import gwsurrogate
         from gwsurrogate.new.precessing_surrogate import splinterp_many
         self.nrsur = gwsurrogate.LoadSurrogate('NRSur7dq4')
