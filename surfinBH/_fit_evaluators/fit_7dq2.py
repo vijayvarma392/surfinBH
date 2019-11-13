@@ -333,11 +333,10 @@ class Fit7dq2(surfinBH.SurFinBH):
             if omega0 is not None:
                 # If spins were given in inertial frame at omega0,
                 # transform vectors and errors back to the same frame.
-                # This model assumes phi_ref is zero
                 fit_val = utils.transform_vector_coorb_to_inertial(fit_val,
-                    orbphase_fitnode, quat_fitnode, 0)
+                    orbphase_fitnode, quat_fitnode)
                 fit_err = utils.transform_error_coorb_to_inertial(fit_val,
-                    fit_err, orbphase_fitnode, quat_fitnode, 0)
+                    fit_err, orbphase_fitnode, quat_fitnode)
             return fit_val, fit_err
 
 

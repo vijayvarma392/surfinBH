@@ -84,12 +84,6 @@ class Fit7dq4(surfinBH.SurFinBH):
                 See THE PAPER for how the orbital frequency is
                 computed as well as the definition of the coprecessing frame.
 
-
-        phi_ref: The angle on the plane of the orbit from the line of ascending
-                nodes to the position of the body 1 at reference epoch. Can
-                also be thought of as the orbital phase at reference epoch.
-                Default: 0.
-
         allow_extrap:
             If False, raises a warning when q > 4.1 or |chiA|,|chiB| > 0.81,
                 and raises an error when q > 6.1 or |chiA|,|chiB| > 1.
@@ -99,7 +93,7 @@ class Fit7dq4(surfinBH.SurFinBH):
 
     Optional PN evolution arguments:
 
-        If the omega0 option is used, the spins need to evolved from omega0
+        If the omega0 option is used, the spins need to be evolved from omega0
         until t=-100M, where the fits will be evaluated. For the late inspiral
         part, we use the internal spin evolution of NRSur7dq4 (also described
         in THE PAPER), which is very accurate. However, this surrogate is not
@@ -151,17 +145,17 @@ class Fit7dq4(surfinBH.SurFinBH):
 
     Inertial frame for returned values:
 
-        The returned chif and vf are in the inertial frame defined as follows:
-        The +ve z-axis is along the orbital angular momentum at the reference
-        epoch. The orbital phase at the reference epoch is phi_ref. This means
-        that the separation vector from the lighter BH to the heavier BH is at
-        an azimuthal angle phi_ref from the +ve x-axis, in the orbital plane at
-        the reference epoch. The y-axis completes the right-handed triad.
-        Note that the default reference epoch corresponds to t=-100M, but
-        if omega0 is given the reference epoch is taken to be the time that
-        the orbital frequency in the coprecessing frame is equal to omega0.
-        This agrees with the LAL convention. See LIGO DCC document T1800226 for
-        the LAL frame diagram.
+        The returned chif/vf are in the LAL inertial frame defined as follows:
+            The +ve z-axis is along the orbital angular momentum at the
+            reference epoch. The separation vector from the lighter BH to the
+            heavier BH at the reference epoch is along the +ve x-axis. The
+            y-axis completes the right-handed triad.
+
+            Note that the default reference epoch corresponds to t=-100M, but
+            if omega0 is given the reference epoch is taken to be the time at
+            which the orbital frequency in the coprecessing frame is equal to
+            omega0. This agrees with the LAL convention. See LIGO DCC document
+            T1800226 for the LAL frame diagram.
     """
 
     #-------------------------------------------------------------------------
@@ -187,6 +181,7 @@ class Fit7dq4(surfinBH.SurFinBH):
 
     #-------------------------------------------------------------------------
     def _load_NRSur7dq4(self):
+        sys.path.append('/Users/vijay/src/gwsurrogate')
         import gwsurrogate
         from gwsurrogate.new.precessing_surrogate import splinterp_many
         self.nrsur = gwsurrogate.LoadSurrogate('NRSur7dq4')
@@ -339,8 +334,8 @@ class Fit7dq4(surfinBH.SurFinBH):
         # using PN spins at omega_switch_IG
         quat_sur, orbphase_sur, chiA_copr_sur, chiB_copr_sur \
             = self.nrsur._sur_dimless.get_dynamics(q, chiA_PN_at_idx_coorb, \
-            chiB_PN_at_idx_coorb, quat_ref=quat_PN_copr_at_idx,
-            phi_ref=phi_PN_at_idx, omega_ref=omega_switch_IG)
+            chiB_PN_at_idx_coorb, init_quat=quat_PN_copr_at_idx,
+            init_orbphase=phi_PN_at_idx, omega_ref=omega_switch_IG)
         dyn_times = self.nrsur._sur_dimless.tds
         omega_sur = np.gradient(orbphase_sur, dyn_times)
 
@@ -363,8 +358,7 @@ class Fit7dq4(surfinBH.SurFinBH):
 
     #-------------------------------------------------------------------------
     def _evolve_spins(self, q, chiA0, chiB0, omega0, \
-            return_spin_evolution=False, phi_ref_for_inertial_frame=None, \
-            **kwargs):
+            return_spin_evolution=False, **kwargs):
         """ Evolves spins of the component BHs from an initial orbital
         frequency = omega0 until t=-100 M from the peak of the waveform.  If
         omega0 < omega_switch_IG, use PN to evolve the spins until
@@ -376,10 +370,7 @@ class Fit7dq4(surfinBH.SurFinBH):
         frame at this time.
 
         If return_spin_evolution is given, also returns the PN and surrogate
-        spin times series. NOTE: phi_ref is not required to determine
-        the spin evolution as it is an overall frame rotation. Therefore,
-        if returning spin evolution, pass phi_ref as phi_ref_for_inertial_frame
-        and this frame rotation will be taken care of.
+        spin times series.
         """
 
         PN_approximant = kwargs.pop('PN_approximant', 'SpinTaylorT4')
@@ -421,8 +412,8 @@ class Fit7dq4(surfinBH.SurFinBH):
         # Now evaluate the surrogate dynamics using PN spins at omega_init_sur
         quat_sur, orbphase_sur, chiA_copr_sur, chiB_copr_sur \
             = self.nrsur._sur_dimless.get_dynamics(q, chiA0_nrsur_coorb, \
-            chiB0_nrsur_coorb, quat_ref=quat0_nrsur_copr,
-            phi_ref=phi0_nrsur, omega_ref=omega_init_sur)
+            chiB0_nrsur_coorb, init_quat=quat0_nrsur_copr,
+            init_orbphase=phi0_nrsur, omega_ref=omega_init_sur)
 
         # get data at time node where remnant fits are done
         dyn_times = self.nrsur._sur_dimless.tds
@@ -437,9 +428,6 @@ class Fit7dq4(surfinBH.SurFinBH):
                 orbphase_fitnode)
 
         if return_spin_evolution:
-            if phi_ref_for_inertial_frame is None:
-                raise Exception("phi_ref_for_inertial_frame should be " \
-                    "specified if return_spin_evolution is True")
             # Interpolate to the coorbital time grid, and transform to coorb
             # frame.  Interpolate first since coorbital spins oscillate faster
             # than coprecessing spins
@@ -456,20 +444,6 @@ class Fit7dq4(surfinBH.SurFinBH):
                     chiA_copr_sur.T).T
             chiB_inertial_sur = utils.transformTimeDependentVector(quat_sur, \
                     chiB_copr_sur.T).T
-
-            # The above spins are not in the LAL inertial frame, for which
-            # the x-axis is rotated by phi_ref w.r.t. the line of separation.
-            # So, we put that back now.
-            if chiA_PN is not None:
-                chiA_PN = utils.rotate_in_plane(chiA_PN, \
-                        -phi_ref_for_inertial_frame)
-            if chiB_PN is not None:
-                chiB_PN = utils.rotate_in_plane(chiB_PN, \
-                        -phi_ref_for_inertial_frame)
-            chiA_inertial_sur = utils.rotate_in_plane(chiA_inertial_sur, \
-                    -phi_ref_for_inertial_frame)
-            chiB_inertial_sur = utils.rotate_in_plane(chiB_inertial_sur, \
-                    -phi_ref_for_inertial_frame)
 
             spin_evolution = {
                     't_sur': t_interp,
@@ -501,18 +475,6 @@ class Fit7dq4(surfinBH.SurFinBH):
         omega0 = kwargs.pop('omega0', None)
         self._check_param_limits(q, chiA, chiB, allow_extrap)
 
-        # The only purpose of phi_ref is an overall frame rotation. The LAL
-        # inertial frame allows the x-axis to have a phi_ref offset w.r.t the
-        # line of separation. The surrogate evaluation, including the spin
-        # evolution does not need phi_ref, so we will just add this rotation
-        # back at the end.
-        phi_ref = kwargs.pop('phi_ref', 0)
-
-        # It is possible to rotate the remnant vectors, but since I don't
-        # expect anyone to need this, this is not implemented.
-        if (omega0 is None) and (phi_ref != 0):
-            raise Exception("phi_ref is only allowed when omega0 is specified")
-
         if omega0 is None:
             # If omega0 is given, assume chiA, chiB are the coorbital frame
             # spins at t=-100 M.
@@ -532,14 +494,13 @@ class Fit7dq4(surfinBH.SurFinBH):
             fit_val = res.T[0]
             fit_err = res.T[1]
             if omega0 is not None:
-                # The fit are constructed in the coorbital frame at
-                # t=-100M, now we transform the remnant vectors into
-                # the LAL inertial frame, which includes a final frame
-                # rotation by phi_ref
+                # The fit are constructed in the coorbital frame at t=-100M,
+                # now we transform the remnant vectors into the LAL inertial
+                # frame, which is the same as the coorbital frame at omega0.
                 fit_val = utils.transform_vector_coorb_to_inertial(fit_val,
-                    orbphase_fitnode, quat_fitnode, phi_ref)
+                    orbphase_fitnode, quat_fitnode)
                 fit_err = utils.transform_error_coorb_to_inertial(fit_val,
-                    fit_err, orbphase_fitnode, quat_fitnode, phi_ref)
+                    fit_err, orbphase_fitnode, quat_fitnode)
             return fit_val, fit_err
 
 

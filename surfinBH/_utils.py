@@ -62,15 +62,10 @@ def rotate_in_plane(chi, phase):
     return res.T
 
 #-----------------------------------------------------------------------------
-def transform_vector_coorb_to_inertial(vec_coorb, orbPhase, quat_copr, phi_ref):
+def transform_vector_coorb_to_inertial(vec_coorb, orbPhase, quat_copr):
     """Given a vector (of size 3) in coorbital frame, orbital phase in
     coprecessing frame and a minimal rotation frame quat, transforms
     the vector from the coorbital to the LAL inertial frame.
-
-    The only purpose of phi_ref is an overall frame rotation. The LAL inertial
-    frame allows the x-axis to have a phi_ref offset w.r.t the line of
-    separation. The surrogate evaluation, including the spin evolution does not
-    need phi_ref, so we will just add this rotation back at the end.
     """
 
     # Transform to coprecessing frame
@@ -80,22 +75,14 @@ def transform_vector_coorb_to_inertial(vec_coorb, orbPhase, quat_copr, phi_ref):
     vec = transformTimeDependentVector(np.array([quat_copr]).T,
         np.array([vec_copr]).T).T[0]
 
-    # Transform to LAL inertial frame
-    vec = rotate_in_plane(vec, -phi_ref)
-
     return np.array(vec)
 
 
 def transform_error_coorb_to_inertial(vec_coorb, vec_err_coorb, orbPhase,
-        quat_copr, phi_ref):
+        quat_copr):
     """ Transform error in a vector from the coorbital frame to the inertial
     frame. Generates distributions in the coorbital frame, transforms them
     to inertial frame and returns 1-simga widths in the inertial frame.
-
-    The only purpose of phi_ref is an overall frame rotation. The LAL inertial
-    frame allows the x-axis to have a phi_ref offset w.r.t the line of
-    separation. The surrogate evaluation, including the spin evolution does not
-    need phi_ref, so we will just add this rotation back at the end.
     """
 
     # for reproducibility
@@ -111,9 +98,6 @@ def transform_error_coorb_to_inertial(vec_coorb, vec_err_coorb, orbPhase,
     # Transform distribution to inertial frame (for the surrogate)
     dist_inertial = transformTimeDependentVector(
         np.array([quat_copr for _ in dist_copr]).T, dist_copr.T).T
-
-    # Transform distribution to LAL inertial frame
-    dist_inertial = rotate_in_plane(dist_inertial, -phi_ref)
 
     # Get 1sigma width in inertial frame
     vec_err_inertial = np.std(dist_inertial, axis=0)
