@@ -427,28 +427,15 @@ class Fit7dq4(surfinBH.SurFinBH):
                 orbphase_fitnode)
 
         if return_spin_evolution:
-            # Interpolate to the coorbital time grid, and transform to coorb
-            # frame.  Interpolate first since coorbital spins oscillate faster
-            # than coprecessing spins
-            t_interp = np.arange(t_sur_switch, dyn_times[-2], PN_dt)
-            chiA_copr_sur = self.splinterp_many(t_interp, dyn_times, \
-                    chiA_copr_sur.T).T
-            chiB_copr_sur = self.splinterp_many(t_interp, dyn_times, \
-                    chiB_copr_sur.T).T
-            orbphase_sur = spline(dyn_times, orbphase_sur)(t_interp)
-            omega_sur = np.gradient(orbphase_sur, t_interp)
-            quat_sur = self.splinterp_many(t_interp, dyn_times, quat_sur)
-            quat_sur = quat_sur/np.sqrt(np.sum(abs(quat_sur)**2, 0))
+            # Transform spins to the reference inertial frame
             chiA_inertial_sur = utils.transformTimeDependentVector(quat_sur, \
                     chiA_copr_sur.T).T
             chiB_inertial_sur = utils.transformTimeDependentVector(quat_sur, \
                     chiB_copr_sur.T).T
-
             spin_evolution = {
-                    't_sur': t_interp,
+                    't_sur': dyn_times,
                     'chiA_sur': chiA_inertial_sur,
                     'chiB_sur': chiB_inertial_sur,
-                    'omega_sur': omega_sur,
                     'orbphase_sur': orbphase_sur,
                     'quat_sur': quat_sur,
                     'omega_PN': omega_PN,
