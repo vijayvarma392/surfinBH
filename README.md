@@ -1,5 +1,6 @@
 [![github](https://img.shields.io/badge/GitHub-surfinBH-blue.svg)](https://github.com/vijayvarma392/surfinBH)
 [![PyPI version](https://badge.fury.io/py/surfinBH.svg)](https://pypi.org/project/surfinBH/)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/surfinbh.svg)](https://anaconda.org/conda-forge/surfinbh)
 [![DOI](https://zenodo.org/badge/145179417.svg)](https://zenodo.org/badge/latestdoi/145179417)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/vijayvarma392/surfinBH/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/vijayvarma392/surfinBH.svg?branch=master)](https://travis-ci.org/vijayvarma392/surfinBH)
@@ -37,6 +38,13 @@ _**surfinBH**_ is available through [PyPI](https://pypi.org/project/surfinBH/):
 
 ```shell
 pip install surfinBH
+```
+
+### Conda
+_**surfinBH**_ is available on [conda-forge](https://anaconda.org/conda-forge/surfinbh):
+
+```shell
+conda install -c conda-forge surfinbh
 ```
 
 
