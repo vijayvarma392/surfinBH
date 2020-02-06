@@ -123,7 +123,7 @@ class Fit7dq4(surfinBH.SurFinBH):
         t_sur_switch:
             The dimensionless time (from the peak) at which we switch from PN
             to the surrogate. Should be something larger than -4300.
-            Default: -4100.
+            Default: -4000.
 
         omega_switch_IG:
             Initial guess for dimensionless orbital frequency, using which the
@@ -379,8 +379,8 @@ class Fit7dq4(surfinBH.SurFinBH):
         # Initial guess for surrogate omega0, this should be large enough for
         # all q=6 cases
         omega_switch_IG = kwargs.pop('omega_switch_IG', 0.03)
-        # The surrogate begins at -4300, use -4100 to be safe
-        t_sur_switch = kwargs.pop('t_sur_switch', -4100)
+        # The surrogate begins at -4300, use -4000 to be safe
+        t_sur_switch = kwargs.pop('t_sur_switch', -4000)
         self._check_unused_kwargs(kwargs)
 
         # Load NRSur7dq4 if not previously loaded
