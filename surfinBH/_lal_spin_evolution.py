@@ -32,7 +32,7 @@ def lal_spin_evloution_wrapper(approximant, q, omega0, chiA0, chiB0,
         returned spins, other vectors like LNhat, etc.
     """
 
-    approxTag = lalsim.GetApproximantFromString(approximant)
+    approxTag = lalsim.SimInspiralGetApproximantFromString(approximant)
 
     # Total mass in solar masses
     M = 100     # This does not affect the returned values as they are
