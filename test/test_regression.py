@@ -38,7 +38,7 @@ def test_fit_regression():
 
         # Load regression data
         regression_h5file = h5py.File('test/regression_data/fit_%s.h5'%(
-                name_tag))
+                name_tag), 'r')
 
         extra_kwargs_list = fit._extra_regression_kwargs()
 
@@ -59,22 +59,22 @@ def test_fit_regression():
             for test in test_keys:
                 print('... running %s'%test)
                 test_h5grp = kw_h5grp[test]
-                q = test_h5grp['q'].value
-                chiA = test_h5grp['chiA'].value
-                chiB = test_h5grp['chiB'].value
+                q = test_h5grp['q'][()]
+                chiA = test_h5grp['chiA'][()]
+                chiB = test_h5grp['chiB'][()]
 
                 # remnant mass
-                y_reg = test_h5grp['y/mf'].value
+                y_reg = test_h5grp['y/mf'][()]
                 y_fit = fit.mf(q, chiA, chiB, **kwargs)
                 np.testing.assert_allclose(y_fit, y_reg, rtol=rtol)
 
                 # remnant spin
-                y_reg = test_h5grp['y/chif'].value
+                y_reg = test_h5grp['y/chif'][()]
                 y_fit = fit.chif(q, chiA, chiB, **kwargs)
                 np.testing.assert_allclose(y_fit, y_reg, rtol=rtol)
 
                 # remnant kick
-                y_reg = test_h5grp['y/vf'].value
+                y_reg = test_h5grp['y/vf'][()]
                 y_fit = fit.vf(q, chiA, chiB, **kwargs)
                 np.testing.assert_allclose(y_fit, y_reg, rtol=rtol)
 
