@@ -151,10 +151,6 @@ def lal_spin_evloution_wrapper(approximant, q, omega0, chiA0, chiB0,
     LNhat = np.array([LNhatx.data.data, LNhaty.data.data, LNhatz.data.data]).T
     E1 = np.array([E1x.data.data, E1y.data.data, E1z.data.data]).T
 
-    # Rescale to non-idiot spins, because stupid lal
-    ChiA = ChiA/(q/(1.+q))**2
-    ChiB = ChiB/(1./(1.+q))**2
-
     Omega = V**3
     return Omega, Phi, ChiA, ChiB, LNhat, E1
 
