@@ -68,7 +68,7 @@ All of these can be installed through pip or conda.
 * [scipy](https://www.scipy.org/install.html)
 * [h5py](http://docs.h5py.org/en/latest/build.html)
 * [scikit-learn](http://scikit-learn.org/stable/install.html) (at least 0.19.1)
-* [lalsuite](https://pypi.org/project/lalsuite)
+* [lalsuite](https://pypi.org/project/lalsuite) (at least 6.70)
 * [gwsurrogate](https://pypi.org/project/gwsurrogate)
 * [NRSur7dq2](https://pypi.org/project/NRSur7dq2) (only for surfinBH7dq2)
 
