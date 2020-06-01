@@ -32,7 +32,7 @@ setuptools.setup(
         'numpy',
         'scipy',
         'h5py',
-        'scikit-learn>=0.19.1',
+        'scikit-learn>=0.19.1,<0.23.1',
         'lalsuite>=6.70',
         'gwsurrogate',
     ],
