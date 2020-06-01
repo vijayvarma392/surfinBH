@@ -176,6 +176,11 @@ See _fit_evaluators.fit_7dq2.py for an example.
         if chiBmag > 1 + 1e-14:
             raise ValueError('Spin magnitude of BhB > 1.')
 
+        chiA = np.atleast_1d(chiA)
+        chiB = np.atleast_1d(chiB)
+        if len(chiA) != 3 or len(chiB) != 3:
+            raise TypeError("Expected input spins to be 3-vectors.")
+
         if self.aligned_spin_only:
             if np.sqrt(np.sum(chiA[:2]**2)) > 1e-14:
                 raise ValueError('The x & y components of chiA should be zero.')
