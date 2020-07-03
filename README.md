@@ -142,5 +142,5 @@ You can find the list of contributors
 
 ## Credits
 The code is developed and maintained by [Vijay
-Varma](http://www.tapir.caltech.edu/~vvarma/). Please report bugs by raising an
+Varma](https://vijayvarma.com). Please report bugs by raising an
 issue on our [GitHub](https://github.com/vijayvarma392/surfinBH) repository.
