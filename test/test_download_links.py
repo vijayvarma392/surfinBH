@@ -30,5 +30,7 @@ def test_download_links():
         # check that the fit_name matches with the name in the attributes
         # of h5 file.
         h5file = h5py.File('%s/fit_%s.h5'%(out_dir, name_tag), 'r')
-        assert(str(name_tag) == str(h5file.attrs['name'], 'utf-8'))
+        assert(str.encode(name_tag) == h5file.attrs['name'])
         h5file.close()
+
+test_download_links()
