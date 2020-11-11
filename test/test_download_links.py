@@ -32,5 +32,3 @@ def test_download_links():
         h5file = h5py.File('%s/fit_%s.h5'%(out_dir, name_tag), 'r')
         assert(str.encode(name_tag) == h5file.attrs['name'])
         h5file.close()
-
-test_download_links()
