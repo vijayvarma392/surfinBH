@@ -16,8 +16,7 @@ git submodule update
 
 Before doing a pull request, you should check that your changes don't break
 anything by running `py.test` from the root directory of your check-out. Every
-pull request will be automatically tested by [Travis
-CI](https://travis-ci.org/).
+pull request will be automatically tested by github.
 
 
 ## Adding a new fit
