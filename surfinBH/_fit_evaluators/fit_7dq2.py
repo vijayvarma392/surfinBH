@@ -105,7 +105,7 @@ class Fit7dq2(surfinBH.SurFinBH):
 
         PN_spin_order:
             Twice the PN order of spin effects. E.g., use 7 for 3.5PN.
-            Default: 7
+            Default: 6
 
         PN_phase_order:
             Twice the PN order in phase. E.g., use 7 for 3.5PN.
@@ -168,7 +168,7 @@ class Fit7dq2(surfinBH.SurFinBH):
             'omega0': 5e-3,
             'PN_approximant': 'SpinTaylorT4',
             'PN_dt': 0.1,
-            'PN_spin_order': 7,
+            'PN_spin_order': 6,
             'PN_phase_order': 7,
             'omega_switch': omega_switch_test,
             })
@@ -187,7 +187,7 @@ class Fit7dq2(surfinBH.SurFinBH):
             'omega0': 7e-3,
             'PN_approximant': 'SpinTaylorT5',
             'PN_dt': 1,
-            'PN_spin_order': 7,
+            'PN_spin_order': 6,
             'PN_phase_order': 5,
             'omega_switch': omega_switch_test,
             })
@@ -304,7 +304,7 @@ class Fit7dq2(surfinBH.SurFinBH):
         omega0 = kwargs.pop('omega0', None)
         PN_approximant = kwargs.pop('PN_approximant', 'SpinTaylorT4')
         PN_dt = kwargs.pop('PN_dt', 0.1)
-        PN_spin_order = kwargs.pop('PN_spin_order', 7)
+        PN_spin_order = kwargs.pop('PN_spin_order', 6)
         PN_phase_order = kwargs.pop('PN_phase_order', 7)
         omega_switch = kwargs.pop('omega_switch', 0.018)
 

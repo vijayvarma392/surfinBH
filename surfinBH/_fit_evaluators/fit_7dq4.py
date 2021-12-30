@@ -114,7 +114,7 @@ class Fit7dq4(surfinBH.SurFinBH):
 
         PN_spin_order:
             Twice the PN order of spin effects. E.g., use 7 for 3.5PN.
-            Default: 7
+            Default: 6
 
         PN_phase_order:
             Twice the PN order in phase. E.g., use 7 for 3.5PN.
@@ -206,7 +206,7 @@ class Fit7dq4(surfinBH.SurFinBH):
             'omega0': 5e-3,
             'PN_approximant': 'SpinTaylorT4',
             'PN_dt': 0.1,
-            'PN_spin_order': 7,
+            'PN_spin_order': 6,
             'PN_phase_order': 7,
             })
 
@@ -223,7 +223,7 @@ class Fit7dq4(surfinBH.SurFinBH):
             'omega0': 7e-3,
             'PN_approximant': 'SpinTaylorT5',
             'PN_dt': 1,
-            'PN_spin_order': 7,
+            'PN_spin_order': 6,
             'PN_phase_order': 5,
             })
 
@@ -374,7 +374,7 @@ class Fit7dq4(surfinBH.SurFinBH):
 
         PN_approximant = kwargs.pop('PN_approximant', 'SpinTaylorT4')
         PN_dt = kwargs.pop('PN_dt', 0.1)
-        PN_spin_order = kwargs.pop('PN_spin_order', 7)
+        PN_spin_order = kwargs.pop('PN_spin_order', 6)
         PN_phase_order = kwargs.pop('PN_phase_order', 7)
         # Initial guess for surrogate omega0, this should be large enough for
         # all q=6 cases
