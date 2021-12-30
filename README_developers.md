@@ -41,6 +41,8 @@ in `test/regression_data/`.
 
 ## PyPI release
 Note: This is currently under Vijay's account, so only he can do this.
+Make sure there are no data files in surfinBH/data before doing this. The
+required data files will get downloaded automatically.
 ```shell
 python setup.py sdist bdist_wheel
 twine upload dist/*

@@ -1,11 +1,3 @@
-'''
-Standard setup.py to upload the code on pypi.
-Make sure there are no data files in surfinBH/data before doing this. The
-required data files will get downloaded automatically.
-Do:
-    python setup.py sdist bdist_wheel
-    twine upload dist/*
-'''
 import setuptools
 
 with open("README.md", "rb") as fh:
