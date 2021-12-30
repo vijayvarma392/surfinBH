@@ -3,7 +3,8 @@
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/surfinbh.svg)](https://anaconda.org/conda-forge/surfinbh)
 [![DOI](https://zenodo.org/badge/145179417.svg)](https://zenodo.org/badge/latestdoi/145179417)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/vijayvarma392/surfinBH/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/vijayvarma392/surfinBH.svg?branch=master)](https://travis-ci.org/vijayvarma392/surfinBH)
+[![Build Status](https://github.com/vijayvarma392/surfinBH/actions/workflows/test.yml/badge.svg)](https://github.com/vijayvarma392/surfinBH/actions/workflows/test.yml)
+
 
 # Welcome to surfinBH!
 
