@@ -27,10 +27,9 @@ If you find this package useful in your work, please cite reference [1] and,
 if available, the relevant paper describing the particular model. Please also
 cite this package, see the DOI badge at the top of this page for BibTeX keys.
 
-This package is compatible with both python2 and python3.  This package lives
-on [GitHub](https://github.com/vijayvarma392/surfinBH) and is tested every
-week. You can see the current build status of the master branch at the top of
-this page.
+This package lives on [GitHub](https://github.com/vijayvarma392/surfinBH), is
+compatible with `python3`, and is tested every week. You can see the current
+build status of the master branch at the top of this page.
 
 ## Installation
 
@@ -52,7 +51,7 @@ conda install -c conda-forge surfinbh
 ### From source
 
 ```shell
-git clone https://github.com/vijayvarma392/surfinBH
+git clone git@github.com:vijayvarma392/surfinBH.git
 cd surfinBH
 git submodule init
 git submodule update
