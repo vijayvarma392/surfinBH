@@ -30,6 +30,6 @@ def test_example_notebooks():
         with open(notebook_filename) as f:
             nb = nbformat.read(f, as_version=4)
 
-        ep = ExecutePreprocessor(timeout=None, kernel_name=python_version)
+        ep = ExecutePreprocessor(timeout=None)
 
         ep.preprocess(nb, {'metadata': {'path': '.'}})
