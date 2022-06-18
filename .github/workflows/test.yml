@@ -32,7 +32,7 @@ jobs:
         shell: bash -l {0}
         run: |
           conda install gsl
-          pip install pytest numpy scipy h5py
+          pip install pytest numpy scipy h5py nbconvert
           pip install NRSur7dq2
 
       - name: Install pipenv
