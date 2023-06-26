@@ -20,17 +20,17 @@ pull request will be automatically tested by github.
 
 
 ## Adding a new fit
-All fits in this package have the naming format: surfinBH* <br/> Let's say your
+The fits in this package have the naming format: NRSur\*Remnant <br/> Let's say your
 fancy new fit has `fit_name = '23dModGR'`, the name to load and evaluate the
-package would be `'surfinBH23dModGR'`.
+package would be `'NRSur23dModGRRemnant'`.
 
 You need to do the following to add this fit to this package:
 * Add `fit_23dModGR.py` in `surfinBH/_fit_evaluators/`; see
   `surfinBH/_fit_evaluators/fit_3dq8.py` for an example.
 * Add `from fit_23dModGR import Fit23dModGR` to
   `surfinBH/_fit_evaluators/__init__.py`.
-* Add `'surfinBH23dModGR'` key to `fits_collection` in `surfinBH/_loadFits.py`.
-  See example for `surfinBH3dq8` in the same file.
+* Add `'NRSur23dModGRRemnant'` key to `fits_collection` in `surfinBH/_loadFits.py`.
+  See example for `surfinBH3dq8` in the same file (`surfinBH*` was the old format).
 * Add `example_23dModGR.ipynb` in `examples`. See `examples/example_3dq8.ipynb`
   for an (cough, cough) example.
 * Generate regression data for testing using `test/generate_regression_data.py`.
