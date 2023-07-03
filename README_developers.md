@@ -34,6 +34,7 @@ You need to do the following to add this fit to this package:
 * Add `example_23dModGR.ipynb` in `examples`. See `examples/example_3dq8.ipynb`
   for an (cough, cough) example.
 * Generate regression data for testing using `test/generate_regression_data.py`.
+  Run it from the root directory of your check-out.
 * Test (see above), commit and push all of the above changes.
 
 Note: Do not push the fit data itself, but push the regression data generated

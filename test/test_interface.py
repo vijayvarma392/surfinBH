@@ -48,12 +48,13 @@ def single_kwargs_test(fit, num_tests, kwargs={}):
             np.testing.assert_allclose(chif_and_err[1], all_data[4], rtol=rtol)
         else:
             np.testing.assert_allclose(chif_and_err, all_data[1], rtol=rtol)
-
-        if hasattr(vf_and_err, '__len__'):      # has both fit val and err_est
-            np.testing.assert_allclose(vf_and_err[0], all_data[2], rtol=rtol)
-            np.testing.assert_allclose(vf_and_err[1], all_data[5], rtol=rtol)
-        else:
-            np.testing.assert_allclose(vf_and_err, all_data[2], rtol=rtol)
+        #MB: needed for NRSur7dq4EmriRemnant
+        if vf_and_err[0] is not None:
+            if hasattr(vf_and_err, '__len__'):      # has both fit val and err_est
+                np.testing.assert_allclose(vf_and_err[0], all_data[2], rtol=rtol)
+                np.testing.assert_allclose(vf_and_err[1], all_data[5], rtol=rtol)
+            else:
+                np.testing.assert_allclose(vf_and_err, all_data[2], rtol=rtol)
 
 
 def test_interface():

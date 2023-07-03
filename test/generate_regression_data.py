@@ -29,10 +29,12 @@ def save_data(h5grp, fit, num_tests, kwargs={}):
         # remnant spin
         y = fit.chif(q, chiA, chiB, **kwargs)
         y_h5grp.create_dataset('chif', data=y)
-
+        
         # remnant kick
         y = fit.vf(q, chiA, chiB, **kwargs)
-        y_h5grp.create_dataset('vf', data=y)
+        #MB: needed for NRSur7dq4EmriRemnant
+        if y[0] is not None:
+            y_h5grp.create_dataset('vf', data=y)
 
 
 if __name__ == "__main__":
