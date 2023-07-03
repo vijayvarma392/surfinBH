@@ -72,10 +72,12 @@ def test_fit_regression():
                 y_reg = test_h5grp['y/chif'][()]
                 y_fit = fit.chif(q, chiA, chiB, **kwargs)
                 np.testing.assert_allclose(y_fit, y_reg, rtol=rtol)
-
+                
                 # remnant kick
-                y_reg = test_h5grp['y/vf'][()]
-                y_fit = fit.vf(q, chiA, chiB, **kwargs)
-                np.testing.assert_allclose(y_fit, y_reg, rtol=rtol)
+                #MB: needed for NRSur7dq4EmriRemnant
+                if 'vf' in test_h5grp['y'].keys():
+                    y_reg = test_h5grp['y/vf'][()]
+                    y_fit = fit.vf(q, chiA, chiB, **kwargs)
+                    np.testing.assert_allclose(y_fit, y_reg, rtol=rtol)
 
         regression_h5file.close()
