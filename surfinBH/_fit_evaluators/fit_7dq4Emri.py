@@ -6,7 +6,7 @@ import sys
 #=============================================================================
 class Fit7dq4Emri(surfinBH.SurFinBH):
     """ A class for the NRSur7dq4EmriRemnant model presented in Boschini et al.,
-    arxiv:[] (hereafter THE PAPER). 
+    arxiv:[TO_BE_CHANGED] (hereafter THE PAPER). 
     
     This model predicts the final mass mf and final spin chif, for the remnants 
     of precessing binary black hole systems. 
@@ -39,7 +39,7 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
         chif, chif_err = fit.chif(q, chiA, chiB, **kwargs)
         
         # All of these together (this fit returns vf = vf_err = None)
-        # This shape output is needed for compatibility reason
+        # This shape of output is needed for compatibility reason
         mf, chif, vf, mf_err, chif_err, vf_err = 
             fit.all(q, chiA, chiB, **kwargs)
 
@@ -97,6 +97,7 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
                 }
 
         # Param limits beyond which to raise an error
+        # In principle q has no limit, but an upper value is needed for testing
         hard_param_lims = {
             'q' : 1e10,
             'chiAmag': 1,
@@ -164,8 +165,8 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
 
         def eval_emri(q, chiA):
             """
-            Estimate remnant mass and spin for EMRI binary following 
-            Boschini & al. (). Additional details in THE PAPER.    
+            Estimate remnant spin for EMRI binary following
+            the procedure described in THE PAPER.    
             """
             r_ISCO = eval_r_isco(chiA[2])
             E_ISCO = np.sqrt(1-2/(3*r_ISCO))
@@ -173,7 +174,7 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
                       
             return chiA + 1/q*(L_ISCO-2*chiA*E_ISCO)  
 
-        def get_extrap(x, chiA):
+        def get_extrap(x, fit_key):
             """Extrapolate remnant spin at q > 1000"""
             x_i = x.copy()
             x_i[0] = self.qEmriMax
@@ -181,24 +182,22 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
             if x[0] < 2*self.qEmriMax:
                 tmp = self._evaluate_fits(x, fit_key)
                 y_i, y_i_err = tmp.T[0], tmp.T[1]
-                y_f = eval_emri(2*self.qEmriMax, chiA)
-                y_f_err = 2*np.abs(chiA - y_f)
-                y = [(y_f[i]-y_i[i])*np.sin(np.pi/(2*self.qEmriMax)* \
-                    (x[0]-self.qEmriMax))**2+y_i[i] for i in range(3)]
-                y_err = [(y_f_err[i]-y_i_err[i])* \
-                    np.sin(np.pi/(2*self.qEmriMax)* \
-                    (x[0]-self.qEmriMax))**2+ \
-                    y_i_err[i] for i in range(3)]
+                y_f = eval_emri(2*self.qEmriMax, x[1:4])
+                y_f_err = 2*np.abs(x[1:4] - y_f)
+                y = (y_f - y_i) * np.sin(np.pi/(2*self.qEmriMax)* \
+                    (x[0] - self.qEmriMax))**2 + y_i
+                y_err = (y_f_err - y_i_err) * np.sin(np.pi/(2*self.qEmriMax)* \
+                    (x[0] - self.qEmriMax))**2 + y_i_err
             else:
-                y_f = eval_emri(x[0], chiA)
-                y_err = 2*np.abs(chiA - y_f)
+                y_f = eval_emri(x[0], x[1:4])
+                y_err = 2*np.abs(x[1:4] - y_f)
 
-            return np.array(y_f), np.array(y_err)
+            return y_f, y_err
 
-        def eval_vector_fit(x, fit_key, chiA):
+        def eval_vector_fit(x, fit_key):
             if fit_key == 'chif':
                 if x[0] > self.qEmriMax:
-                    fit_val, fit_err = get_extrap(x, chiA)
+                    fit_val, fit_err = get_extrap(x, fit_key)
                 else:
                     res = self._evaluate_fits(x, fit_key)
                     fit_val = res.T[0]
@@ -213,7 +212,7 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
                 return mf, mf_err
 
         if fit_key == 'chif' or fit_key == 'all':
-            chif, chif_err = eval_vector_fit(x, 'chif', chiA)
+            chif, chif_err = eval_vector_fit(x, 'chif')
             if fit_key == 'chif':
                 return chif, chif_err
         
