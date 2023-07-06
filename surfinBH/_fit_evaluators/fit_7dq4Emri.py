@@ -16,8 +16,15 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
     This model has been trained in the parameter space:
         NR: q <= 4, |chiA| <= 0.8, |chiB| <= 0.8
         EMRI: 100 <= q <= 1000 , |chiA| <= 1, |chiB| <= 1
-
-    But, the model can be evaluated at arbitrary mass ratios and spins.
+        
+    But, it can be evaluated at arbitrary mass ratios and spins. 
+    The model returns remnant mass provided by the GPR fit on the entire 
+    mass-ratio domain. Concerning the remnant spin fit, the model returns GPR 
+    predictions up to q = 1000. At q > 2000 it returns the EMRI limit and it 
+    estimates the error as the absolute value of the difference between chif in 
+    the EMRI regime and the limit value (chif -> chiA when q -> inf). There
+    is a transition region (1000 < q < 2000) to smoothly connect these two 
+    regimes. See Sec. III in THE PAPER for details.
 
     =========================================================================
     Usage:
@@ -177,8 +184,8 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
         # Warn if trying to pass allow_extrap
         allow_extrap = kwargs.pop('allow_extrap', False)
         if allow_extrap: 
-            warnings.warn('Optional argument allow_extrap is unused for this \
-model. It works at arbitrary mass ratios and spins.')
+            warnings.warn('Optional argument allow_extrap is unused for this'
+'model. It works at arbitrary mass ratios and spins.')
         self._check_param_limits(q, chiA, chiB, True)
 
         x = np.concatenate(([q], chiA, chiB))
