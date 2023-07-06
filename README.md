@@ -16,12 +16,15 @@ _**surfinBH**_ provides _**sur**rogate **fin**al **B**lack_ _**H**ole_
 properties for mergers of binary black holes (BBH).
 
 These fits are described in the following papers: <br/>
-[1] Vijay Varma, D. Gerosa, L. C. Stein, F. Hébert and H. Zhang,
+[1] V. Varma, D. Gerosa, L. C. Stein, F. Hébert and H. Zhang,
 [arxiv:1809.09125](https://arxiv.org/abs/1809.09125).
 
-[2] Vijay Varma, S. E. Field, M. A. Scheel, J. Blackman, D. Gerosa, L. C.
+[2] V. Varma, S. E. Field, M. A. Scheel, J. Blackman, D. Gerosa, L. C.
 Stein, L. E. Kidder, H. P. Pfeiffer,
 [arxiv:1905.09300](https://arxiv.org/abs/1905.09300).
+
+[3] M. Boschini, D. Gerosa, V. Varma, and others,
+[arxiv:xxxx.xxxx](https://arxiv.org/abs/xxxx.xxxx). #FIXME
 
 If you find this package useful in your work, please cite reference [1] and,
 if available, the relevant paper describing the particular model. Please also
@@ -80,8 +83,8 @@ import surfinBH
 
 ### See list of available fits
 ```python
-print(surfinBH.fits_collection.keys())
->>> ['NRSur3dq8Remnant', 'NRSur7dq4Remnant', 'surfinBH7dq2']
+print(list(surfinBH.fits_collection.keys()))
+>>> ['NRSur3dq8Remnant', 'surfinBH7dq2', 'NRSur7dq4Remnant', 'NRSur7dq4EmriRemnant']
 ```
 
 Pick your favorite fit and get some basic information about it.
@@ -115,6 +118,8 @@ We also provide ipython examples for usage of different fits:
 
 * [NRSur7dq4Remnant](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq4.ipynb) (Ref. [2])
 
+* [NRSur7dq4EmriRemnant](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq4Emri.ipynb) (Ref. [3])
+
 * [NRSur3dq8Remnant](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_3dq8.ipynb) (called surfinBH3dq8 in Ref. [1])
 
 ##### Older fits
@@ -136,11 +141,11 @@ See this
 [README](https://github.com/vijayvarma392/surfinBH/blob/master/README_developers.md)
 for instructions on how to make contributions to this package.
 
-You can find the list of contributors
-[here](https://github.com/vijayvarma392/surfinBH/graphs/contributors).
 
 
 ## Credits
-The code is developed and maintained by [Vijay
-Varma](https://vijayvarma.com). Please report bugs by raising an
+The code is maintained by [Vijay Varma](https://vijayvarma.com).
+You can find the list of contributors
+[here](https://github.com/vijayvarma392/surfinBH/graphs/contributors).
+Please report bugs by raising an
 issue on our [GitHub](https://github.com/vijayvarma392/surfinBH) repository.
