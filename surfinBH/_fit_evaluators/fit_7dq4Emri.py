@@ -17,14 +17,16 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
         NR: q <= 4, |chiA| <= 0.8, |chiB| <= 0.8
         EMRI: 100 <= q <= 1000 , |chiA| <= 1, |chiB| <= 1
         
-    But, it can be evaluated at arbitrary mass ratios and spins. 
-    The model returns remnant mass provided by the GPR fit on the entire 
-    mass-ratio domain. Concerning the remnant spin fit, the model returns GPR 
-    predictions up to q = 1000. At q > 2000 it returns the EMRI limit and it 
-    estimates the error as the absolute value of the difference between chif in 
-    the EMRI regime and the limit value (chif -> chiA when q -> inf). There
-    is a transition region (1000 < q < 2000) to smoothly connect these two 
-    regimes. See Sec. III in THE PAPER for details.
+    But, the model can be evaluated at arbitrary mass ratios and spins. 
+    For the remnant mass, the model uses a GPR fit at all mass ratios, which
+    includes an error estimate. 
+    For the remnant spin, the GPR fit only covers mass ratios up to q=1000.
+    Therefore, at q<=1000, the error estimate is provided by GPR. At q >= 2000
+    the model simply returns the EMRI limit and the error is estimated as the
+    absolute difference between this value and chiA (which is the limit of chif
+    at q -> inf). There is a transition region (1000 < q < 2000) to smoothly
+    connect these two regimes, and the error estimate also has a similar
+    transition. See Sec. III in THE PAPER for details.
 
     =========================================================================
     Usage:
