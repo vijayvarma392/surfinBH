@@ -61,11 +61,10 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
                 the spins in the coorbital frame at the reference epoch. 
                 For comparable-mass binaries (q<=6) the reference epoch is 
                 assumed to be at t=-100 M from the peak of the waveform 
-                amplitude, which corresponds to 2-4 GW cycles before the peak. 
-                In the EMRI limit (q>=100) the reference epoch is the ISCO 
-                (innermost stable circular orbit). In the intermediate regime 
-                the reference epoch is a transition between these two frames. 
-                See Sec. III in THE PAPER for additional details.
+                amplitude. In the EMRI limit (q>=100) the reference epoch is the 
+                ISCO (innermost stable circular orbit). In the intermediate 
+                regime the reference epoch is a transition between these two 
+                frames. See Sec. III in THE PAPER for additional details.
 
      Inertial frame for returned values:
 
@@ -109,6 +108,7 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
     #-------------------------------------------------------------------------
     def _load_fits(self, h5file):
         """ Loads fits from h5file and returns a dictionary of fits. """
+        
         fits = {}
         for key in ['mf']:
             fits[key] = self._load_scalar_fit(fit_key=key, h5file=h5file)
@@ -128,6 +128,7 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
     of chiA and chiB.
     chi_a = (chiAz - chiBz)/2.
         """
+        
         q, chiAz, chiBz = x[0], x[3], x[6]
         eta = q/(1.+q)**2
         chi_wtAvg = (q*chiAz+chiBz)/(1.+q)
@@ -139,8 +140,8 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
 
     #-------------------------------------------------------------------------
     def _generate_random_params_for_tests(self):
-        """ Generate random parameters to use in tests.
-        """
+        """ Generate random parameters to use in tests."""
+        
         # Generate params randomly within allowed values. NRSur7dq4EmriRemnant 
         # is valid at arbitrary mass ratios, but here an upper value is needed.
         q = 10**np.random.uniform(0, 10)
@@ -169,14 +170,15 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
     #-------------------------------------------------------------------------
     def _eval_wrapper(self, fit_key, q, chiA, chiB, **kwargs):
         """ Evaluates the NRSur7dq4EmriRemnant model. """
+        
         chiA = np.array(chiA)
         chiB = np.array(chiB)
 
         # Warn if trying to pass allow_extrap
         allow_extrap = kwargs.pop('allow_extrap', False)
         if allow_extrap: 
-            warnings.warn("""Optional argument 'allow_extrap' is unused for this
-            model. It works at arbitrary mass ratios and spins.""")
+            warnings.warn('Optional argument allow_extrap is unused for this \
+model. It works at arbitrary mass ratios and spins.')
         self._check_param_limits(q, chiA, chiB, True)
 
         x = np.concatenate(([q], chiA, chiB))
@@ -198,6 +200,7 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
             Compute remnant spin for EMRI binary following Eq. (7) 
             presented in THE PAPER.    
             """
+            
             r_ISCO = eval_r_isco(chiA[2])
             E_ISCO = np.sqrt(1-2/(3*r_ISCO))
             L_ISCO = np.array([0,0,2/(3*3**(1/2))*(1+2*np.sqrt(3*r_ISCO-2))])
@@ -229,25 +232,24 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
                 # EMRI limit is used to compute chif at the upper end of the 
                 # transition region (q=2000)
                 y_f = eval_chif_emri(2*self.qEmriMax, x[1:4])
-                # Conservative error estimate when evaluating the EMRI limit.
+                # Error estimate when evaluating the EMRI limit.
                 # The model returns the difference between remnant spin at 
-                # finite q and the limit value (chif->chiA when q->inf) as an 
-                # estimate of the error. The factor 2 gives a conservative 
-                # error.
-                y_f_err = 2*np.abs(x[1:4] - y_f)
+                # q = 2000 and the limit value (chif->chiA when q->inf) 
+                # as an estimate of the error.
+                y_f_err = np.abs(x[1:4] - y_f)
                 # transition function to smoothly connect GPR fit and EMRI limit
                 g = np.sin(np.pi/(2*self.qEmriMax) * (x[0] - self.qEmriMax))**2
                 y = (1 - g) * y_i + g * y_f
+                # Adding errors in quadrature
                 y_err = np.sqrt((1 - g)**2 * y_i_err**2 + g**2 * y_f_err**2) 
 
             else:
                 y = eval_chif_emri(x[0], x[1:4])
-                # Conservative error estimate when evaluating the EMRI limit.
-                # The model returns the difference between remnant spin at 
-                # finite q and the limit value (chif->chiA when q->inf) as an 
-                # estimate of the error. The factor 2 gives a conservative 
-                # error.
-                y_err = 2*np.abs(x[1:4] - y)
+                # Error estimate when evaluating the EMRI limit.
+                # The model returns the difference between remnant spin at a 
+                # given q (>2000) and the limit value (chif->chiA when q->inf) 
+                # as an estimate of the error. 
+                y_err = np.abs(x[1:4] - y)
 
             return y, y_err
 
