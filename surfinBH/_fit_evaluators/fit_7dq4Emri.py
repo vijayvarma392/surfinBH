@@ -187,7 +187,7 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
         allow_extrap = kwargs.pop('allow_extrap', False)
         if allow_extrap:
             warnings.warn('Optional argument allow_extrap is unused for this'
-'model. It works at arbitrary mass ratios and spins.')
+                          'model. It works at arbitrary mass ratios and spins.')
         self._check_param_limits(q, chiA, chiB, True)
 
         x = np.concatenate(([q], chiA, chiB))
