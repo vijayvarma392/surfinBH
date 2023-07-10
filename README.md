@@ -23,7 +23,7 @@ These fits are described in the following papers: <br/>
 Stein, L. E. Kidder, H. P. Pfeiffer,
 [arxiv:1905.09300](https://arxiv.org/abs/1905.09300).
 
-[3] Matteo Boschini, Davide Gerosa, Vijay Varma, et al.,
+[3] M. Boschini, D. Gerosa, V. Varma, et al.,
 [arXiv:2307.03435](https://arxiv.org/abs/2307.03435)
 
 If you find this package useful in your work, please cite reference [1] and,
