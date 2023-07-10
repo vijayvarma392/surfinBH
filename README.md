@@ -23,11 +23,7 @@ These fits are described in the following papers: <br/>
 Stein, L. E. Kidder, H. P. Pfeiffer,
 [arxiv:1905.09300](https://arxiv.org/abs/1905.09300).
 
-[3] Matteo Boschini, Davide Gerosa, Vijay Varma, Cristóbal Armaza, Michael Boyle,
-Marceline S. Bonilla, Andrea Ceja, Yitian Chen, Nils Deppe, Matthew Giesler, 
-Lawrence E. Kidder, Guillermo Lara, Oliver Long, Sizheng Ma, Keefe Mitman, Peter 
-James Nee, Harald P. Pfeiffer, Antoni Ramos-Buades, Mark A. Scheel, Nils L. Vu, 
-Jooheon Yoo
+[3] Matteo Boschini, Davide Gerosa, Vijay Varma, et al.,
 [arXiv:2307.03435](https://arxiv.org/abs/2307.03435)
 
 If you find this package useful in your work, please cite reference [1] and,
@@ -125,8 +121,6 @@ We also provide ipython examples for usage of different fits:
 * [NRSur7dq4EmriRemnant](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq4Emri.ipynb) (Ref. [3])
 
 * [NRSur3dq8Remnant](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_3dq8.ipynb) (called surfinBH3dq8 in Ref. [1])
-
-* [NRSur7dq4EmriRemnant](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq4Emri.ipynb) (Ref. [3])
 
 ##### Older fits
 
