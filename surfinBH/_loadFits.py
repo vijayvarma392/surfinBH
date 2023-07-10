@@ -102,6 +102,6 @@ fits_collection['NRSur7dq4EmriRemnant'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit7dq4Emri,
     desc = 'Fits for remnant mass and spin for generically'
         ' precessing BBH systems with any mass ratio.',
-    data_url = 'https://SOMETHING/TO/BE/CHANGED/fit_7dq4Emri.h5',
-    refs = 'arxiv:[TO_BE_CHANGED]',
+    data_url = 'https://zenodo.org/record/8121956/files/fit_7dq4Emri.h5',
+    refs = 'arXiv:2307.03435',
     )
