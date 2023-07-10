@@ -5,10 +5,10 @@ import warnings
 #=============================================================================
 class Fit7dq4Emri(surfinBH.SurFinBH):
     """ A class for the NRSur7dq4EmriRemnant model presented in Boschini et al.,
-    arxiv:[TO_BE_CHANGED] (hereafter THE PAPER).
-
-    This model predicts the final mass mf and final spin chif, for the remnants
-    of precessing binary black hole systems,  extending to arbitrarily large
+    arxiv:2307.03435 (hereafter THE PAPER). 
+    
+    This model predicts the final mass mf and final spin chif, for the remnants 
+    of precessing binary black hole systems,  extending to arbitrarily large 
     mass ratios.
     The fits are done using Gaussian Process Regression (GPR) and also
     provide an error estimate along with the fit value.
