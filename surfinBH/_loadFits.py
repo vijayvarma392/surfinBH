@@ -78,7 +78,7 @@ fits_collection['NRSur3dq8Remnant'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit3dq8,
     desc = 'Fits for remnant mass, spin and kick veclocity for nonprecessing'
         ' BBH systems. This model was called surfinBH3dq8 in the paper.',
-    data_url = 'https://zenodo.org/record/1435751/files/remnant_fits/fit_3dq8.h5',
+    data_url = 'https://zenodo.org/records/1435751/files/remnant_fits/fit_3dq8.h5',
     refs = 'arxiv:1809.09125',
     )
 
@@ -86,7 +86,7 @@ fits_collection['surfinBH7dq2'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit7dq2,
     desc = 'Fits for remnant mass, spin and kick veclocity for generically'
         ' precessing BBH systems.',
-    data_url = 'https://zenodo.org/record/1435751/files/remnant_fits/fit_7dq2.h5',
+    data_url = 'https://zenodo.org/records/1435751/files/remnant_fits/fit_7dq2.h5',
     refs = 'arxiv:1809.09125',
     )
 
@@ -94,7 +94,7 @@ fits_collection['NRSur7dq4Remnant'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit7dq4,
     desc = 'Fits for remnant mass, spin and kick veclocity for generically'
         ' precessing BBH systems up to mass ratio 4.',
-    data_url = 'https://zenodo.org/record/3455886/files/remnant_fits/fit_7dq4.h5',
+    data_url = 'https://zenodo.org/records/3455886/files/remnant_fits/fit_7dq4.h5',
     refs = 'arxiv:1905.09300',
     )
 
@@ -102,6 +102,6 @@ fits_collection['NRSur7dq4EmriRemnant'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit7dq4Emri,
     desc = 'Fits for remnant mass and spin for generically'
         ' precessing BBH systems with any mass ratio.',
-    data_url = 'https://zenodo.org/record/8246990/files/fit_7dq4Emri.h5',
+    data_url = 'https://zenodo.org/records/8246990/files/fit_7dq4Emri.h5',
     refs = 'arXiv:2307.03435',
     )
