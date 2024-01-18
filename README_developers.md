@@ -50,7 +50,7 @@ First make sure :
 1. There are no data files in surfinBH/data. The
    required data files will get downloaded automatically.
 
-2. `surfinBH/_eval_pysur` is not empty. If empty, do `git submodule update --init`.
+2. `surfinBH/_eval_pysur` is not empty. If empty, do `git submodule update --init .`.
 
 Then:
 
