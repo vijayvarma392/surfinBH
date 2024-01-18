@@ -8,6 +8,7 @@ request](https://help.github.com/articles/about-pull-requests/) from the main
 [repo](https://github.com/vijayvarma392/surfinBH).
 
 After cloning your fork, do:
+
 ```shell
 cd surfinBH
 git submodule init
@@ -18,13 +19,14 @@ Before doing a pull request, you should check that your changes don't break
 anything by running `py.test` from the root directory of your check-out. Every
 pull request will be automatically tested by github.
 
-
 ## Adding a new fit
+
 The fits in this package have the naming format: NRSur\*Remnant <br/> Let's say your
 fancy new fit has `fit_name = '23dModGR'`, the name to load and evaluate the
 package would be `'NRSur23dModGRRemnant'`.
 
 You need to do the following to add this fit to this package:
+
 * Add `fit_23dModGR.py` in `surfinBH/_fit_evaluators/`; see
   `surfinBH/_fit_evaluators/fit_3dq8.py` for an example.
 * Add `from fit_23dModGR import Fit23dModGR` to
@@ -41,9 +43,17 @@ Note: Do not push the fit data itself, but push the regression data generated
 in `test/regression_data/`.
 
 ## PyPI release
+
 Note: This is currently under Vijay's account, so only he can do this.
-Make sure there are no data files in surfinBH/data before doing this. The
-required data files will get downloaded automatically.
+First make sure :
+
+1. There are no data files in surfinBH/data. The
+   required data files will get downloaded automatically.
+
+2. `surfinBH/_eval_pysur` is not empty. If empty, do `git submodule update --init`.
+
+Then:
+
 ```shell
 python setup.py sdist bdist_wheel
 twine upload dist/*
