@@ -26,6 +26,9 @@ Stein, L. E. Kidder, H. P. Pfeiffer,
 [3] M. Boschini, D. Gerosa, V. Varma, et al.,
 [arXiv:2307.03435](https://arxiv.org/abs/2307.03435)
 
+[4] L. Magaña Zertuche, L. C. Stein, et al.,
+[arXiv:TODO](https://arxiv.org/abs/TODO)
+
 If you find this package useful in your work, please cite reference [1] and,
 if available, the relevant paper describing the particular model. Please also
 cite this package, see the DOI badge at the top of this page for BibTeX keys.
@@ -84,7 +87,7 @@ import surfinBH
 ### See list of available fits
 ```python
 print(list(surfinBH.fits_collection.keys()))
->>> ['NRSur3dq8Remnant', 'surfinBH7dq2', 'NRSur7dq4Remnant', 'NRSur7dq4EmriRemnant']
+>>> ['NRSur3dq8Remnant', 'surfinBH7dq2', 'NRSur7dq4Remnant', 'NRSur7dq4EmriRemnant', 'NRSur3dq8_RD']
 ```
 
 Pick your favorite fit and get some basic information about it.
@@ -121,6 +124,8 @@ We also provide ipython examples for usage of different fits:
 * [NRSur7dq4EmriRemnant](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq4Emri.ipynb) (Ref. [3])
 
 * [NRSur3dq8Remnant](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_3dq8.ipynb) (called surfinBH3dq8 in Ref. [1])
+
+* [NRSur3dq8_RD](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_3dq8_RD.ipynb) (Ref. [4])
 
 ##### Older fits
 
