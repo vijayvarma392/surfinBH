@@ -1,0 +1,35 @@
+{
+  "sxs_format": "rotating_paired_diff_multishuffle_bzip2",
+  "data_info": {
+    "data_type": "h",
+    "m_is_scaled_out": true,
+    "r_is_scaled_out": true,
+    "spin_weight": -2,
+    "ell_min": 2,
+    "ell_max": 4
+  },
+  "version_info": {
+    "python": "3.12.2 | packaged by conda-forge | (main, Feb 16 2024, 20:50:58) [GCC 12.3.0]",
+    "numpy": "1.26.4",
+    "scipy": "1.13.0",
+    "h5py": "3.11.0",
+    "numba": "0.59.1",
+    "quaternion": "2023.0.3",
+    "spherical_functions": "2022.4.5",
+    "spinsfast": "2022.4.6",
+    "scri": "2022.8.11",
+    "quaternionic": "1.0.10",
+    "spherical": "1.0.14",
+    "sxs": "2022.5.6"
+  },
+  "validation": {
+    "h5_file_size": 123717,
+    "n_times": 1281,
+    "md5sum": "652e1268a32305582a2afd4c7e3547e1"
+  },
+  "modifications": {
+    "truncate": {
+      "tol": 1e-10
+    }
+  }
+}
