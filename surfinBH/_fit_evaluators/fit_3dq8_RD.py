@@ -129,16 +129,13 @@ class Fit3dq8_RD(surfinBH.SurFinBH):
         fit_params = [np.log(q), chiHat, chi_a]
         return fit_params
 
-
-
-
     #-------------------------------------------------------------------------
     def vf(self, *args, **kwargs):
-        """vf is not implemented in this model."""
-        raise NotImplementedError("vf is not implemented in this model.")
+        """vf is not implemented in this model. Will return (None, None),"""
+        return self._eval_wrapper('vf', *args, **kwargs)
 
     def all(self, *args, **kwargs):
-        """ Evaluates fit and 1-sigma error estimate for remnant mass, spin
+        """ Evaluates fit and 1-sigma error estimate for remnant mass, spin,
         and QNM amplitudes.
         Returns:
             mf, chif, QNM_dict, mf_err_est, chif_err_est, QNM_err_est_dict
@@ -168,10 +165,15 @@ class Fit3dq8_RD(surfinBH.SurFinBH):
             mf, mf_err = self._evaluate_fits(x, 'M_f')
             if fit_key == 'mf':
                 return mf, mf_err
+
         if fit_key == 'chif' or fit_key == 'all':
             chif, chif_err = self._evaluate_fits(x, 'chi_f')
             if fit_key == 'chif':
                 return chif, chif_err
+
+        if fit_key == 'vf':
+            vf, vf_err = None, None
+            return vf, vf_err
 
         QNM_dict = {}
         QNM_err_est_dict = {}
