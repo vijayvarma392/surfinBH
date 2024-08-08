@@ -32,7 +32,8 @@ def save_data(h5grp, fit, num_tests, kwargs={}):
 
         # remnant kick
         y = fit.vf(q, chiA, chiB, **kwargs)
-        # Needed for NRSur7dq4EmriRemnant
+        # Needed for models that don't include remnant kick,
+        # like NRSur7dq4EmriRemnant and NRSur3dq8_RD
         if y[0] is not None:
             y_h5grp.create_dataset('vf', data=y)
 
