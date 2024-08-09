@@ -37,9 +37,11 @@ jobs:
       - name: Install dependencies
         shell: bash -l {0}
         run: |
-          conda install gsl
+          conda install gsl h5py numba
           pip install pytest numpy nbconvert ipykernel
           pip install NRSur7dq2
+          conda config --add channels conda-forge
+          conda install qnm sxs
 
       - name: Install pipenv
         shell: bash -l {0}
