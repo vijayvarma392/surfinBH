@@ -58,3 +58,16 @@ Then:
 python setup.py sdist bdist_wheel
 twine upload dist/*
 ```
+
+NOTE for the uploader: For the last step, you should have the following in your `~/.pypirc`:
+
+```
+[distutils]
+index-servers =
+    pypi
+
+[pypi]
+username = __token__
+```
+
+When asked for the password, get a fresh API token https://pypi.org/manage/account/.
