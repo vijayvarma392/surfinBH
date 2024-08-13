@@ -111,5 +111,5 @@ fits_collection['NRSur3dq8_RD'] = FitAttributes( \
     desc = 'Fits for remnant mass, spin, and complex QNM amplitudes'
            ' for nonprecessing BBH systems.',
     data_url = 'https://zenodo.org/records/13307895/files/fit_3dq8_RD.h5',
-    refs = 'arxiv:TODO',
+    refs = 'arxiv:2408.05300',
     )

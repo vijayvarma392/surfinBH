@@ -5,7 +5,7 @@ import warnings
 #=============================================================================
 class Fit3dq8_RD(surfinBH.SurFinBH):
     """A class for the NRSur3dq8_RD model presented in Magana Zertuche et al.,
-    arxiv:TODO.
+    arxiv:2408.05300.
 
     This model predicts the final mass mf, final spin chif, and
     complex QNM amplitudes A_(l,m,n,p), for the remnants of
