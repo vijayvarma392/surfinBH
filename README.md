@@ -27,7 +27,7 @@ Stein, L. E. Kidder, H. P. Pfeiffer,
 [arXiv:2307.03435](https://arxiv.org/abs/2307.03435)
 
 [4] L. Magaña Zertuche, L. C. Stein, et al.,
-[arXiv:TODO](https://arxiv.org/abs/TODO)
+[arXiv:2408.05300](https://arxiv.org/abs/2408.05300)
 
 If you find this package useful in your work, please cite reference [1] and,
 if available, the relevant paper describing the particular model. Please also
