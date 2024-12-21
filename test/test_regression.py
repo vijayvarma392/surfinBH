@@ -70,22 +70,38 @@ def test_fit_regression():
                 q = test_h5grp['q'][()]
                 chiA = test_h5grp['chiA'][()]
                 chiB = test_h5grp['chiB'][()]
-
-                # remnant mass
-                y_reg = test_h5grp['y/mf'][()]
-                y_fit = fit.mf(q, chiA, chiB, **kwargs)
-                np.testing.assert_allclose(y_fit, y_reg, rtol=rtol, atol=atol)
-
-                # remnant spin
-                y_reg = test_h5grp['y/chif'][()]
-                y_fit = fit.chif(q, chiA, chiB, **kwargs)
-                np.testing.assert_allclose(y_fit, y_reg, rtol=rtol, atol=atol)
                 
-                # remnant kick
-                # Needed for NRSur7dq4EmriRemnant
-                if 'vf' in test_h5grp['y'].keys():
-                    y_reg = test_h5grp['y/vf'][()]
-                    y_fit = fit.vf(q, chiA, chiB, **kwargs)
+                if name == 'NRSur3dq8BMSRemnant':
+                    #compute fits
+                    alpha, boost,  alpha_err, boost_err = fit.all(q, chiA, chiB, **kwargs)
+                    
+                    # supertranslation
+                    y_reg = test_h5grp['y/alpha'][()]
+                    y_fit = alpha, alpha_err
                     np.testing.assert_allclose(y_fit, y_reg, rtol=rtol, atol=atol)
 
+                    # boost velocity
+                    y_reg = test_h5grp['y/boost'][()]
+                    y_fit = boost, boost_err
+                    np.testing.assert_allclose(y_fit, y_reg, rtol=rtol, atol=atol)
+                    
+                else:
+                    # remnant mass
+                    y_reg = test_h5grp['y/mf'][()]
+                    y_fit = fit.mf(q, chiA, chiB, **kwargs)
+                    np.testing.assert_allclose(y_fit, y_reg, rtol=rtol, atol=atol)
+    
+                    # remnant spin
+                    y_reg = test_h5grp['y/chif'][()]
+                    y_fit = fit.chif(q, chiA, chiB, **kwargs)
+                    np.testing.assert_allclose(y_fit, y_reg, rtol=rtol, atol=atol)
+                    
+                    # remnant kick
+                    # Needed for NRSur7dq4EmriRemnant
+                    if 'vf' in test_h5grp['y'].keys():
+                        y_reg = test_h5grp['y/vf'][()]
+                        y_fit = fit.vf(q, chiA, chiB, **kwargs)
+                        np.testing.assert_allclose(y_fit, y_reg, rtol=rtol, atol=atol)
+   
+                     
         regression_h5file.close()
