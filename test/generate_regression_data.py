@@ -5,6 +5,35 @@ import os
 
 import surfinBH
 
+def save_data_3dq8BMS(h5grp, fit, num_tests, kwargs={}):
+
+    for i in range(num_tests):
+        # save each test evaluation as group
+        test_h5grp = h5grp.create_group('test_%d'%i)
+
+        # Generate params randomly within allowed values
+        q, chiA, chiB = fit._generate_random_params_for_tests()
+
+        # save params
+        test_h5grp.create_dataset('q', data=q)
+        test_h5grp.create_dataset('chiA', data=chiA)
+        test_h5grp.create_dataset('chiB', data=chiB)
+
+        # save evaluations as a group
+        y_h5grp = test_h5grp.create_group('y')
+     
+        alpha, boost,  alpha_err, boost_err = fit.all(q, chiA, chiB, **kwargs)
+        
+        # supertranslation 
+        y = alpha, alpha_err
+        y_h5grp.create_dataset('alpha', data=y)
+
+        #  boost velocity
+        y = boost, boost_err
+        y_h5grp.create_dataset('boost', data=y)
+
+
+
 def save_data(h5grp, fit, num_tests, kwargs={}):
 
     for i in range(num_tests):
@@ -62,7 +91,10 @@ if __name__ == "__main__":
 
     # save regression without optional kwargs
     h5grp = h5file.create_group('No_kwargs')
-    save_data(h5grp, fit, num_tests)
+    if name_tag == '3dq8BMS':
+        save_data_3dq8BMS(h5grp, fit, num_tests)
+    else:
+        save_data(h5grp, fit, num_tests)
 
     # save regression with optional kwargs.
     # NOTE: this would be empty unless _extra_regression_kwargs() is

@@ -113,3 +113,13 @@ fits_collection['NRSur3dq8_RD'] = FitAttributes( \
     data_url = 'https://zenodo.org/records/13307895/files/fit_3dq8_RD.h5',
     refs = 'arxiv:2408.05300',
     )
+
+#update arxiv number and url (zenodo) when available
+fits_collection['NRSur3dq8BMSRemnant'] = FitAttributes( \
+    fit_class = _fit_evaluators.Fit3dq8BMS,
+    desc = 'Fits for supertranslation parameter modes and boost velocity of the BMS'
+    ' transformation from the PN BMS frame to the remnant BMS frame '
+    ' for nonprecessing BBH systems.',
+    data_url = 'https://zenodo.org/records/14919209/files/fit_3dq8BMS.h5',
+    refs = 'arxiv:25??.?????',
+    )

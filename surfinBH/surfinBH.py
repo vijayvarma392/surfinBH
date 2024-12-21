@@ -310,6 +310,18 @@ See _fit_evaluators.fit_7dq2.py for an example.
             mf, chif, vf, mf_err_est, chif_err_est, vf_err_est
 
         chif, vf, chif_err_est and vf_err_est are arrays of size 3.
+
+        In the case of NRsur3dq8BMSRemnant evaluates fit and 1-sigma error estimate for the 
+        supertranslation parameter's modes and boost velocity of the BMS transformation from the PN
+        BMS frame to the remnant BMS frame.
+        Returns:
+            alpha, boost_vel, alpha_err, boost_vel_err
+
+            alpha, alpha_err complex arrays of spherical harmonics modes from ell = 0 to ell = 8 with spherical_function package mode ordering.
+            [(0,0),(1,-1),(1,0),(1,1),(2,-2),...,(8,8)]
+            
+            boost_vel, boost_vel_err are arrays of size 3.
         """
         return self._eval_wrapper('all', *args, **kwargs)
+
 

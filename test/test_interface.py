@@ -64,6 +64,11 @@ def test_interface():
     # List of all available fits
     fit_names = surfinBH.fits_collection.keys()
     for name in fit_names:
+
+        # since there are no methods for the fit parameters of 3dq8BMS yet, these tests 
+        # cannot be applied to this model
+        if name == 'NRSur3dq8BMSRemnant': continue
+        
         # Load fit
         fit = surfinBH.LoadFits(name)
 
