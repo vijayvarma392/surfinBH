@@ -41,7 +41,7 @@ jobs:
           pip install pytest numpy nbconvert ipykernel
           pip install NRSur7dq2
           conda config --add channels conda-forge
-          conda install qnm sxs
+          conda install qnm sxs scri
 
       - name: Install pipenv
         shell: bash -l {0}
