@@ -6,7 +6,7 @@ import warnings
 #=============================================================================
 class Fit3dq8BMS(surfinBH.SurFinBH):
     """ A class for the NRSur3dq8BMSRemnant model presented in Da Re et al.,
-    arxiv:????.?????.
+    arXiv:2503.09569.
     
     This model predicts the supertransation modes up to ell = 8 and the 
     3 components of the boost velocity of the BMS transformation from the 

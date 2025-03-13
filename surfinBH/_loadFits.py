@@ -121,5 +121,5 @@ fits_collection['NRSur3dq8BMSRemnant'] = FitAttributes( \
     ' transformation from the PN BMS frame to the remnant BMS frame '
     ' for nonprecessing BBH systems.',
     data_url = 'https://zenodo.org/records/14919209/files/fit_3dq8BMS.h5',
-    refs = 'arxiv:25??.?????',
+    refs = 'arXiv:2503.09569',
     )
