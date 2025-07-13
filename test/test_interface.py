@@ -65,9 +65,14 @@ def test_interface():
     fit_names = surfinBH.fits_collection.keys()
     for name in fit_names:
 
+        # This model is deprecated and should not be tested.
+        if name == "surfinBH7dq2":
+            continue 
+
         # since there are no methods for the fit parameters of 3dq8BMS yet, these tests 
         # cannot be applied to this model
-        if name == 'NRSur3dq8BMSRemnant': continue
+        if name == 'NRSur3dq8BMSRemnant':
+            continue
         
         # Load fit
         fit = surfinBH.LoadFits(name)
