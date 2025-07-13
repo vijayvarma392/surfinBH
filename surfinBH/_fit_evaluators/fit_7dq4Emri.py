@@ -95,7 +95,7 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
         # Param limits beyond which to raise a warning
         # With current settings a warning is never raised
         soft_param_lims = {
-            'q': np.Inf,
+            'q': np.inf,
             'chiAmag': 1,
             'chiBmag': 1,
                 }
@@ -103,7 +103,7 @@ class Fit7dq4Emri(surfinBH.SurFinBH):
         # Param limits beyond which to raise an error
         # With current settings an error is never raised
         hard_param_lims = {
-            'q' : np.Inf,
+            'q' : np.inf,
             'chiAmag': 1,
             'chiBmag': 1,
                 }

@@ -28,6 +28,9 @@ setuptools.setup(
         'scikit-learn>=0.19.1',
         'lalsuite>=6.70',
         'gwsurrogate',
+        'qnm',
+        'sxs',
+        'scri'
     ],
     classifiers=[
         "Intended Audience :: Science/Research",
