@@ -1,5 +1,6 @@
 import os
 import errno
+import warnings
 try:
     from urllib.request import urlretrieve # py 3
 except ImportError:
@@ -28,6 +29,15 @@ def LoadFits(name):
     """
     if name not in fits_collection.keys():
         raise Exception('Invalid fit name : %s'%name)
+    elif name == "surfinBH7dq2" or name == "NRSur7dq2Remnant":
+        warnings.warn(
+            "surfinBH7dq2 is deprecated and will be removed. In particular," \
+            "the underlying NRSur7dq2 model does not support numpy 2.0+." \
+            "If you are running on numpy 2.0+, surfinBH7dq2 cannot be used.",
+            "Please use the more recent NRSur7dq4Remnant model instead.",
+            category=DeprecationWarning,
+            stacklevel=2
+        )
     else:
         testPath = DataPath() + '/' + fits_collection[name].data_url.split('/')[-1]
         if (not os.path.isfile(testPath)):
@@ -82,17 +92,18 @@ fits_collection['NRSur3dq8Remnant'] = FitAttributes( \
     refs = 'arxiv:1809.09125',
     )
 
+# The surfinBH7dq2 model is deprecated and may be removed in the future.
 fits_collection['surfinBH7dq2'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit7dq2,
-    desc = 'Fits for remnant mass, spin and kick veclocity for generically'
-        ' precessing BBH systems.',
+    desc = 'Fits for remnant mass, spin and kick velocity for generically'
+        ' precessing BBH systems. This model is deprecated -- use NRSur7dq4Remnant.',
     data_url = 'https://zenodo.org/records/1435751/files/remnant_fits/fit_7dq2.h5',
     refs = 'arxiv:1809.09125',
     )
 
 fits_collection['NRSur7dq4Remnant'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit7dq4,
-    desc = 'Fits for remnant mass, spin and kick veclocity for generically'
+    desc = 'Fits for remnant mass, spin and kick velocity for generically'
         ' precessing BBH systems up to mass ratio 4.',
     data_url = 'https://zenodo.org/records/3455886/files/remnant_fits/fit_7dq4.h5',
     refs = 'arxiv:1905.09300',
@@ -114,7 +125,6 @@ fits_collection['NRSur3dq8_RD'] = FitAttributes( \
     refs = 'arxiv:2408.05300',
     )
 
-#update arxiv number and url (zenodo) when available
 fits_collection['NRSur3dq8BMSRemnant'] = FitAttributes( \
     fit_class = _fit_evaluators.Fit3dq8BMS,
     desc = 'Fits for supertranslation parameter modes and boost velocity of the BMS'

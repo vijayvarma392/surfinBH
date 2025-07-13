@@ -39,7 +39,6 @@ jobs:
         run: |
           conda install gsl h5py numba
           pip install pytest numpy nbconvert ipykernel
-          pip install NRSur7dq2
           conda config --add channels conda-forge
           conda install qnm sxs scri
 

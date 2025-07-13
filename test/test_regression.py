@@ -27,6 +27,10 @@ def test_fit_regression():
     fit_names = surfinBH.fits_collection.keys()
     for name in fit_names:
 
+        # This model is deprecated and should not be tested.
+        if name == "surfinBH7dq2":
+            continue 
+
         if name == 'NRSur7dq4EmriRemnant':
             # FIXME Somehow, the error estimate for this fit seems particularly
             # finnicky accross different machines. For now, essentially

@@ -18,6 +18,11 @@ def test_example_notebooks():
     fit_names = surfinBH.fits_collection.keys()
 
     for name in fit_names:
+
+        # This model is deprecated and should not be tested.
+        if name == "surfinBH7dq2":
+            continue 
+
         # allow for both naming formats surfinBH7dq2 and NRSur7dq4Remnant
         if 'surfinBH' in name:
             name_tag = name.split('surfinBH')[-1]

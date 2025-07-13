@@ -79,7 +79,7 @@ All of these can be installed through pip or conda.
 * [scikit-learn](http://scikit-learn.org/stable/install.html) (at least 0.19.1)
 * [lalsuite](https://pypi.org/project/lalsuite) (at least 6.70)
 * [gwsurrogate](https://pypi.org/project/gwsurrogate)
-* [NRSur7dq2](https://pypi.org/project/NRSur7dq2) (only for surfinBH7dq2)
+
 
 ## Usage
 
@@ -90,7 +90,7 @@ import surfinBH
 ### See list of available fits
 ```python
 print(list(surfinBH.fits_collection.keys()))
->>> ['NRSur3dq8Remnant', 'surfinBH7dq2', 'NRSur7dq4Remnant', 'NRSur7dq4EmriRemnant', 'NRSur3dq8_RD', 'NRSur3dq8BMSRemnant']
+>>> ['NRSur3dq8Remnant', 'NRSur7dq4Remnant', 'NRSur7dq4EmriRemnant', 'NRSur3dq8_RD', 'NRSur3dq8BMSRemnant']
 ```
 
 Pick your favorite fit and get some basic information about it.
@@ -132,7 +132,7 @@ We also provide ipython examples for usage of different fits:
 
 * [NRSur3dq8BMSRemnant](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_3dq8BMS.ipynb) (Ref. [5]) 
 
-##### Older fits
+##### Deprecated fits
 
 * [surfinBH7dq2](https://github.com/vijayvarma392/surfinBH/blob/master/examples/example_7dq2.ipynb) (Ref. [1]. Superseded by NRSur7dq4Remnant)
 
