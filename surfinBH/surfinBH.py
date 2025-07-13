@@ -81,7 +81,7 @@ See _fit_evaluators.fit_7dq2.py for an example.
         for k, item in f.items():
             if type(item) == h5py._hl.dataset.Dataset:
                 v = item[()]
-                if type(v) == np.string_:
+                if type(v) == np.bytes_:
                     v = str(v)
                 if type(v) == str and v == "NONE":
                     d[k] = None
