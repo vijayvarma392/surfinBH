@@ -90,7 +90,7 @@ import surfinBH
 ### See list of available fits
 ```python
 print(list(surfinBH.fits_collection.keys()))
->>> ['NRSur3dq8Remnant', 'NRSur7dq4Remnant', 'NRSur7dq4EmriRemnant', 'NRSur3dq8_RD', 'NRSur3dq8BMSRemnant']
+>>> ['NRSur3dq8Remnant', 'surfinBH7dq2', 'NRSur7dq4Remnant', 'NRSur7dq4EmriRemnant', 'NRSur3dq8_RD', 'NRSur3dq8BMSRemnant']
 ```
 
 Pick your favorite fit and get some basic information about it.
