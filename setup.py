@@ -27,10 +27,7 @@ setuptools.setup(
         'h5py',
         'scikit-learn>=0.19.1',
         'lalsuite>=6.70',
-        'gwsurrogate',
-        'qnm',
-        'sxs',
-        'scri'
+        'gwsurrogate'
     ],
     classifiers=[
         "Intended Audience :: Science/Research",
