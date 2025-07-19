@@ -31,9 +31,9 @@ def LoadFits(name):
         raise Exception('Invalid fit name : %s'%name)
     elif name == "surfinBH7dq2" or name == "NRSur7dq2Remnant":
         warnings.warn(
-            "surfinBH7dq2 is deprecated and will be removed. In particular," \
-            "the underlying NRSur7dq2 model does not support numpy 2.0+." \
-            "If you are running on numpy 2.0+, surfinBH7dq2 cannot be used.",
+            "surfinBH7dq2 is deprecated and will be removed. In particular, " \
+            "the underlying NRSur7dq2 model does not support numpy 2.0+. " \
+            "If you are running on numpy 2.0+, surfinBH7dq2 cannot be used. " \
             "Please use the more recent NRSur7dq4Remnant model instead.",
             category=DeprecationWarning,
             stacklevel=2
