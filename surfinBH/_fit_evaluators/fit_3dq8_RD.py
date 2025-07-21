@@ -19,6 +19,20 @@ class Fit3dq8_RD(surfinBH.SurFinBH):
     However, it extrapolates reasonably to:
         q <= 10, |chiAz| <= 1, |chiBz| <= 1
 
+    Modes are labeled by (l,m,n,p) where
+        l:      int
+                angular quantum number, 2 <= l
+        m:      int
+                "magnetic" quantum number, -l <= m <= +l
+        n:      int
+                overtone number, 0 <= n
+        p:      +1 or -1
+                Labels if mode is in the right/left half of the complex plane,
+                p = sgn(Re[omega]); that is,
+                p = +1 when Re[omega] > 0
+                p = -1 when Re[omega] < 0
+    These conventions agree with [arXiv:2110.15922].
+
     =========================================================================
     Usage:
 
@@ -51,8 +65,8 @@ class Fit3dq8_RD(surfinBH.SurFinBH):
 
     Optional arguments:
         modes:
-            A list of mode labels of the form (l,m,n,p) which are a
-            subset of the modeled modes. The default is all the
+            A list of mode labels of the form (l,m,n,p), documented above,
+            which are a subset of the modeled modes. The default is all the
             modeled modes, namely
             modes = [ (2,2,0,1),(2,-2,0,-1),(2,2,1,1),(2,-2,1,-1),
                       (2,0,0,1),(2,0,0,-1),(4,4,0,1),(4,-4,0,-1),
