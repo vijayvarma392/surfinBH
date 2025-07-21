@@ -29,7 +29,7 @@ def LoadFits(name):
     """
     if name not in fits_collection.keys():
         raise Exception('Invalid fit name : %s'%name)
-    elif name == "surfinBH7dq2" or name == "NRSur7dq2Remnant":
+    if name == "surfinBH7dq2" or name == "NRSur7dq2Remnant":
         warnings.warn(
             "surfinBH7dq2 is deprecated and will be removed. In particular, " \
             "the underlying NRSur7dq2 model does not support numpy 2.0+. " \
@@ -38,20 +38,19 @@ def LoadFits(name):
             category=DeprecationWarning,
             stacklevel=2
         )
+    testPath = DataPath() + '/' + fits_collection[name].data_url.split('/')[-1]
+    if (not os.path.isfile(testPath)):
+        DownloadData(name)
+
+    # allow for both naming formats surfinBH7dq2 and NRSur7dq4Remnant
+    if 'surfinBH' in name:
+        name_tag = name.split('surfinBH')[-1]
     else:
-        testPath = DataPath() + '/' + fits_collection[name].data_url.split('/')[-1]
-        if (not os.path.isfile(testPath)):
-            DownloadData(name)
+        name_tag = name.split('NRSur')[-1].split('Remnant')[0]
 
-        # allow for both naming formats surfinBH7dq2 and NRSur7dq4Remnant
-        if 'surfinBH' in name:
-            name_tag = name.split('surfinBH')[-1]
-        else:
-            name_tag = name.split('NRSur')[-1].split('Remnant')[0]
-
-        fit = fits_collection[name].fit_class(name_tag)
-        print('Loaded %s fit.'%name)
-        return fit
+    fit = fits_collection[name].fit_class(name_tag)
+    print('Loaded %s fit.'%name)
+    return fit
 
 #-------------------------------------------------------------------------
 def DownloadData(name='all', data_dir=DataPath()):
